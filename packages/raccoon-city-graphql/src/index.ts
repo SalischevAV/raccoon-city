@@ -16,7 +16,7 @@ async function tradeTokenForUser(token: string) {
     return userObj ? userObj : null;
 }
 
-export const redis = new Redis();
+export const redis = new Redis({host: process.env.REDIS_HOST});
 export const app = express();
 app.use(cors());
 app.use(express.json());

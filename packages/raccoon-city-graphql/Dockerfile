@@ -4,7 +4,6 @@ RUN mkdir -p /raccoon-city-graphql
 WORKDIR /raccoon-city-graphql
 COPY . /raccoon-city-graphql
 RUN yarn
-RUN yarn build
-EXPOSE 8080
-CMD [ "yarn", "start" ]
+EXPOSE 4000
+CMD [ "yarn", "start:dev" ]
 
