@@ -10,7 +10,7 @@ services:
       context: ./packages/raccoon-city-graphql
       dockerfile: Dockerfile
     ports:
-      - 4000:4000
+      - 8080:4000
     depends_on:
       - mongo
   mongo:
@@ -19,7 +19,7 @@ services:
     volumes:
       - data-volume:/var/lib/db
     ports:
-      - "27017:27017"
+      - "227017:27017"
   redis:
     image: redis
     expose:
