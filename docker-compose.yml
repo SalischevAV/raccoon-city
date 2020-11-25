@@ -1,18 +1,8 @@
 version: "3"
 services:
-  client:
-    container_name: raccoon-city-ui
-    build:
-      context: ./packages/raccoon-city-ui
-      dockerfile: Dockerfile
-    image: raccoon-city/raccoon-city-ui
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./packages/raccoon-city-ui:/raccoon-city-ui
-      - /raccoon-city-ui/node_modules/
   server:
-    container_name: raccoon-city-graphql
+    env_file: ./packages/raccoon-city-graphql/.env
+    container_name: raccoon-city
     links:
       - mongo
       - redis
@@ -21,17 +11,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4000:4000
-    volumes:
-      - ./packages/raccoon-city-graphql:/raccoon-city-graphql
-      - /raccoon-city-graphql/node_modules/
+    depends_on:
+      - mongo
   mongo:
     container_name: mongo
     image: mongo
     volumes:
-      - ./data:/data/db
+      - data-volume:/var/lib/db
     ports:
       - "27017:27017"
   redis:
     image: redis
     expose:
       - 6379
+volumes:
+  data-volume:
