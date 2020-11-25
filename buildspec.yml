@@ -2,6 +2,7 @@ version: 0.1
 environment_variables:
   plaintext:
     S3_BUCKET: "raccoon-city-test"
+    CLOUDFRONT_DISTRIBUTION_ID: "EOXOE0O3319Z3"
 phases:
   install:
     commands:
@@ -20,6 +21,7 @@ phases:
     commands:
       - cd packages/raccoon-city-ui; aws s3 cp build s3://${S3_BUCKET}/client --recursive
       - echo Build completed on `date`
+      - aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/*'
 artifacts:
   files:
     - '**/*'
