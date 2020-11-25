@@ -1,0 +1,27 @@
+version: 0.1
+environment_variables:
+  plaintext:
+    S3_BUCKET: "raccoon-city-test"
+phases:
+  install:
+    commands:
+      - echo Entered the install phase...
+      - apt-get update -y
+      - apt-get install apt-transport-https
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+      - apt-get update -y
+      - apt-get install -y yarn
+      - cd packages/raccoon-city-ui; yarn
+  build:
+    commands:
+      - cd packages/raccoon-city-ui; yarn build
+  post_build:
+    commands:
+      - cd packages/raccoon-city-ui; aws s3 cp build s3://${S3_BUCKET}/client --recursive
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'build*'
+  discard-paths: yes
