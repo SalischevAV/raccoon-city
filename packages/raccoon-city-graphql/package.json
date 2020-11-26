@@ -10,6 +10,8 @@
         "start:dev": "ts-node src/index.ts",
         "start:pm2": "NODE_ENV=production pm2 start dist/index.js --name \"raccoon-city-graphql\" &",
         "stop:pm2": "pm2 stop \"raccoon-city-graphql\" &",
+        "start:pm2-test": "NODE_ENV=production pm2 start dist/index.js --name \"raccoon-city-graphql-test\" &",
+        "stop:pm2-test": "pm2 stop \"raccoon-city-graphql-test\" &",
         "copy-to-dist": "copyfiles --up 1 src/schemas/* dist",
         "copyspec": "copyfiles appspec.yml dist",
         "debug": "dotenv -- nodemon -e ts,graphql -x node --inspect=9200 -r ts-node/register src/index.ts",
