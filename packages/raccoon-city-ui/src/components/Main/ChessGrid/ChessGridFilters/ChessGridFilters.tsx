@@ -4,10 +4,10 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import classNames from 'classnames';
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import styled from 'styled-components';
+import {withTooltip} from '../../../HOC/withTooltip';
 import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
-import {withTooltip} from './ChessGridDesktopFilters';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
 import {ViewModeFilters} from './ViewModeFilters';
 

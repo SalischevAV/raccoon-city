@@ -1,3 +1,4 @@
+import {flatStatuses} from 'src/constants/flatStatuses';
 import {Flat, FlatModel} from '../../db/models/flat';
 import {LevelModel} from '../../db/models/level';
 import {SectionModel} from '../../db/models/section';
@@ -132,7 +133,15 @@ export const flatMutation = {
         return true;
     },
     async createFlat(parent, args, ctx: Context) {
-        const flat = args.flat;
+        let flat = args.flat;
+
+        if (!flatStatuses.includes(flat.status)) {
+            flat = {
+                ...flat,
+                status: "UNAVAILABLE"
+            };
+        }
+
         const newFlat = await handleSection(flat, null, args.houseGuid);
         return FlatModel.create(newFlat);
     },

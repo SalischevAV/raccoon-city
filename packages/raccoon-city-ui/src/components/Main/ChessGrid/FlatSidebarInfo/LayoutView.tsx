@@ -116,6 +116,7 @@ function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCu
         if (svgRef && svgRef.current) {
             fillExistingLayouts(svgRef.current, paths, viewBox, info, setCurrentDataId, onSelect);
         }
+
         // eslint-disable-next-line
     }, []);
 

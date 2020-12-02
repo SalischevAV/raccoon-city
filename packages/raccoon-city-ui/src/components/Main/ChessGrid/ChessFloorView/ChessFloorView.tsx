@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
     GET_FLATS_INFO_WITH_SVG_LAYOUTS,
     GET_PUBLISHED_FLATS_INFO_WITH_SVG_LAYOUTS
@@ -57,6 +57,20 @@ export const ChessFloorView = (props) => {
         },
         fetchPolicy: 'cache-and-network'
     });
+
+    const currentValueTest = useCallback(
+        (sectionId) => {
+            setCurrentSection(sectionId);
+            const {levels} = sections[sectionId];
+
+            if (!levels.length) {
+                return;
+            }
+
+            setCurrentLevel(levels[0].id);
+        },
+        [setCurrentSection, setCurrentLevel, sections]
+    );
 
     if (flatsLoading) {
         return <ChessGridAnimation />;
@@ -117,17 +131,6 @@ export const ChessFloorView = (props) => {
             />
         );
     }
-
-    const currentValueTest = (sectionId) => {
-        setCurrentSection(sectionId);
-        const {levels} = sections[sectionId];
-
-        if (!levels.length) {
-            return;
-        }
-
-        setCurrentLevel(levels[0].id);
-    };
 
     const levels = sections[currentSection].levels;
     const updatedLevels = isPublic ? levels.reverse() : levels;

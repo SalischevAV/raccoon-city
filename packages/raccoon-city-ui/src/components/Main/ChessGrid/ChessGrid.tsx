@@ -192,17 +192,23 @@ const ChessGridContent = React.memo((props: any) => {
     const chessViews = {
         [ChessCellViewMode.FLOOR]: (
             <>
-                <ChessFloorView
-                    setCurrentLevel={setCurrentLevel}
-                    filters={filters}
-                    onSelect={selectFlat}
-                    houseFlats={houseFlats}
-                    isPublic={isPublic}
-                />
+                {!houseFlats.length ? (
+                    <div>Дома не найдены</div>
+                ) : (
+                    <>
+                        <ChessFloorView
+                            setCurrentLevel={setCurrentLevel}
+                            filters={filters}
+                            onSelect={selectFlat}
+                            houseFlats={houseFlats}
+                            isPublic={isPublic}
+                        />
 
-                <MobileInformation>
-                    {isPublic && <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />}
-                </MobileInformation>
+                        <MobileInformation>
+                            {isPublic && <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />}
+                        </MobileInformation>
+                    </>
+                )}
             </>
         ),
         [ChessCellViewMode.LIST]: <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />,

@@ -8,7 +8,7 @@ import {Level} from '../../db/models/level';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
-import {flatStatusesWithoutPrice} from '../../constants/flatStatusesWithoutPrice';
+import {flatStatusesWithoutPrice} from '../../constants/flatStatuses';
 
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();

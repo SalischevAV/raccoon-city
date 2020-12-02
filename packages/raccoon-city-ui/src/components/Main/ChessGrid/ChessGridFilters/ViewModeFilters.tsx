@@ -2,8 +2,8 @@ import {Avatar, SvgIcon} from '@material-ui/core';
 import classNames from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
+import {withTooltip} from '../../../HOC/withTooltip';
 import {ChessCellViewMode} from '../ChessEnums';
-import {withTooltip} from './ChessGridDesktopFilters';
 import {FilterItemContainer, FilterTitle} from './ChessGridFilters';
 
 const ViewModeContainer = styled.div`

@@ -39,14 +39,6 @@ const FlatStatusesBarWrapper = styled.div`
 
 const RangeContainer = styled.div``;
 
-export function withTooltip(component: JSX.Element, title: string) {
-    return (
-        <Tooltip title={title} placement="bottom">
-            <div>{component}</div>
-        </Tooltip>
-    );
-}
-
 export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;

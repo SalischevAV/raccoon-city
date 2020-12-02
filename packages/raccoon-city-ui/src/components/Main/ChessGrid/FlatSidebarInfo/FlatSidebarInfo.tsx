@@ -28,6 +28,7 @@ import SentTradeRequestModal from './SentTradeRequestModal';
 
 import {defaultFlatPicture} from './SvgImages';
 import {GET_USER_INFO} from '../../../../graphql/queries/userQuery';
+import {withTooltip} from '../../../HOC/withTooltip';
 interface FlatSidebarInfoProps {
     flat: Flat;
     houseId: string;
@@ -207,12 +208,32 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     scrollButtons="auto"
                     aria-label="scrollable prevent tabs example"
                 >
-                    <StyledTab icon={<InfoIcon />} aria-label="phone" />
-                    <StyledTab disabled={!hasVR} icon={<ThreeDRotationIcon />} aria-label="3d" />
-                    <StyledTab disabled={!hasHalfVR} icon={<ThreeSixtyIcon />} aria-label="2d" />
-                    <StyledTab disabled={!hasPhoto} icon={<ImageIcon />} aria-label="gallery" />
-                    <StyledTab disabled={!hasLevelsPhoto} icon={<PhotoLibraryIcon />} aria-label="layout" />
-                    <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />
+                    {withTooltip(<StyledTab icon={<InfoIcon />} aria-label="phone" />, 'Информация', false)}
+                    {withTooltip(
+                        <StyledTab disabled={!hasVR} icon={<ThreeDRotationIcon />} aria-label="3d" />,
+                        '3D фото',
+                        false
+                    )}
+                    {withTooltip(
+                        <StyledTab disabled={!hasHalfVR} icon={<ThreeSixtyIcon />} aria-label="2d" />,
+                        '2D фото',
+                        false
+                    )}
+                    {withTooltip(
+                        <StyledTab disabled={!hasPhoto} icon={<ImageIcon />} aria-label="gallery" />,
+                        'Фото',
+                        false
+                    )}
+                    {withTooltip(
+                        <StyledTab disabled={!hasLevelsPhoto} icon={<PhotoLibraryIcon />} aria-label="layout" />,
+                        'Этаж',
+                        false
+                    )}
+                    {withTooltip(
+                        <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />,
+                        'Распечатать инофрмацию',
+                        false
+                    )}
                 </Tabs>
             </AppBar>
 
