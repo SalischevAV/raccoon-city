@@ -38,8 +38,10 @@ export const ChessGridRow = React.memo((props: ChessGridItem) => (
         <RowTitle>{props.rowName}</RowTitle>
         {props.flats.length === 0 && <EmplyLevel />}
         {props.flats.length !== 0 &&
-            props.flats.map((flat: Flat) => {
-                return <ChessGridCell key={flat.id} flat={flat} onSelect={props.onSelect} />;
-            })}
+            props.flats
+                .sort((flat1, flat2) => parseInt(flat1.flatNumber) - parseInt(flat2.flatNumber))
+                .map((flat: Flat) => {
+                    return <ChessGridCell key={flat.id} flat={flat} onSelect={props.onSelect} />;
+                })}
     </RowWrapper>
 ));

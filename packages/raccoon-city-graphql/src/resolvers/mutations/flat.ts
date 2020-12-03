@@ -1,4 +1,4 @@
-import {flatStatuses} from 'src/constants/flatStatuses';
+import {flatStatuses} from '../../constants/flatStatuses';
 import {Flat, FlatModel} from '../../db/models/flat';
 import {LevelModel} from '../../db/models/level';
 import {SectionModel} from '../../db/models/section';

@@ -26,7 +26,7 @@ export const ChessFloorView = (props) => {
     const {onSelect, houseFlats, isPublic, setCurrentLevel: handleCurrentLevelChange} = props;
 
     // TODO handle error if houseFlats[0] === undefined
-    const {groupedFlats} = houseFlats[0];
+    const {groupedFlats} = houseFlats[0] || [];
 
     const [sections] = useState(getSections(groupedFlats));
     const [currentSection, setCurrentSection] = useState(Object.keys(sections)[0]);
@@ -123,7 +123,7 @@ export const ChessFloorView = (props) => {
     if (fullFlatsInfo.length) {
         contentView = (
             <LayoutView
-                isLarge={true}
+                isChessLayoutView={true}
                 onSelect={onSelect}
                 levelLayouts={flatsToDraw}
                 floorImage={image}

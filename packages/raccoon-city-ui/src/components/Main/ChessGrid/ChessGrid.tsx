@@ -380,8 +380,8 @@ const ChessGrid = connect(null, (dispatch) => ({
     applyParams: (params) => dispatch(setRouteParams(params)),
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, hasSelect, applyTitle, isPublic, onFlatSelected, filterId, showRequestButton}) => {
-    const params = useParams();
-    const {houseUuid} = useParams();
+    const params: any = useParams();
+    const {houseUuid} = params;
 
     useEffect(() => {
         applyParams(params);

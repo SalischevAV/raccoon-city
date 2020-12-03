@@ -168,6 +168,11 @@ export const WarningContainer: any = styled.div`
 
 export const WarningContainerColumn = styled(WarningContainer)`
     flex-direction: column;
+
+    img {
+        width: auto;
+        max-height: 500px;
+    }
 `;
 
 export const FloorContainer = styled.div`

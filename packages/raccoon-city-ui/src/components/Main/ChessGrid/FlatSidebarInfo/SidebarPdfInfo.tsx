@@ -141,11 +141,12 @@ const CustomPDFDownloadLink = styled(PDFDownloadLink)`
 `;
 
 function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
-    let manager: string | null = null;
+    let name: string | null = null;
+    let role: string | null = null;
 
     if (userInfo) {
-        const role = userInfo?.role?.displayName || '';
-        manager = `${userInfo.name} ${role}`;
+        role = userInfo?.role?.displayName || 'Пользователь';
+        name = `${userInfo.name}`;
     }
 
     return (
@@ -210,13 +211,13 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
                     <Text>{new Date().toLocaleDateString()}</Text>
                 </View>
             </TR>
-            {manager ? (
+            {name ? (
                 <TR>
                     <View style={styles.td}>
-                        <Text>Имя/Роль</Text>
+                        <Text>{role}</Text>
                     </View>
                     <View style={styles.value}>
-                        <Text>{manager}</Text>
+                        <Text>{name}</Text>
                     </View>
                 </TR>
             ) : null}

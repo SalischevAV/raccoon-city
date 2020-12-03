@@ -81,8 +81,18 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
             return level2.level - level1.level;
         });
 
+        const EntranceTitle = () => (
+            <ColumnTitle>
+                <Typography variant="subtitle1" gutterBottom={true}>
+                    Подъезд №{this.props.columnName}
+                </Typography>
+            </ColumnTitle>
+        );
+
         return (
             <ColumnWrapper className="ChessGridColumn">
+                <EntranceTitle />
+
                 <CellContainer className="ChessGridColumn__cell">
                     {sortedLevels.map((level) => {
                         return (
@@ -95,11 +105,8 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
                         );
                     })}
                 </CellContainer>
-                <ColumnTitle>
-                    <Typography variant="subtitle1" gutterBottom={true}>
-                        Подъезд №{this.props.columnName}
-                    </Typography>
-                </ColumnTitle>
+
+                <EntranceTitle />
             </ColumnWrapper>
         );
     }

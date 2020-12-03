@@ -15,15 +15,17 @@ const StyledPaper = styled(Paper)`
     max-width: 320px;
 `;
 
-const ImageContainerLarge = styled.div<any>`
-    max-width: 650px;
-    height: auto;
+const ChessLayoutImageContainer = styled.div<any>`
+    width: auto;
+    height: 500px;
     background: url(${(props: any) => props.url});
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     margin: 0 auto;
 `;
 
-const StyledPaperLarge = styled(Paper)`
+const StyledPaperChessLayout = styled(Paper)`
     width: 100%;
 `;
 
@@ -43,7 +45,7 @@ interface LayoutViewProps {
         image: SinglePreviewImage;
         viewBox: {width: number; height: number};
     }>;
-    isLarge?: boolean;
+    isChessLayoutView?: boolean;
     floorImage?: LevelImageUrlInterface;
     onSelect?: any;
     setCurrentDataId?: any;
@@ -107,7 +109,16 @@ function fillExistingLayouts(
     });
 }
 
-function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCurrentDataId = null, onSelect = null}) {
+function ImageWithSvg({
+    image,
+    paths,
+    index,
+    viewBox,
+    isChessLayoutView,
+    info = null,
+    setCurrentDataId = null,
+    onSelect = null
+}) {
     const svgRef = useRef<Svg>();
 
     useEffect(() => {
@@ -120,15 +131,17 @@ function ImageWithSvg({image, paths, index, viewBox, isLarge, info = null, setCu
         // eslint-disable-next-line
     }, []);
 
-    if (isLarge) {
-        return <ImageContainerLarge id={`img-container__${index}`} url={image.downloadUrl} alt={'layout image'} />;
+    if (isChessLayoutView) {
+        return (
+            <ChessLayoutImageContainer id={`img-container__${index}`} url={image.downloadUrl} alt={'layout image'} />
+        );
     }
 
     return <ImageContainer id={`img-container__${index}`} url={image.downloadUrl} alt={'layout image'} />;
 }
 
 export function LayoutView(props: LayoutViewProps) {
-    const {levelLayouts, isLarge = false, setCurrentDataId = null, floorImage, onSelect = null} = props;
+    const {levelLayouts, isChessLayoutView = false, setCurrentDataId = null, floorImage, onSelect = null} = props;
 
     if (!levelLayouts) {
         return null;
@@ -136,7 +149,7 @@ export function LayoutView(props: LayoutViewProps) {
 
     const updatedFloor: any = {};
 
-    if (isLarge) {
+    if (isChessLayoutView) {
         updatedFloor.viewBox = levelLayouts[0].viewBox;
         updatedFloor.paths = levelLayouts.reduce((acc: any, item: any) => [...acc, ...item.paths], []);
         updatedFloor.info = levelLayouts.reduce((acc: any, item: any) => {
@@ -146,20 +159,20 @@ export function LayoutView(props: LayoutViewProps) {
 
     return (
         <Grid container spacing={3}>
-            {isLarge ? (
+            {isChessLayoutView ? (
                 <Grid item xs={12}>
-                    <StyledPaperLarge>
+                    <StyledPaperChessLayout>
                         <ImageWithSvg
                             image={floorImage}
                             paths={updatedFloor.paths}
                             index={0}
                             viewBox={updatedFloor.viewBox}
-                            isLarge={true}
+                            isChessLayoutView={true}
                             info={updatedFloor.info}
                             setCurrentDataId={setCurrentDataId}
                             onSelect={onSelect}
                         />
-                    </StyledPaperLarge>
+                    </StyledPaperChessLayout>
                 </Grid>
             ) : (
                 levelLayouts.map((layout, i) => {
@@ -171,7 +184,7 @@ export function LayoutView(props: LayoutViewProps) {
                                     paths={layout.paths}
                                     index={i}
                                     viewBox={layout.viewBox}
-                                    isLarge={false}
+                                    isChessLayoutView={false}
                                 />
                             </StyledPaper>
                         </Grid>
