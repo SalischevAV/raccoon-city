@@ -10,6 +10,74 @@ import ApartmentComplexModel from '../../db/models/apartmentComplex';
 import {countFlatsByStatus} from '../../utils/flatsCounter';
 import {flatStatusesWithoutPrice} from '../../constants/flatStatuses';
 
+export const getFlatsByGroupedSection = (houses): Flat[] => {
+    const flats: Flat[] = [];
+    houses.forEach((house) =>
+        house.sections.forEach((section) =>
+            section.levels.forEach((level) =>
+                level.flats.forEach((flat) => {
+                    if (flat) {
+                        flats.push(flat);
+                    }
+                })
+            )
+        )
+    );
+    return flats;
+};
+
+export interface HouseRanges {
+    minPrice: number;
+    maxPrice: number;
+    minArea: number;
+    maxArea: number;
+    flatsSoldOut: boolean;
+}
+
+export function getPrice(squarePrice, squarePriceSale): number | null {
+    const prices: number[] = [];
+    if (squarePrice) {
+        prices.push(squarePrice);
+    }
+    if (squarePriceSale) {
+        prices.push(squarePriceSale);
+    }
+    if (prices.length) {
+        return Math.min(...prices);
+    } else return null;
+}
+
+export function getHouseRanges(flats: Flat[]): HouseRanges {
+    let minPrice = Number.MAX_SAFE_INTEGER;
+    let maxPrice = 0;
+    let minArea = Number.MAX_SAFE_INTEGER;
+    let maxArea = 0;
+    let flatsSoldOut = false;
+
+    flats.forEach((flat) => {
+        const price = getPrice(flat.squarePrice, flat.squarePriceSale);
+        if (!flatStatusesWithoutPrice.includes(flat.status) && price) {
+            minPrice = price < minPrice ? price : minPrice;
+            maxPrice = price > maxPrice ? price : maxPrice;
+        }
+        minArea = flat.area < minArea ? flat.area : minArea;
+        maxArea = flat.area > maxArea ? flat.area : maxArea;
+    });
+    if (minPrice === Number.MAX_SAFE_INTEGER) {
+        minPrice = 0;
+    }
+    if (minPrice === 0 && maxPrice === 0) {
+        flatsSoldOut = true;
+    }
+    return {
+        minPrice,
+        maxPrice,
+        minArea,
+        maxArea,
+        flatsSoldOut
+    };
+}
+
 const groupByLevelLayout = groupBy((levelFlatLayout: LevelFlatLayout) => {
     return levelFlatLayout.levelLayout.id.toString();
 });
@@ -214,44 +282,20 @@ export const flatQuery = {
             }
         }).exec();
 
-        const [result] = await PublishedHouseModel.aggregate([
-            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
-            {
-                $unwind: '$sections'
-            },
-            {
-                $unwind: '$sections.levels'
-            },
-            {
-                $unwind: '$sections.levels.flats'
-            },
-            {
-                $group: {
-                    _id: null,
-                    maxPrice: {$max: '$sections.levels.flats.squarePrice'},
-                    minPrice: {$min: '$sections.levels.flats.squarePrice'},
-                    maxArea: {$max: '$sections.levels.flats.area'},
-                    minArea: {$min: '$sections.levels.flats.area'}
-                }
-            }
-        ]).exec();
-        let maxPrice = 0;
-        let minPrice = 0;
-        let maxArea = 0;
-        let minArea = 0;
+        const flats = getFlatsByGroupedSection(houses);
 
-        if (!!result) {
-            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
-            minPrice = Number(String(result.minPrice).replace(',', '.'));
-            maxArea = result.maxArea;
-            minArea = result.minArea;
-        }
+        const maxPrice = getHouseRanges(flats).maxPrice;
+        const minPrice = getHouseRanges(flats).minPrice;
+        const maxArea = getHouseRanges(flats).maxArea;
+        const minArea = getHouseRanges(flats).minArea;
+        const flatsSoldOut = getHouseRanges(flats).flatsSoldOut;
 
         const res = {
             maxPrice,
             minPrice,
             maxArea,
             minArea,
+            flatsSoldOut,
             houseFlats: []
         };
 
@@ -287,7 +331,6 @@ export const flatQuery = {
                 });
             }
         });
-
         return res;
     },
     getPublicFlatsList: async (parent, {uuid}) => {

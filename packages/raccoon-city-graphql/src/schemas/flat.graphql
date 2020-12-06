@@ -80,6 +80,7 @@ type GroupedBySectionResult {
     minPrice: Float
     maxArea: Float
     minArea: Float
+    flatsSoldOut: Boolean
     houseFlats: [FlatsInHouse]
 }
 type Mutation {

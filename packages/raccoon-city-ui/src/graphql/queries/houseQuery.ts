@@ -103,6 +103,7 @@ export interface GetGroupedFlatsBySectionQuery {
         minPrice: number;
         maxArea: number;
         minArea: number;
+        flatsSoldOut: boolean;
         houseFlats: FlatsInHouse[];
     };
 }
@@ -114,6 +115,7 @@ export const GET_PUBLIC_GROUPED_FLATS_CHESSGRID = gql`
             minPrice
             maxArea
             minArea
+            flatsSoldOut
             houseFlats {
                 id
                 name
@@ -172,6 +174,7 @@ export const GET_GROUPED_FLATS_CHESSGRID = gql`
             minPrice
             maxArea
             minArea
+            flatsSoldOut
             houseFlats {
                 id
                 name

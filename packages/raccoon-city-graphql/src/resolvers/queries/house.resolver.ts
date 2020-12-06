@@ -6,6 +6,7 @@ import HouseModel from '../../db/models/house';
 import {Level, LevelModel} from '../../db/models/level';
 import {Section, SectionModel} from '../../db/models/section';
 import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import {getHouseRanges, getFlatsByGroupedSection} from './flat.resolver';
 
 const groupBySection = groupBy((flat: Flat) => {
     return flat.section;
@@ -117,35 +118,22 @@ export const hosueQuery = {
                 }
             })
             .exec();
-        const [result] = await FlatModel.aggregate([
-            {$match: {house: {$in: uuid.map((item) => mongoose.Types.ObjectId(item))}, isDeleted: false}},
-            {
-                $group: {
-                    _id: null,
-                    maxPrice: {$max: '$squarePrice'},
-                    minPrice: {$min: '$squarePrice'},
-                    maxArea: {$max: '$area'},
-                    minArea: {$min: '$area'}
-                }
-            }
-        ]).exec();
-        let maxPrice = 0;
-        let minPrice = 0;
-        let maxArea = 0;
-        let minArea = 0;
 
-        if (!!result) {
-            maxPrice = Number(String(result.maxPrice).replace(',', '.'));
-            minPrice = Number(String(result.minPrice).replace(',', '.'));
-            maxArea = result.maxArea;
-            minArea = result.minArea;
-        }
+        const flats = getFlatsByGroupedSection(houses);        
+        const ranges = getHouseRanges(flats);
+        
+        const maxPrice = ranges.maxPrice;
+        const minPrice = ranges.minPrice;
+        const maxArea = ranges.maxArea;
+        const minArea = ranges.minArea;
+        const flatsSoldOut = ranges.flatsSoldOut;
 
         const res = {
             maxPrice,
             minPrice,
             maxArea,
             minArea,
+            flatsSoldOut,
             houseFlats: []
         };
 
@@ -180,7 +168,6 @@ export const hosueQuery = {
                 });
             }
         });
-
         return res;
     },
     getFlatsList: async (parent, {uuid}) => {
@@ -299,5 +286,5 @@ export const hosueQuery = {
         return await PublishedHouseModel.findOne({
             house: uuid
         }).exec();
-    },
+    }
 };

@@ -495,6 +495,8 @@ export interface ChessGridFiltersProps {
 export function ChessGridFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;
+    const flatsSoldOut = data && data?.flatsSoldOut;
+
     return (
         <FilterWrapper>
             <Grid container spacing={1}>
@@ -519,14 +521,16 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                         </Grid>
                         <Grid item xs={12} md={4}>
                             <Grid container justify="center" direction="row">
-                                <Grid item xs={12} md={6}>
-                                    <PriceFilter
-                                        data={data}
-                                        maxPrice={data.maxPrice}
-                                        minPrice={data.minPrice}
-                                        dispatch={props.dispatchFn}
-                                    />
-                                </Grid>
+                                {!flatsSoldOut && (
+                                    <Grid item xs={12} md={6}>
+                                        <PriceFilter
+                                            data={data}
+                                            maxPrice={data.maxPrice}
+                                            minPrice={data.minPrice}
+                                            dispatch={props.dispatchFn}
+                                        />
+                                    </Grid>
+                                )}
                                 <Grid item xs={12} md={4}>
                                     <AreaFilter
                                         maxArea={data.maxArea}

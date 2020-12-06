@@ -43,6 +43,7 @@ export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
     const data = props?.data?.getGroupedFlatsBySection;
     const hasPrices = data && data?.houseFlats?.length > 0;
     const {mode} = props.filters;
+    const flatsSoldOut = data && data?.flatsSoldOut;
 
     return (
         <Grid container spacing={1}>
@@ -66,14 +67,16 @@ export function ChessGridDesktopFilters(props: ChessGridFiltersProps) {
                                 title="Другие помещения"
                             />
                             <RoomAmountFilter dispatch={props.dispatchFn} />
-                            <RangeContainer>
-                                <PriceFilter
-                                    data={data}
-                                    maxPrice={data.maxPrice}
-                                    minPrice={data.minPrice}
-                                    dispatch={props.dispatchFn}
-                                />
-                            </RangeContainer>
+                            {!flatsSoldOut && (
+                                <RangeContainer>
+                                    <PriceFilter
+                                        data={data}
+                                        maxPrice={data.maxPrice}
+                                        minPrice={data.minPrice}
+                                        dispatch={props.dispatchFn}
+                                    />
+                                </RangeContainer>
+                            )}
                             <RangeContainer>
                                 <AreaFilter
                                     maxArea={data.maxArea}
