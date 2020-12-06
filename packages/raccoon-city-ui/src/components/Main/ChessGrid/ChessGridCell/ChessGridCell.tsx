@@ -73,7 +73,6 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
         )
     };
 
-    // TODO show price inside CRM
     const priceField = isSoldOut ? null : (
         <div className="Cell__price">
             <ReducedPrice flat={flat} />

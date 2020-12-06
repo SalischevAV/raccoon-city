@@ -42,11 +42,11 @@ function getUpdatedFlat(flat: Flat, newFlat: any) {
     return !shouldHidePriceInFlat(flat.status)
         ? updatedFlat
         : {
-            ...updatedFlat,
-            price: null,
-            squarePrice: null,
-            squarePriceSale: null
-        };
+              ...updatedFlat,
+              price: null,
+              squarePrice: null,
+              squarePriceSale: null
+          };
 }
 
 export const flatQuery = {

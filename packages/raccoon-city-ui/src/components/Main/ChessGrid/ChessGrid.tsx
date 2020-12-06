@@ -44,6 +44,12 @@ import {SectionBar} from './SectionBar/SectionBar';
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
 
+export const InternalCustomSidebarDrawer = styled<any>(SidebarDrawer)`
+    .MuiAppBar-root .MuiTab-wrapper path {
+        fill: #fff;
+    }
+`;
+
 export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
     .MuiPaper-elevation4 {
         box-shadow: none;
@@ -63,6 +69,7 @@ export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
 
     .MuiAppBar-root {
         margin-top: 10px;
+        padding: 0 18px;
     }
 
     .MuiTab-root {
@@ -84,6 +91,14 @@ export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
 
     .Mui-selected .MuiTab-wrapper {
         color: #e84f1d;
+
+        svg {
+            width: 20px;
+        }
+
+        path {
+            fill: #e84f1d;
+        }
     }
 
     .Mui-selected .MuiTouchRipple-root {
@@ -124,7 +139,7 @@ const ChessGridContent = React.memo((props: any) => {
     const [selectedFlat, setSelectedFlat] = useState<Flat>();
     const [currentLevel, setCurrentLevel] = useState<string>();
 
-    const SideBar = isPublic ? CustomSidebarDrawer : SidebarDrawer;
+    const SideBar = isPublic ? CustomSidebarDrawer : InternalCustomSidebarDrawer;
 
     if (loading || listLoading) {
         return <ChessGridAnimation />;

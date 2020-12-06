@@ -125,10 +125,13 @@ export const flatMutation = {
         return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, result);
     },
     updateFlatStatus: async (parent, {flatId, flatStatus}) => {
-        await FlatModel.findOneAndUpdate({
-            _id: flatId,
-            isDeleted: false
-        }, {status: String(flatStatus)});
+        await FlatModel.findOneAndUpdate(
+            {
+                _id: flatId,
+                isDeleted: false
+            },
+            {status: String(flatStatus)}
+        );
 
         return true;
     },
@@ -138,7 +141,7 @@ export const flatMutation = {
         if (!flatStatuses.includes(flat.status)) {
             flat = {
                 ...flat,
-                status: "UNAVAILABLE"
+                status: 'UNAVAILABLE'
             };
         }
 

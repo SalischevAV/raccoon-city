@@ -1,11 +1,6 @@
 import {useQuery} from '@apollo/react-hooks';
 import {AppBar, Button, Chip, Tab, Tabs, Typography} from '@material-ui/core';
-import ImageIcon from '@material-ui/icons/Image';
-import InfoIcon from '@material-ui/icons/Info';
-import PrintIcon from '@material-ui/icons/Print';
-import ThreeDRotationIcon from '@material-ui/icons/ThreeDRotation';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -28,6 +23,11 @@ import SentTradeRequestModal from './SentTradeRequestModal';
 
 import {defaultFlatPicture} from './SvgImages';
 import {GET_USER_INFO} from '../../../../graphql/queries/userQuery';
+import {InformationIcon} from '../../../../icons/InformationIcon';
+import {AroundIcon} from '../../../../icons/AroundIcon';
+import {PlayIcon} from '../../../../icons/PlayIcon';
+import {PrintIсon} from '../../../../icons/PrintIсon';
+import {GallaryIcon} from '../../../../icons/GaleryIcon';
 import {withTooltip} from '../../../HOC/withTooltip';
 interface FlatSidebarInfoProps {
     flat: Flat;
@@ -40,7 +40,6 @@ interface FlatSidebarInfoProps {
     setSavedFlat: any;
 }
 
-// TODO replace styles to separate file
 const FlatSidebarWrapper = styled.div`
     padding: 16px;
     width: 420px;
@@ -72,6 +71,10 @@ const SendRequestContainer = styled.div`
 
 const StyledTab = styled(Tab)`
     min-width: 48px !important;
+`;
+
+const StyledPrintTab = styled<any>(StyledTab)`
+    margin-left: auto !important;
 `;
 
 export const ButtonsContainer = styled.div`
@@ -157,7 +160,6 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const hasImages = flat?.layout?.images;
     const hasVR = Boolean(hasImages && hasImages.VR?.length);
     const hasHalfVR = Boolean(hasImages && hasImages.HALF_VR?.length);
-    const hasPhoto = Boolean(hasImages && hasImages.PHOTO?.length);
 
     const hasLevelsPhoto = Boolean(flat?.levelLayouts);
 
@@ -208,9 +210,9 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                     scrollButtons="auto"
                     aria-label="scrollable prevent tabs example"
                 >
-                    {withTooltip(<StyledTab icon={<InfoIcon />} aria-label="phone" />, 'Информация', false)}
+                    {withTooltip(<StyledTab icon={<InformationIcon />} aria-label="phone" />, 'Информация', false)}
                     {withTooltip(
-                        <StyledTab disabled={!hasVR} icon={<ThreeDRotationIcon />} aria-label="3d" />,
+                        <StyledTab disabled={!hasVR} icon={<AroundIcon />} aria-label="3d" />,
                         '3D фото',
                         false
                     )}
@@ -219,18 +221,14 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                         '2D фото',
                         false
                     )}
+                    {withTooltip(<StyledTab icon={<GallaryIcon />} aria-label="gallery" />, 'Фото', false)}
                     {withTooltip(
-                        <StyledTab disabled={!hasPhoto} icon={<ImageIcon />} aria-label="gallery" />,
-                        'Фото',
-                        false
-                    )}
-                    {withTooltip(
-                        <StyledTab disabled={!hasLevelsPhoto} icon={<PhotoLibraryIcon />} aria-label="layout" />,
+                        <StyledTab disabled={!hasLevelsPhoto} icon={<PlayIcon />} aria-label="layout" />,
                         'Этаж',
                         false
                     )}
                     {withTooltip(
-                        <StyledTab disabled={!flat} icon={<PrintIcon />} aria-label="print" />,
+                        <StyledPrintTab disabled={!flat} icon={<PrintIсon />} aria-label="print" />,
                         'Распечатать инофрмацию',
                         false
                     )}

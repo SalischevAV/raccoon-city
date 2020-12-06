@@ -2,12 +2,27 @@ import {Grid, Paper} from '@material-ui/core';
 import React, {useEffect, useState} from 'react';
 import {PhotoSwipe} from 'react-photoswipe';
 import styled from 'styled-components';
+import {LinkIcon} from '../../../../icons/LinkIcon';
+import {HOUSE_REMAKE} from '../../../../utils/constants';
 import {NamedImage} from '../../../shared/types/apartmentComplex.types';
 
 const StyledPaper = styled(Paper)`
-    img {
-        width: 320px;
+    position: relative;
+    background-color: transparent;
+
+    .MuiPaper-elevation1 {
+        box-shadow: none;
     }
+
+    img {
+        width: 100%;
+    }
+`;
+
+const StyledLink = styled.a`
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 `;
 
 interface ImageViewPhotosProps {
@@ -36,26 +51,35 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
         // eslint-disable-next-line
     }, []);
 
-    if (!props.images) {
-        return null;
-    }
-
     return (
         <Grid container spacing={3}>
-            {props.images.map((image: NamedImage, i) => {
-                return (
-                    <Grid item key={image.uuid} xs={12}>
-                        <StyledPaper
-                            onClick={() => {
-                                setSelected(i);
-                                setIsOpen(true);
-                            }}
-                        >
-                            <img src={image.downloadUrl} alt={image.name} />
-                        </StyledPaper>
-                    </Grid>
-                );
-            })}
+            {!props?.images?.length ? (
+                <div>
+                    <p>Фото пока отсутствуют.</p>
+                    <p>А пока мы готовим для Вас фото, посмотрите другие дизайн-проекты на сайте партнеров:</p>
+                    <a href={HOUSE_REMAKE} style={{color: '#e84f1d', textDecoration: 'none'}}>
+                        https://houseremake.com.ua/
+                    </a>
+                </div>
+            ) : (
+                props.images.map((image: NamedImage, i) => {
+                    return (
+                        <Grid item key={image.uuid} xs={12}>
+                            <StyledPaper
+                                onClick={() => {
+                                    setSelected(i);
+                                    setIsOpen(true);
+                                }}
+                            >
+                                <img src={image.downloadUrl} alt={image.name} />
+                                <StyledLink href={HOUSE_REMAKE}>
+                                    <LinkIcon />
+                                </StyledLink>
+                            </StyledPaper>
+                        </Grid>
+                    );
+                })
+            )}
             <PhotoSwipe
                 isOpen={isOpen}
                 items={items}

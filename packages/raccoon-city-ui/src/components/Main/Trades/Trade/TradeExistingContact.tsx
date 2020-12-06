@@ -15,7 +15,6 @@ import styled from 'styled-components';
 import {isRequired} from '../../../../core/validators/validators';
 import {TradeContactList} from './TradeContactList';
 
-// TODO in styled components
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         appBar: {
