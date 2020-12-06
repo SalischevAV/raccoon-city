@@ -11,6 +11,7 @@ export const HouseChooseContainer = styled.div`
     height: 15%;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-bottom: 16px;
 `;
 
@@ -39,7 +40,8 @@ export const StyledCarousel = styled(Carousel)`
 
     .rec-dot {
         border-radius: 0;
-        height: 12px;
+        height: 3px;
+        width: 3px;
         background-color: #c4c4c4;
         box-shadow: none;
     }
@@ -76,7 +78,8 @@ export const HouseIconContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 12px;
+    padding: 10px;
+    margin: 0 5px;
 
     &:hover,
     &:hover svg,
@@ -110,6 +113,7 @@ export const StyledIcon = styled(ApartmentIcon)`
 `;
 
 export const HouseNameDiv = styled.div`
-    font-size: 1vw;
+    font-size: 0.6em;
     text-align: center;
+    padding: 0 5px;
 `;
