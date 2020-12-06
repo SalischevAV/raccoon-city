@@ -49,8 +49,31 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
     const cellView = useContext<any>(CellViewModeContext);
     const isSoldOut = flat.status === 'SOLD_OUT';
 
+    function getFlatViewValue(viewContextValue) {
+        switch (viewContextValue.selectedViewMode) {
+            case 'roomAmount':
+                return <div>{flat.roomAmount}</div>;
+            case 'flatNumber':
+                return <div>{flat.flatNumber}</div>;
+            case 'area':
+                return (
+                    <div>
+                        <div>{flat.area}</div>
+                        <div>м2</div>
+                    </div>
+                );
+            default:
+                return (
+                    <div>
+                        <div>Нет</div>
+                        <div>данных</div>
+                    </div>
+                );
+        }
+    }
+
     const CellViewJSX = {
-        [ChessCellViewMode.TILE]: <>{flat[viewContextValue.selectedViewMode]}</>,
+        [ChessCellViewMode.TILE]: <>{getFlatViewValue(viewContextValue)}</>,
         [ChessCellViewMode.TILE_PLUS]: (
             <Fragment>
                 <TilePlusFirstSection>№{flat.flatNumber}</TilePlusFirstSection>

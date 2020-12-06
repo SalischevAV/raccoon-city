@@ -12,6 +12,9 @@ const RowWrapper = styled.div`
 const RowTitle = styled.div`
     width: 16px;
     margin-right: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const StyledEmptyLevel = styled.div`
@@ -35,7 +38,10 @@ function EmplyLevel() {
 
 export const ChessGridRow = React.memo((props: ChessGridItem) => (
     <RowWrapper>
-        <RowTitle>{props.rowName}</RowTitle>
+        <RowTitle>
+            <div>{props.rowName}</div>
+            <div>этаж</div>
+        </RowTitle>
         {props.flats.length === 0 && <EmplyLevel />}
         {props.flats.length !== 0 &&
             props.flats
