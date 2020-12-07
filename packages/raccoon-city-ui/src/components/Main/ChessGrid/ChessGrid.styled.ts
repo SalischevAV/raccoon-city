@@ -87,7 +87,8 @@ export const InfoIcon = styled.div`
 export const HouseTitle = styled.div`
     font-size: 20px;
     margin: 0;
-    align-self: flex-start /* margin-top: -60px; */ @media only screen and (max-width: 600px) {
+    align-self: flex-start;
+    @media only screen and (max-width: 600px) {
         font-size: 18px;
         text-align: center;
         margin-bottom: 10px;
