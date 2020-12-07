@@ -7,7 +7,7 @@ export const ChessGridWrapper: any = styled.div`
     margin-top: 20px;
 
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
     white-space: nowrap;
     text-align: center;
 
@@ -84,15 +84,19 @@ export const InfoIcon = styled.div`
     }
 `;
 
-export const HouseTitle = styled.p`
+export const HouseTitle = styled.div`
     font-size: 20px;
     margin: 0;
-    margin-top: -60px;
-
-    @media only screen and (max-width: 600px) {
+    align-self: flex-start /* margin-top: -60px; */ @media only screen and (max-width: 600px) {
         font-size: 18px;
         text-align: center;
         margin-bottom: 10px;
         margin-top: 0;
     }
+`;
+
+export const ScrollWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
 `;
