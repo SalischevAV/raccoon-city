@@ -52,7 +52,7 @@ export function getHouseRanges(flats: Flat[]): HouseRanges {
     let maxPrice = 0;
     let minArea = Number.MAX_SAFE_INTEGER;
     let maxArea = 0;
-    let flatsSoldOut = false;
+    let flatsSoldOut = true;
 
     flats.forEach((flat) => {
         if (!flatStatusesWithoutPrice.includes(flat.status)){
@@ -69,6 +69,7 @@ export function getHouseRanges(flats: Flat[]): HouseRanges {
     if (minPrice === Number.MAX_SAFE_INTEGER) {
         minPrice = 0;
     }
+
     return {
         minPrice,
         maxPrice,
