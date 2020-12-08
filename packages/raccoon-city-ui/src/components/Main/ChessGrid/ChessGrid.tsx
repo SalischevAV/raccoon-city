@@ -29,7 +29,8 @@ import {
     HouseTitle,
     InfoIcon,
     MobileInformation,
-    SidebarDrawer
+    SidebarDrawer,
+    ScrollWrapper
 } from './ChessGrid.styled';
 import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
@@ -349,7 +350,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
     }
 
     return (
-        <Fragment>
+        <ScrollWrapper>
             {isPublic && <ComplexHouseName />}
 
             <CellViewModeContext.Provider value={filters}>
@@ -387,7 +388,7 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
             </CellViewModeContext.Provider>
 
             {isMounted && <FilterIcon setShownFilters={setShownFilters} id={filterId} />}
-        </Fragment>
+        </ScrollWrapper>
     );
 };
 
