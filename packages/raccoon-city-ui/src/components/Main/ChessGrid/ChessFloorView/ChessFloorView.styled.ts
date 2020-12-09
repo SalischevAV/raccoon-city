@@ -172,6 +172,10 @@ export const WarningContainerColumn = styled(WarningContainer)`
     img {
         width: auto;
         max-height: 500px;
+
+        @media (max-width: 750px) {
+            width: 100%;
+        }
     }
 `;
 
