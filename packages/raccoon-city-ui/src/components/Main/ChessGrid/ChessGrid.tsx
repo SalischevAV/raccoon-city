@@ -1,5 +1,5 @@
 import {useQuery} from '@apollo/react-hooks';
-import React, {Fragment, useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';

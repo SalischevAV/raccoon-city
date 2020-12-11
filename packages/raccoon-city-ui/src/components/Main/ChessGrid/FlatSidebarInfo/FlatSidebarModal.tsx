@@ -108,12 +108,12 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                     </Field>
                                 </CustomInput>
                                 <CustomInput>
-                                    <Field name="reason" validate={required}>
+                                    <Field name="type" validate={required}>
                                         {({input, meta}) => (
                                             <div>
                                                 <Select
                                                     {...input}
-                                                    id="reason"
+                                                    id="type"
                                                     label="Причина обращения"
                                                     options={optionsValue}
                                                     name={input.name}

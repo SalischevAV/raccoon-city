@@ -131,8 +131,7 @@ export const tradeMutation = {
         } = args;
         let tradeNumber = 1;
 
-        const amoUser = {name: args.userInfo.name, phone: args.userInfo.phone, reason: args.userInfo.reason};
-
+        const amoUser = {name: args.userInfo.name, phone: args.userInfo.phone, type: args.userInfo.type.value};
         sendUserToAmo(process.env.ZHILSTROJ2_API_AMO4, amoUser);
 
         const maxNumberTrade = await TradeModel.findOne({})

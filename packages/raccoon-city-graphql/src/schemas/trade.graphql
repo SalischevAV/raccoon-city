@@ -35,7 +35,7 @@ type Reason {
     label: String
 }
 
-input ReasonInput {
+input TypeInput {
     value: Int
     label: String
 }
@@ -80,7 +80,7 @@ input UserFormInput {
     email: String
     phone: String
     developerUuid: String
-    reason: ReasonInput
+    type: TypeInput
 }
 
 type Mutation {
