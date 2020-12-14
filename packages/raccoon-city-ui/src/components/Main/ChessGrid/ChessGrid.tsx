@@ -39,7 +39,7 @@ import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
 import {PublicLink} from './PublicLink/PublicLink';
 import {SectionBar} from './SectionBar/SectionBar';
-import {ViewModeSelectorMobile, MobileInfoPanel} from './MobileViewMode';
+import {ViewModeSelectorMobile} from './MobileViewMode';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -251,8 +251,6 @@ const ChessGridContent = React.memo((props: any) => {
                     currentLevel={currentLevel}
                 />
             )}
-
-            <MobileInfoPanel houseId={houseId} setSideBarOpen={setSideBarOpen} />
         </ViewModeContext.Provider>
     );
 });
