@@ -118,7 +118,11 @@ export const FlatInfo = styled.div`
 
     @media only screen and (max-width: 1000px) {
         max-width: none;
-        width: 90%;
+        width: 100%;
+
+        span {
+            font-size: 11px;
+        }
     }
 
     @media only screen and (max-width: 500px) {
