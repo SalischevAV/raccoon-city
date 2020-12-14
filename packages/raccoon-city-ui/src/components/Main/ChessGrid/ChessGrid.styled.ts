@@ -65,6 +65,8 @@ export const MobileInformation = styled.div`
     @media only screen and (max-width: 600px) {
         display: flex;
         justify-content: flex-start;
+        min-height: 40px;
+        margin-bottom: 5px;
     }
 `;
 
@@ -76,6 +78,7 @@ export const InfoIcon = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 5px auto;
 
     &::before {
         content: 'i';
@@ -100,4 +103,9 @@ export const ScrollWrapper = styled.div`
     display: flex;
     flex-direction: column;
     height: 85vh;
+`;
+
+export const InfoMobileViewWrapper = styled.div`
+    width: 50%;
+    border: 1px solid #73859f;
 `;

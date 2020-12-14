@@ -27,7 +27,6 @@ import {
     ColumnWrapper,
     Container,
     HouseTitle,
-    InfoIcon,
     MobileInformation,
     SidebarDrawer,
     ScrollWrapper
@@ -38,9 +37,9 @@ import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
-import {FlatStatusesBar} from './FlatStatusesBar';
 import {PublicLink} from './PublicLink/PublicLink';
 import {SectionBar} from './SectionBar/SectionBar';
+import {ViewModeSelectorMobile, MobileInfoPanel} from './MobileViewMode';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
@@ -234,11 +233,6 @@ const ChessGridContent = React.memo((props: any) => {
 
     return (
         <ViewModeContext.Provider value={filters}>
-            <MobileInformation>
-                <FlatStatusesBar houseId={houseId} />
-                <InfoIcon onClick={() => setSideBarOpen(true)} />
-            </MobileInformation>
-
             {chessViews[filters.mode]}
 
             {flatCardOpen && (
@@ -257,6 +251,8 @@ const ChessGridContent = React.memo((props: any) => {
                     currentLevel={currentLevel}
                 />
             )}
+
+            <MobileInfoPanel houseId={houseId} setSideBarOpen={setSideBarOpen} />
         </ViewModeContext.Provider>
     );
 });
@@ -354,6 +350,8 @@ export const ChessGridComponent = ({uuid, hasSelect, isPublic, showRequestButton
             {isPublic && <ComplexHouseName />}
 
             <CellViewModeContext.Provider value={filters}>
+                <ViewModeSelectorMobile dispatchFn={dispatch} filters={filters} />
+
                 <ChessGridFiltersDrawer
                     filters={filters}
                     filterShown={filterShown}

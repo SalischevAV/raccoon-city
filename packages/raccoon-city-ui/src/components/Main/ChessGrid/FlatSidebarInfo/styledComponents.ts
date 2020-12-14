@@ -35,7 +35,7 @@ export const ModalContainer = styled.div<{isFullScreen?: boolean}>`
     ${getModalStyles}
 
     @media only screen and (max-width: 500px) {
-        width: 90%;
+        max-width: 90%;
     }
 `;
 

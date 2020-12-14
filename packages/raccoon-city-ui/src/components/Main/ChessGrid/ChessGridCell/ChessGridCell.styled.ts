@@ -225,3 +225,9 @@ export const TilePlusPriceInfo = styled.div`
 export const TilePlusSquarePriceInfo = styled.div`
     margin-bottom: 5px;
 `;
+
+export const FontSizeDecorationMedium = styled.div`
+    @media only screen and (max-width: 600px) {
+        font-size: 0.8em;
+    }
+`;

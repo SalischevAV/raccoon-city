@@ -1,4 +1,4 @@
-import {Avatar, Grid, Slider, Tooltip, useMediaQuery, useTheme} from '@material-ui/core';
+import {Avatar, Grid, Slider, Tooltip, useMediaQuery, useTheme, Button} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import classNames from 'classnames';
@@ -9,7 +9,20 @@ import {House} from '../../../shared/types/house.types';
 import {ViewModeValues} from '../ChessEnums';
 import {CellViewModeContext} from '../ChessGrid';
 import {ChessGridHouseSelect} from './ChessGridHouseSelect';
-import {ViewModeFilters} from './ViewModeFilters';
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+
+    .MuiButton-outlinedPrimary {
+        color: #e84f1d;
+        border: 1px solid #e84f1d;
+    }
+
+    .MuiButton-outlinedPrimary:hover {
+        border-color: #e84f1d;
+    }
+`;
 
 export const SelectContainer = styled.div`
     display: flex;
@@ -490,6 +503,7 @@ export interface ChessGridFiltersProps {
     data: any;
     isPublic: boolean;
     houseId: string[];
+    setShownFilters: any;
 }
 
 export function ChessGridFilters(props: ChessGridFiltersProps) {
@@ -541,15 +555,18 @@ export function ChessGridFilters(props: ChessGridFiltersProps) {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12} md={2}>
-                            <Grid container justify="center">
-                                <ViewMode dispatch={props.dispatchFn} />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} md={2}>
-                            <Grid container justify="center">
-                                <ViewModeFilters mode={props.filters.mode} dispatch={props.dispatchFn} />
-                            </Grid>
+                        <Grid container justify="center" direction="row">
+                            <ButtonContainer>
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={() => {
+                                        props.setShownFilters(false);
+                                    }}
+                                >
+                                    Применить
+                                </Button>
+                            </ButtonContainer>
                         </Grid>
                     </Fragment>
                 )}

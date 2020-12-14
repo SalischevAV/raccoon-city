@@ -191,6 +191,7 @@ export const FloorContainer = styled.div`
 export const FlatStatusesBarContainer = styled.div`
     position: relative;
     width: 30px;
+    margin: 5px auto !important;
 
     @media (max-width: 750px) {
         margin-right: 10px;

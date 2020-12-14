@@ -54,6 +54,7 @@ export const ChessSideBar = ({
                     setSavedFlat={setSavedFlat}
                     viewMode={viewMode}
                     currentLevel={currentLevel}
+                    setFlatCardOpen={setFlatCardOpen}
                 />
             )}
         </SideBar>

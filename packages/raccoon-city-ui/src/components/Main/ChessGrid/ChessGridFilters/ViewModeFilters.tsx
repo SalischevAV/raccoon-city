@@ -155,24 +155,13 @@ export function ViewModeFilters({mode, dispatch}) {
                     </DesktopsView>,
                     'Плитка+'
                 )}
-                {withTooltip(<ListIcon value={mode} onClick={onClick} />, 'Список')}
+                {withTooltip(
+                    <DesktopsView>
+                        <ListIcon value={mode} onClick={onClick} />
+                    </DesktopsView>,
+                    'Список'
+                )}
                 {withTooltip(<LevelIcon value={mode} onClick={onClick} />, 'План этажа')}
-            </ViewModeContainer>
-        </FilterItemContainer>
-    );
-}
-
-export function ViewModeFiltersMobile({mode, dispatch}) {
-    const onClick = (e) => {
-        dispatch({type: 'cellViewMode', payload: e});
-    };
-
-    return (
-        <FilterItemContainer>
-            <FilterTitle>Отображение</FilterTitle>
-            <ViewModeContainer>
-                <ChessGridIcon value={mode} onClick={onClick} />
-                <LevelIcon value={mode} onClick={onClick} />
             </ViewModeContainer>
         </FilterItemContainer>
     );

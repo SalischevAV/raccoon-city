@@ -29,6 +29,9 @@ import {PlayIcon} from '../../../../icons/PlayIcon';
 import {PrintIсon} from '../../../../icons/PrintIсon';
 import {GallaryIcon} from '../../../../icons/GaleryIcon';
 import {withTooltip} from '../../../HOC/withTooltip';
+import {useMediaQuery, useTheme} from '@material-ui/core';
+import {StyledCloseIcon} from './styledComponents';
+
 interface FlatSidebarInfoProps {
     flat: Flat;
     houseId: string;
@@ -38,6 +41,7 @@ interface FlatSidebarInfoProps {
     onFlatSelected?: (flat: Flat) => void;
     currentLevel?: string;
     setSavedFlat: any;
+    setFlatCardOpen: any;
 }
 
 const FlatSidebarWrapper = styled.div`
@@ -122,6 +126,9 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
     const [isModalOpen, setModalOpen] = React.useState(false);
     const [modal, setModal] = React.useState(false);
 
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
     const {data: user, loading: userLoading} = useQuery(GET_USER_INFO, {
         fetchPolicy: 'cache-and-network',
         skip: props.isPublic
@@ -173,6 +180,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
 
     return (
         <FlatSidebarWrapper>
+            {matches && <StyledCloseIcon onClick={() => props.setFlatCardOpen(false)} />}
             <FlatTitleContainer>
                 <Typography variant="h5" gutterBottom>
                     Квартира № {flat.flatNumber}

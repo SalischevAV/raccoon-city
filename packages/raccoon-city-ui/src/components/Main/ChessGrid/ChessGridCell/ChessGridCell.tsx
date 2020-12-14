@@ -18,7 +18,8 @@ import {
     TilePlusPriceInfo,
     TilePlusSecondSection,
     TilePlusSquarePriceInfo,
-    TooltipContainer
+    TooltipContainer,
+    FontSizeDecorationMedium
 } from './ChessGridCell.styled';
 
 interface Props {
@@ -58,8 +59,8 @@ export const ChessGridCell = React.memo(({flat, onSelect}: Props) => {
             case 'area':
                 return (
                     <div>
-                        <div>{flat.area}</div>
-                        <div>м2</div>
+                        <FontSizeDecorationMedium>{flat.area}</FontSizeDecorationMedium>
+                        <FontSizeDecorationMedium>м2</FontSizeDecorationMedium>
                     </div>
                 );
             default:
