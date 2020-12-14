@@ -19,22 +19,27 @@ function getPrice(flat) {
     return price.toFixed(2);
 }
 
-export const FlatInfoBar = ({info}: Props) => (
-    <FlatInfo>
-        {info ? (
-            <>
-                <span>{`№${info.flatNumber}`}</span>
-                <span>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label}`}</span>
-                {info.status !== 'SOLD_OUT' && info.price && <span>{`Цена: ${getPrice(info)}`}</span>}
-                <span>{`М2: ${info.area}`}</span>
-                {(info.squarePriceSale || info.squarePrice) && (
-                    <span>{`Цена м2: ${info.squarePriceSale || info.squarePrice}`}</span>
-                )}
-                <span>{`Комнат: ${info.roomAmount}`}</span>
-                <span>{`Кол-во уровней: ${info.levelAmount}`}</span>
-            </>
-        ) : (
-            <span>Выберите квартиру</span>
-        )}
-    </FlatInfo>
-);
+export const FlatInfoBar = ({info}: Props) => {
+    const NO_DATA = 'Нет данных';
+
+    return (
+        <FlatInfo>
+            {info ? (
+                <>
+                    <span>{`№${info.flatNumber || NO_DATA}`}</span>
+                    <span>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label ||
+                        NO_DATA}`}</span>
+                    {info.status !== 'SOLD_OUT' && info.price && <span>{`Цена: ${getPrice(info) || NO_DATA}`}</span>}
+                    <span>{`М2: ${info.area || NO_DATA}`}</span>
+                    {(info.squarePriceSale || info.squarePrice) && (
+                        <span>{`Цена м2: ${info.squarePriceSale || info.squarePrice || NO_DATA}`}</span>
+                    )}
+                    <span>{`Комнат: ${info.roomAmount}`}</span>
+                    <span>{`Кол-во уровней: ${info.levelAmount || NO_DATA}`}</span>
+                </>
+            ) : (
+                <span>Выберите квартиру</span>
+            )}
+        </FlatInfo>
+    );
+};

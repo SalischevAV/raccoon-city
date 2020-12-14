@@ -256,7 +256,7 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                 {value === 2 && <ImageViewVR images={flat.layout?.images?.HALF_VR} mode={ImageType.HALF_VR} />}
             </TabPanel>
             <TabPanel value={value} index={3}>
-                {value === 3 && <ImageViewPhotos images={flat.layout?.images?.PHOTO} />}
+                {value === 3 && <ImageViewPhotos images={flat.layout?.images?.PHOTO} flat={flat} />}
             </TabPanel>
             <TabPanel value={value} index={4}>
                 {value === 4 && <LayoutView levelLayouts={flat.levelLayouts} />}

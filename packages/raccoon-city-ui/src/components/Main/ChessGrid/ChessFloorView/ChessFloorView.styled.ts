@@ -71,7 +71,7 @@ export const FloorLegendInfo = styled.div<{isPublic: boolean}>`
     padding: 10px 35px 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #e0e0e0;
-    justify-content: ${({isPublic}) => (isPublic ? 'flex-end' : 'space-between')};
+    justify-content: ${({isPublic}) => (isPublic ? 'center' : 'space-between')};
     font-family: 'TTNorms', sans-serif;
 
     @media only screen and (max-width: 500px) {
@@ -114,6 +114,11 @@ export const FlatInfo = styled.div`
 
     span {
         font-size: 15px;
+    }
+
+    @media only screen and (max-width: 1000px) {
+        max-width: none;
+        width: 90%;
     }
 
     @media only screen and (max-width: 500px) {

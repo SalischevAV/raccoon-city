@@ -55,7 +55,7 @@ export function getHouseRanges(flats: Flat[]): HouseRanges {
     let flatsSoldOut = true;
 
     flats.forEach((flat) => {
-        if (!flatStatusesWithoutPrice.includes(flat.status)){
+        if (!flatStatusesWithoutPrice.includes(flat.status)) {
             flatsSoldOut = false;
         }
         const price = getPrice(flat.squarePrice, flat.squarePriceSale);

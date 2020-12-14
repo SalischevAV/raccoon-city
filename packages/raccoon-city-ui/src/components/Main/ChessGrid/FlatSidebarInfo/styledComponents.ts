@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Button} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -9,23 +9,40 @@ export const StyledCloseIcon = styled(CloseIcon)`
     color: #e84f1d;
 `;
 
-export const ModalContainer = styled.div`
-    position: fixed;
+const FullScreenModal = css`
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    z-index: 3002;
+`;
+
+const DefaultModal = css`
     top: 50%;
     right: 3.5%;
     transform: translateY(-50%);
     z-index: 1001;
+`;
+
+function getModalStyles(props) {
+    return props.isFullScreen ? FullScreenModal : DefaultModal;
+}
+
+export const ModalContainer = styled.div<{isFullScreen?: boolean}>`
+    position: fixed;
     box-shadow: 2px 2px 10px rgba(1, 1, 1, 0.5);
+
+    ${getModalStyles}
 
     @media only screen and (max-width: 500px) {
         width: 90%;
     }
 `;
 
-export const Modal = styled.div`
+export const Modal = styled.div<{isFullScreen?: boolean}>`
     padding: 30px;
     background-color: #fff;
-    max-width: 320px;
+    width: ${({isFullScreen}) => (isFullScreen ? '100%' : '320px')};
 
     display: flex;
     flex-direction: column;
@@ -126,7 +143,44 @@ export const CustomInput = styled(Input)`
     }
 `;
 
-export const CustomButton = styled(Button)`
+export const CustomInputFullScreen = styled(CustomInput)`
+    width: 40%;
+    margin: 20px 0;
+
+    &:first-child {
+        margin-right: 20%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+        margin: 10px 0;
+
+        &:first-child {
+            margin-right: 0;
+        }
+    }
+`;
+
+export const CustomFormFullScreen = styled.form`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 80%;
+    margin: 0 auto;
+
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+    }
+`;
+
+export const SimpleForm = styled.form``;
+export const CustomSelectFull = styled(CustomInput)`
+    width: 100%;
+    margin: 20px 0;
+`;
+
+export const CustomButton = styled(Button)<{isFullScreen?: boolean}>`
     width: 100%;
     padding: 5px 0;
 
@@ -143,4 +197,45 @@ export const TextWrapper = styled.div`
 
 export const MainColorPainter = styled.span`
     color: #e84f1d;
+`;
+
+export const HouseRemakeModalTitle = styled.p`
+    font-size: 30px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+`;
+
+export const HRLink = styled.a`
+    color: #e84f1d;
+    padding-left: '5px';
+`;
+
+export const CloseButton = styled(Button)`
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+
+    .MuiButton-root {
+        border: 1px solid #e84f1d;
+    }
+`;
+
+export const FlatSidebarHeaderContainer = styled.div`
+    padding: 0 10%;
+    padding-bottom: 30px;
+
+    h3 {
+        color: #e84f1d;
+        font-size: 30px;
+        padding: 0;
+        margin: 0;
+    }
+
+    p {
+        color: #646363;
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
+    }
 `;

@@ -14,8 +14,13 @@ import {
     ButtonsContainer,
     ModalTitle,
     CustomInput,
+    CustomInputFullScreen,
+    CustomFormFullScreen,
+    CustomSelectFull,
+    SimpleForm,
     CustomButton,
-    StyledCloseIcon
+    StyledCloseIcon,
+    FlatSidebarHeaderContainer
 } from './styledComponents';
 
 const optionsValue = [
@@ -30,9 +35,30 @@ interface FlatModalProps extends BrowserRouterProps {
     close: any;
     flat: any;
     match: any;
+    isFullScreen?: boolean;
 }
 
-const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
+export const FlatSidebarHeader = (props) => {
+    const {isFullScreen, modalText} = props;
+    const defaultText = 'введите данные и оставьте заявку';
+
+    if (isFullScreen) {
+        return (
+            <FlatSidebarHeaderContainer>
+                <h3>Заявка</h3>
+                <p>{modalText ? modalText : defaultText}</p>
+            </FlatSidebarHeaderContainer>
+        );
+    }
+
+    return (
+        <Typography>
+            <ModalTitle>оставить заявку</ModalTitle>
+        </Typography>
+    );
+};
+
+const FlatSidebarModal = ({open, close, flat, match, isFullScreen = false}: FlatModalProps) => {
     const [makeRequest] = useMutation(FORM_REQUEST_TRADE);
 
     const onSubmit = async (values) => {
@@ -61,19 +87,21 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
         close(false);
     };
 
+    const Input = isFullScreen ? CustomInputFullScreen : CustomInput;
+    const CustomForm: any = isFullScreen ? CustomFormFullScreen : SimpleForm;
+    const CustomSelect: any = isFullScreen ? CustomSelectFull : Input;
+
     return (
         <>
-            <ModalContainer>
-                <Modal>
-                    <Typography>
-                        <ModalTitle>оставить заявку</ModalTitle>
-                    </Typography>
+            <ModalContainer isFullScreen={isFullScreen}>
+                <Modal isFullScreen={isFullScreen}>
+                    <FlatSidebarHeader isFullScreen={isFullScreen} />
                     <Form
                         subscription={{invalid: true}}
                         onSubmit={onSubmit}
                         render={({handleSubmit, invalid}) => (
-                            <form onSubmit={handleSubmit}>
-                                <CustomInput>
+                            <CustomForm onSubmit={handleSubmit}>
+                                <Input>
                                     <Field name="name" validate={required}>
                                         {({input, meta}) => (
                                             <div>
@@ -88,8 +116,8 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                             </div>
                                         )}
                                     </Field>
-                                </CustomInput>
-                                <CustomInput>
+                                </Input>
+                                <Input>
                                     <Field name="phone" validate={required}>
                                         {({input, meta}) => (
                                             <div>
@@ -106,9 +134,9 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                             </div>
                                         )}
                                     </Field>
-                                </CustomInput>
-                                <CustomInput>
-                                    <Field name="type" validate={required}>
+                                </Input>
+                                <CustomSelect>
+                                    <Field name="reason" validate={required}>
                                         {({input, meta}) => (
                                             <div>
                                                 <Select
@@ -127,14 +155,19 @@ const FlatSidebarModal = ({open, close, flat, match}: FlatModalProps) => {
                                             </div>
                                         )}
                                     </Field>
-                                </CustomInput>
+                                </CustomSelect>
                                 <ButtonsContainer>
                                     <StyledCloseIcon onClick={() => close(false)} />
-                                    <CustomButton type="submit" variant="outlined" disabled={invalid}>
+                                    <CustomButton
+                                        type="submit"
+                                        variant="outlined"
+                                        disabled={invalid}
+                                        isFullScreen={isFullScreen}
+                                    >
                                         Отправить
                                     </CustomButton>
                                 </ButtonsContainer>
-                            </form>
+                            </CustomForm>
                         )}
                     />
                 </Modal>

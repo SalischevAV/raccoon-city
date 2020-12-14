@@ -7,7 +7,7 @@ import {ApolloError} from 'apollo-server';
 
 async function sendUserToAmo(url: string, user: any) {
     try {
-        logger.info(`sending flat request to ${url} with user info ${JSON.stringify(user)}`)
+        logger.info(`sending flat request to ${url} with user info ${JSON.stringify(user)}`);
         const response = await axios.post(url, user);
         return response.status;
     } catch (err) {

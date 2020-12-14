@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(require('./routes/spreadsheets'));
 app.use(require('./routes/amoContacts'));
+app.use(require('./routes/houseRemake'));
 const server = new ApolloServer({
     typeDefs: gql`
         ${typeDefs}
@@ -85,4 +86,3 @@ connect({db});
 app.listen({port: process.env.PORT || 4000}, () => {
     logger.info(`🚀  Server ready`);
 });
-
