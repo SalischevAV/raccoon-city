@@ -62,7 +62,7 @@ export const SelectStyled = styled(Select)`
 export const MobileInformation = styled.div`
     display: none;
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 960px) {
         display: flex;
         justify-content: flex-start;
         min-height: 40px;

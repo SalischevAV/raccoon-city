@@ -16,7 +16,7 @@ const ViewModeContainer = styled.div`
 `;
 
 const DesktopsView = styled.div`
-    @media only screen and (max-width: 700px) {
+    @media only screen and (max-width: 960px) {
         display: none;
     }
 `;

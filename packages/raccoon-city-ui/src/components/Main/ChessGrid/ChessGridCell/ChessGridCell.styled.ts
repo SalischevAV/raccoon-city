@@ -82,7 +82,7 @@ export const Cell = styled.div<{viewMode?: string}>`
         cursor: pointer;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 960px) {
         ${TileViewMobile}
     }
 

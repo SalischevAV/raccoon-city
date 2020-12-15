@@ -10,7 +10,7 @@ export const SectionBarContainer = styled.div<{isSideBarOpen: boolean}>`
         padding: 0 !important;
     }
 
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 960px) {
         display: ${({isSideBarOpen}) => (isSideBarOpen ? 'block' : 'none')};
         position: fixed;
         top: 0;
