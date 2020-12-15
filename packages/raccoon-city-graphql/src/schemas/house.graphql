@@ -7,6 +7,8 @@ type House {
     images: HouseImages
     publishedDate: String
     order: Int
+    beginDate: String
+    endDate: String
 }
 
 input HouseInput {
@@ -15,6 +17,8 @@ input HouseInput {
     price: Float
     parking: Boolean
     order: Int
+    beginDate: String
+    endDate: String
 }
 
 type HouseImages {

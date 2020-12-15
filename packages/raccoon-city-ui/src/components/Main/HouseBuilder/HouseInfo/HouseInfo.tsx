@@ -35,6 +35,7 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
+import ruLocale from 'date-fns/locale/ru';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -58,6 +59,15 @@ const StyledLink = styled(StyledNavLink)`
         }
     }
 `;
+export const getDateFromFullString = (date: any) => {
+    if (date) {
+        try {
+            return format(parseISO(date), 'MM yyyy', {locale: ruLocale});
+        } catch (e) {
+            return 'Не определено';
+        }
+    } else return 'Не определено';
+};
 
 function PublishHouse({uuid}) {
     const [mutation] = useMutation(PUBLISH_HOUSE);
@@ -123,7 +133,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
         return <Redirect to="/" />;
     }
 
-    const {name, images, parking, price, publishedDate} = data.getHouse;
+    const {name, images, parking, price, publishedDate, beginDate, endDate} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -228,6 +238,30 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                                     <TableCell align="right">
                                                         <Typography variant="body2" component="p">
                                                             {parking ? 'Есть' : 'Нет'}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Начало строительства
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {getDateFromFullString(beginDate)}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Typography variant="body2" component="p">
+                                                            Окончание строительства
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <Typography variant="body2" component="p">
+                                                            {getDateFromFullString(endDate)}
                                                         </Typography>
                                                     </TableCell>
                                                 </TableRow>

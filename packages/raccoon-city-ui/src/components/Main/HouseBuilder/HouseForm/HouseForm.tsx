@@ -22,6 +22,7 @@ import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {StyledLink} from '../../../shared/components/styled';
 import {House} from '../../../shared/types/house.types';
 import {getHouseDataVariables, HouseFormValues} from './utils';
+import {DatePicker} from '@material-ui/pickers';
 
 const required = (value: any) => (value ? undefined : 'Required');
 
@@ -204,6 +205,40 @@ export function HouseForm(outerProps: HouseFormProps) {
                                     />
                                 )}
                             </Field>
+                            <Grid container={true} spacing={2}>
+                                <Grid item={true} xs={12} md={6}>
+                                    <Field name="beginDate" validate={required}>
+                                        {(props) => (
+                                            <DatePicker
+                                                views={['year', 'month']}
+                                                name={props.input.name}
+                                                label="Начало строительства"
+                                                value={props.input.value ? props.input.value : null}
+                                                margin="normal"
+                                                fullWidth={true}
+                                                inputVariant="outlined"
+                                                onChange={props.input.onChange}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid>
+                                <Grid item={true} xs={12} md={6}>
+                                    <Field name="endDate">
+                                        {(props) => (
+                                            <DatePicker
+                                                views={['year', 'month']}
+                                                name={props.input.name}
+                                                label="Конец строительства"
+                                                value={props.input.value ? props.input.value : null}
+                                                margin="normal"
+                                                fullWidth={true}
+                                                inputVariant="outlined"
+                                                onChange={props.input.onChange}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid>
+                            </Grid>
                             <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
                                 {(props) => {
                                     return (

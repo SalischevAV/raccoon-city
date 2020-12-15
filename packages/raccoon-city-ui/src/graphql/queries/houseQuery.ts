@@ -24,6 +24,8 @@ export const HOUSE_INFO = gql`
             name
             parking
             price
+            beginDate
+            endDate
             publishedDate
             images {
                 CHESS_GRID {
