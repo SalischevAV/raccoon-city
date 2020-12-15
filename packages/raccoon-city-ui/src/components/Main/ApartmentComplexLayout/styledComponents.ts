@@ -13,6 +13,11 @@ export const HouseChooseContainer = styled.div`
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
+
+    @media only screen and (max-width: 960px) {
+        height: 80px;
+        margin-top: 30px;
+    }
 `;
 
 export const ImageContainer = styled.div`
