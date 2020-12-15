@@ -180,7 +180,7 @@ export const WarningContainerColumn = styled(WarningContainer)`
 
     img {
         width: auto;
-        max-height: 500px;
+        max-height: 60vh;
 
         @media (max-width: 750px) {
             width: 100%;
