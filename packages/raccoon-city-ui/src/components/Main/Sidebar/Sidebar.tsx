@@ -9,15 +9,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AppsIcon from '@material-ui/icons/Apps';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import clsx from 'clsx';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
+import {FEATURES} from '../../../core/constants/features';
+import {Feature} from '../../shared/components/features/Feature';
 import {StyledLink} from '../../shared/components/styled';
 
 interface SidebarProps {
@@ -97,20 +99,24 @@ export const Sidebar = connect((state) => ({
                     </StyledLink>
                 )}
                 {developerUuid && (
-                    <StyledLink to={`/developers/${developerUuid}/contacts`}>
-                        <ListItem button>
-                            <ListItemIcon>{<PeopleAltIcon />}</ListItemIcon>
-                            <ListItemText primary="Клиенты" />
-                        </ListItem>
-                    </StyledLink>
+                    <Feature features={[FEATURES.CONTACTS]}>
+                        <StyledLink to={`/developers/${developerUuid}/contacts`}>
+                            <ListItem button>
+                                <ListItemIcon>{<PeopleAltIcon />}</ListItemIcon>
+                                <ListItemText primary="Клиенты" />
+                            </ListItem>
+                        </StyledLink>
+                    </Feature>
                 )}
                 {developerUuid && (
-                    <StyledLink to={`/developers/${developerUuid}/trades`}>
-                        <ListItem button>
-                            <ListItemIcon>{<MonetizationOnIcon />}</ListItemIcon>
-                            <ListItemText primary="Сделки" />
-                        </ListItem>
-                    </StyledLink>
+                    <Feature features={[FEATURES.TRADES]}>
+                        <StyledLink to={`/developers/${developerUuid}/trades`}>
+                            <ListItem button>
+                                <ListItemIcon>{<MonetizationOnIcon />}</ListItemIcon>
+                                <ListItemText primary="Сделки" />
+                            </ListItem>
+                        </StyledLink>
+                    </Feature>
                 )}
             </List>
             <Divider />

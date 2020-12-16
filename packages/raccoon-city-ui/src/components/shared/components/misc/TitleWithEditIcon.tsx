@@ -20,6 +20,11 @@ interface TitleWithEditIconProps {
     children?: any;
 }
 
+interface TitleWithoutEditIconProps {
+    title: string;
+    children?: any;
+}
+
 export function TitleWithEditIcon({editUrl, title, children}: TitleWithEditIconProps) {
     return (
         <Fragment>
@@ -29,6 +34,19 @@ export function TitleWithEditIcon({editUrl, title, children}: TitleWithEditIconP
                     <StyledLink to={editUrl}>
                         <EditIcon color="primary" />
                     </StyledLink>
+                </TitleContainer>
+            </Typography>
+            {children}
+        </Fragment>
+    );
+}
+
+export function TitleWithoutEditIcon({title, children}: TitleWithoutEditIconProps) {
+    return (
+        <Fragment>
+            <Typography variant="h5" gutterBottom={true}>
+                <TitleContainer>
+                    <div>{title}</div>
                 </TitleContainer>
             </Typography>
             {children}

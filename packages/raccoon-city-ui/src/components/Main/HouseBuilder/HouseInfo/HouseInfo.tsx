@@ -14,6 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import {format, parseISO} from 'date-fns';
+import ruLocale from 'date-fns/locale/ru';
 import {Fragment, useEffect, useState} from 'react';
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -35,7 +36,6 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import ruLocale from 'date-fns/locale/ru';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -66,7 +66,9 @@ export const getDateFromFullString = (date: any) => {
         } catch (e) {
             return 'Не определено';
         }
-    } else return 'Не определено';
+    } else {
+        return 'Не определено';
+    }
 };
 
 function PublishHouse({uuid}) {

@@ -3,17 +3,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import React, {lazy, Suspense} from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
 import styled from 'styled-components';
+import {FEATURES} from '../../core/constants/features';
 import {GET_USER_INFO} from '../../graphql/queries/userQuery';
+import {isEnabled} from '../../utils/feature';
 import {
     ApartmentComplexCreateForm,
     ApartmentComplexEditForm
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
+import {AmoIntegration} from './Developer/AmoIntegration';
 import {DeveloperCreateForm, DeveloperEditForm} from './Developer/DeveloperForm';
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
 import {Sidebar} from './Sidebar/Sidebar';
-import {AmoIntegration} from './Developer/AmoIntegration';
 
 const Content = styled.div`
     position: relative;
@@ -33,7 +35,7 @@ const HouseInfo = lazy(() => import('./HouseBuilder/HouseInfo/HouseInfo'));
 const ApartmentComplexInfo = lazy(() => import('./ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexInfo'));
 
 export function Main() {
-    const {data, loading} = useQuery(GET_USER_INFO, {
+    const {data, loading, client} = useQuery(GET_USER_INFO, {
         fetchPolicy: 'cache-and-network'
     });
     const [open, setOpen] = React.useState(false);
@@ -74,36 +76,52 @@ export function Main() {
                         <Route exact={true} path="/developers/:developerUuid/chessgrid">
                             <MainChessGrid />
                         </Route>
-                        <Route exact={true} path="/users">
-                            <UserList />
-                        </Route>
+                        {isEnabled(client, [FEATURES.VIEW_USER]) && (
+                            <Route exact={true} path="/users">
+                                <UserList />
+                            </Route>
+                        )}
                         <Route exact={true} path="/developers">
                             <DeveloperList />
                         </Route>
-                        <Route exact={true} path="/developer/new">
-                            <DeveloperCreateForm />
-                        </Route>
-                        <Route exact={true} path="/developer/:developerUuid/edit">
-                            <DeveloperEditForm />
-                        </Route>
-                        <Route exact={true} path="/developer/:developerUuid/amo">
-                            <AmoIntegration />
-                        </Route>
-                        <Route exact={true} path="/developers/:developerUuid/contacts">
-                            <Contacts />
-                        </Route>
-                        <Route exact={true} path="/developers/:developerUuid/trades">
-                            <Trades />
-                        </Route>
-                        <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
-                            <ApartmentComplexCreateForm />
-                        </Route>
-                        <Route
-                            exact={true}
-                            path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/edit"
-                        >
-                            <ApartmentComplexEditForm />
-                        </Route>
+                        {isEnabled(client, [FEATURES.CREATE_DEVELOPER]) && (
+                            <Route exact={true} path="/developer/new">
+                                <DeveloperCreateForm />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CREATE_DEVELOPER]) && (
+                            <Route exact={true} path="/developer/:developerUuid/edit">
+                                <DeveloperEditForm />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CREATE_DEVELOPER]) && (
+                            <Route exact={true} path="/developer/:developerUuid/amo">
+                                <AmoIntegration />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CONTACTS]) && (
+                            <Route exact={true} path="/developers/:developerUuid/contacts">
+                                <Contacts />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.TRADES]) && (
+                            <Route exact={true} path="/developers/:developerUuid/trades">
+                                <Trades />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CREATE_APARTMENT_COMPLEX]) && (
+                            <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
+                                <ApartmentComplexCreateForm />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CREATE_APARTMENT_COMPLEX]) && (
+                            <Route
+                                exact={true}
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/edit"
+                            >
+                                <ApartmentComplexEditForm />
+                            </Route>
+                        )}
                         <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/overview">
                             <ApartmentComplexInfo />
                         </Route>
@@ -113,18 +131,22 @@ export function Main() {
                         <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid">
                             <ChessGrid />
                         </Route>
-                        <Route
-                            exact={true}
-                            path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/create/house"
-                        >
-                            <HouseCreateForm />
-                        </Route>
-                        <Route
-                            exact={true}
-                            path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid"
-                        >
-                            <HouseEditForm />
-                        </Route>
+                        {isEnabled(client, [FEATURES.CREATE_HOUSE]) && (
+                            <Route
+                                exact={true}
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/create/house"
+                            >
+                                <HouseCreateForm />
+                            </Route>
+                        )}
+                        {isEnabled(client, [FEATURES.CREATE_HOUSE]) && (
+                            <Route
+                                exact={true}
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid"
+                            >
+                                <HouseEditForm />
+                            </Route>
+                        )}
                         <Route path="*">
                             <DeveloperList />
                         </Route>

@@ -1,9 +1,9 @@
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as React from 'react';
 import {Fragment} from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import CardHeader from '@material-ui/core/CardHeader';
 
 export function CardHeaderWithMenu(props: any) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -15,7 +15,6 @@ export function CardHeaderWithMenu(props: any) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
     return (
         <CardHeader
             title={props.title}
@@ -24,9 +23,17 @@ export function CardHeaderWithMenu(props: any) {
                     <IconButton aria-label="settings" onClick={handleMenuClick}>
                         <MoreVertIcon />
                     </IconButton>
-                    <Menu id="long-menu" anchorEl={anchorEl} keepMounted={true} open={menuOpen} onClose={handleClose}>
-                        {props.children}
-                    </Menu>
+                    {!!React.Children.count(props.children) && (
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted={true}
+                            open={menuOpen}
+                            onClose={handleClose}
+                        >
+                            {props.children}
+                        </Menu>
+                    )}
                 </Fragment>
             }
         />

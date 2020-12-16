@@ -146,7 +146,7 @@ export function UserDialog() {
                                                             >
                                                                 {data.userRoles.map((item: any) => {
                                                                     return (
-                                                                        <MenuItem key={item.key} value={item.key}>
+                                                                        <MenuItem key={item.key} value={item.id}>
                                                                             {item.displayName}
                                                                         </MenuItem>
                                                                     );

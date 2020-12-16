@@ -1,4 +1,5 @@
 type UserRole {
+    id: String
     key: String
     displayName: String
     features: [String]

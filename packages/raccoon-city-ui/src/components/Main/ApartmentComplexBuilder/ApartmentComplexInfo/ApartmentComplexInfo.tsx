@@ -15,9 +15,12 @@ import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import styled from 'styled-components';
+import {FEATURES} from '../../../../core/constants/features';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
 import {setRouteParams, setTitle} from '../../../../redux/actions';
-import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
+import {isEnabled} from '../../../../utils/feature';
+import {Feature} from '../../../shared/components/features/Feature';
+import {TitleWithEditIcon, TitleWithoutEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 import {StyledNavLink} from '../../../shared/components/styled';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {HouseList} from '../../HouseList/HouseList';
@@ -84,12 +87,15 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(APARTMENT_COMPLEX_INFO, {
-        fetchPolicy: 'cache-and-network',
-        variables: {
-            uuid: apartmentComplexUuid
+    const {loading, error, data, client} = useQuery<{getApartmentComplex: ApartmentComplexType}>(
+        APARTMENT_COMPLEX_INFO,
+        {
+            fetchPolicy: 'cache-and-network',
+            variables: {
+                uuid: apartmentComplexUuid
+            }
         }
-    });
+    );
 
     if (loading) {
         return <p>Loading...</p>;
@@ -111,10 +117,14 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <TitleWithEditIcon
-                    title={name}
-                    editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/edit`}
-                />
+                {isEnabled(client, [FEATURES.CREATE_APARTMENT_COMPLEX]) ? (
+                    <TitleWithEditIcon
+                        title={name}
+                        editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/edit`}
+                    />
+                ) : (
+                    <TitleWithoutEditIcon title={name} />
+                )}
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <StyledPaper>
@@ -135,16 +145,20 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Разметка ЖК" />
                                     </ListItem>
                                 </StyledNavLink>
-                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/import`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Импорт помещений" />
-                                    </ListItem>
-                                </StyledNavLink>
-                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/history`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="История обновлений" />
-                                    </ListItem>
-                                </StyledNavLink>
+                                <Feature features={[FEATURES.IMPORT_FLATS]}>
+                                    <StyledNavLink activeClassName="Mui-selected" to={`${url}/import`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="Импорт помещений" />
+                                        </ListItem>
+                                    </StyledNavLink>
+                                </Feature>
+                                <Feature features={[FEATURES.HISTORY]}>
+                                    <StyledNavLink activeClassName="Mui-selected" to={`${url}/history`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="История обновлений" />
+                                        </ListItem>
+                                    </StyledNavLink>
+                                </Feature>
                                 <ListItem
                                     button
                                     component="a"
@@ -187,12 +201,16 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                 <Route path={`${path}/houses`}>
                                     <HouseList />
                                 </Route>
-                                <Route path={`${path}/import`}>
-                                    <ApartmentComplexImport />
-                                </Route>
-                                <Route path={`${path}/history`}>
-                                    <ApartmentComplexHistory />
-                                </Route>
+                                {isEnabled(client, [FEATURES.IMPORT_FLATS]) && (
+                                    <Route path={`${path}/import`}>
+                                        <ApartmentComplexImport />
+                                    </Route>
+                                )}
+                                {isEnabled(client, [FEATURES.HISTORY]) && (
+                                    <Route path={`${path}/history`}>
+                                        <ApartmentComplexHistory />
+                                    </Route>
+                                )}
                                 <Route path={`${path}/layout`}>
                                     <ApartmentComplexLayoutEditor />
                                 </Route>

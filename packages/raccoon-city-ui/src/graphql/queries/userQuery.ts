@@ -22,6 +22,7 @@ export const GET_USERS = gql`
             name
             email
             role {
+                id
                 key
                 displayName
                 features
@@ -34,6 +35,7 @@ export const GET_USERS = gql`
 export const GET_ROLES = gql`
     query getRoles {
         userRoles {
+            id
             key
             displayName
             features
