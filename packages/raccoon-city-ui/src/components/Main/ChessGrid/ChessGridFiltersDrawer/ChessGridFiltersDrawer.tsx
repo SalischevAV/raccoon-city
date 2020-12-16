@@ -83,7 +83,7 @@ export function HideFilter({setShownFilters}) {
 
 export function ChessGridFiltersDrawer({setShownFilters, filterShown, ...props}: any) {
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.down('md'));
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     if (!matches) {
         return <ChessGridDesktopFilters {...props} />;
