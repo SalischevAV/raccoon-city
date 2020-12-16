@@ -10,18 +10,21 @@ export interface User extends Document {
     isDeleted: boolean;
 }
 
-const UserSchema: Schema = new Schema({
-    name: {type: Schema.Types.String, required: true},
-    email: {type: Schema.Types.String, required: true},
-    password: {type: Schema.Types.String, required: true},
-    role: {
-        type: Schema.Types.ObjectId,
-        ref: 'UserRole'
+const UserSchema: Schema = new Schema(
+    {
+        name: {type: Schema.Types.String, required: true},
+        email: {type: Schema.Types.String, required: true},
+        password: {type: Schema.Types.String, required: true},
+        role: {
+            type: Schema.Types.ObjectId,
+            ref: 'UserRole'
+        },
+        isDeleted: {type: Schema.Types.Boolean}
     },
-    isDeleted: {type: Schema.Types.Boolean}
-}, {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true}
-});
+    {
+        toJSON: {virtuals: true},
+        toObject: {virtuals: true}
+    }
+);
 
 export const UserModel = mongoose.model<User>('User', UserSchema);
