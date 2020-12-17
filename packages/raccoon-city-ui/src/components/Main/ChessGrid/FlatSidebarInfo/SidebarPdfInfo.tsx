@@ -81,7 +81,7 @@ const ImageWrapper = styled.View`
 `;
 
 const LogoImageWrapper = styled(ImageWrapper)`
-    width: 60%;
+    width: 25%;
 `;
 
 const Logo = styled.Image`
@@ -121,7 +121,7 @@ const HeaderWrapper = styled.View`
 const InfoWrapper = styled.View`
     display: flex;
     justify-content: center;
-    width: 40%;
+    width: 37%;
 `;
 
 const PhoneSection = styled.View`
@@ -245,13 +245,24 @@ const FlatPdf = ({flat, userInfo}: SidebarPdfInfoProps) => {
                     )}
 
                     <InfoWrapper>
-                        <Call>По всем вопросам:</Call>
+                        <NumberSection>
+                            <PhoneSection>
+                                <PhoneSectionTitle>ТДВ "Житлобуд-2"</PhoneSectionTitle>
+                                <PhoneSectionTitle>Україна, м. Харкiв</PhoneSectionTitle>
+                                <PhoneSectionTitle>61145, вул. Космiчна, 12</PhoneSectionTitle>
+                            </PhoneSection>
+                        </NumberSection>
+                    </InfoWrapper>
+
+                    <InfoWrapper>
                         <NumberSection>
                             <PhoneSection>
                                 <PhoneSectionTitle>Приемная</PhoneSectionTitle>
                                 {flat.developer.receptionNumbers.map((phone, i) => {
                                     return <Text key={phone + i}>{phone}</Text>;
                                 })}
+                                <Text>info@zhilstroy-2.ua</Text>
+                                <Text>zhilstroj-2.ua</Text>
                             </PhoneSection>
                             <PhoneSection>
                                 <PhoneSectionTitle>Отдел продаж</PhoneSectionTitle>

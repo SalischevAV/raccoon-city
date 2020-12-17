@@ -43,14 +43,30 @@ const CustomPhotoSwipe = styled(PhotoSwipe)`
     }
 
     .pswp__bg {
-        background: rgba(1, 1, 1, 0.6);
+        background: rgba(29, 29, 27, 0.9);
+    }
+
+    .pswp__caption,
+    .pswp__button--share,
+    .pswp__button--fs {
+        display: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        transform: translate(0, 0);
     }
 `;
 
 const ButtonsContainer = styled.div`
     position: fixed;
     left: 50%;
-    bottom: 75px;
+    bottom: 10%;
     transform: translateX(-50%);
     z-index: 3000;
     display: flex;
@@ -61,19 +77,23 @@ const ButtonsContainer = styled.div`
         align-items: center;
         text-align: center;
         bottom: 100px;
+
+        a {
+            width: 100%;
+        }
     }
 `;
 
 const CustomButton = styled(Button)`
     width: 380px;
     margin: 0 5px !important;
-    font-size: 14px;
     background-color: #e84f1d !important;
     color: #fff !important;
 
     @media only screen and (max-width: 600px) {
-        width: 70%;
-        font-size: 10px;
+        width: 100%;
+        font-size: 12px !important;
+        margin: 5px 0 0 0 !important;
     }
 `;
 
@@ -84,10 +104,10 @@ const CustomButtonHouseRemake = styled<any>(CustomButton)`
     transform: translateX(-50%);
     z-index: 3002;
     width: 300px;
-    margin: 0 5px !important;
 
     @media only screen and (max-width: 600px) {
         top: 17%;
+        margin: 0 !important;
     }
 `;
 
@@ -192,7 +212,7 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
                         <CustomButton variant="contained" onClick={openHouseRemakeOrderModal}>
                             Оставить заявку
                         </CustomButton>
-                        <a href={HOUSE_REMAKE} target="blank">
+                        <a href={HOUSE_REMAKE} target="blank" style={{textDecoration: 'none'}}>
                             <CustomButton variant="contained">Перейти на дизайн студию House Remake</CustomButton>
                         </a>
                     </ButtonsContainer>

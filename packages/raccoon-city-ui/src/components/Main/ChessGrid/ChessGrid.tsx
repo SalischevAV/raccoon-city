@@ -186,6 +186,7 @@ const ChessGridContent = React.memo((props: any) => {
                                         <ChessGridColumn
                                             key={item.id}
                                             columnName={item.section}
+                                            houseName={houseFlats[0].name}
                                             levels={item.levels}
                                             onSelect={selectFlat}
                                             savedFlat={savedFlat}
