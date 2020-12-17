@@ -1,6 +1,7 @@
 import React from 'react';
 import {FLAT_STATUSES} from '../../../../../core/constants';
 import {FlatInfo} from '../ChessFloorView.styled';
+import {ValueWrapper} from './FlatInfoBar.styled';
 
 interface Props {
     info: any;
@@ -26,19 +27,21 @@ export const FlatInfoBar = ({info}: Props) => {
         <FlatInfo>
             {info ? (
                 <>
-                    <span>{`№${info.flatNumber || NO_DATA}`}</span>
-                    <span>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label ||
-                        NO_DATA}`}</span>
-                    {info.status !== 'SOLD_OUT' && info.price && <span>{`Цена: ${getPrice(info) || NO_DATA}`}</span>}
-                    <span>{`М2: ${info.area || NO_DATA}`}</span>
-                    {(info.squarePriceSale || info.squarePrice) && (
-                        <span>{`Цена м2: ${info.squarePriceSale || info.squarePrice || NO_DATA}`}</span>
+                    <ValueWrapper>{`№${info.flatNumber || NO_DATA}`}</ValueWrapper>
+                    <ValueWrapper>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label ||
+                        NO_DATA}`}</ValueWrapper>
+                    {info.status !== 'SOLD_OUT' && info.price && (
+                        <ValueWrapper>{`Цена: ${getPrice(info) || NO_DATA}`}</ValueWrapper>
                     )}
-                    <span>{`Комнат: ${info.roomAmount}`}</span>
-                    <span>{`Кол-во уровней: ${info.levelAmount || NO_DATA}`}</span>
+                    <ValueWrapper>{`М2: ${info.area || NO_DATA}`}</ValueWrapper>
+                    {(info.squarePriceSale || info.squarePrice) && (
+                        <ValueWrapper>{`Цена м2: ${info.squarePriceSale || info.squarePrice || NO_DATA}`}</ValueWrapper>
+                    )}
+                    <ValueWrapper>{`Комнат: ${info.roomAmount}`}</ValueWrapper>
+                    <ValueWrapper>{`Кол-во уровней: ${info.levelAmount || NO_DATA}`}</ValueWrapper>
                 </>
             ) : (
-                <span>Выберите квартиру</span>
+                <ValueWrapper>Выберите квартиру</ValueWrapper>
             )}
         </FlatInfo>
     );

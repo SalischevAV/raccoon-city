@@ -106,7 +106,7 @@ export const FlatInfo = styled.div`
     border-radius: 10px;
     background-color: transparent;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     max-width: 60%;
     min-width: 60%;
