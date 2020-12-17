@@ -28,7 +28,7 @@ const ApartmentComplexSchema: Schema = new Schema({
     address: {type: Schema.Types.String},
     city: {type: KeyDisplayNameSchema, required: true},
     district: {type: KeyDisplayNameSchema, required: true},
-    undergroundStation:{type: KeyDisplayNameSchema},
+    undergroundStation: {type: KeyDisplayNameSchema},
     class: {type: KeyDisplayNameSchema, required: true},
     levels: {type: Schema.Types.Number, required: true},
     sections: {type: Schema.Types.Number, required: true},

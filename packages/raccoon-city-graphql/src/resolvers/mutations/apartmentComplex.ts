@@ -18,10 +18,14 @@ export const apartmentComplex = {
         const apartmentComplexArg: ApartmentComplexInputArgs = args.apartmentComplex;
         const result = {...apartmentComplexArg} as any;
 
-        const {key, displayName, districts, undergroundStations} = cities.find((type) => type.key === apartmentComplexArg.city);
+        const {key, displayName, districts, undergroundStations} = cities.find(
+            (type) => type.key === apartmentComplexArg.city
+        );
         const district = districts.find((type) => String(type.key) === apartmentComplexArg.district);
-        const undergroundStation = undergroundStations.find((type) => String(type.key) === apartmentComplexArg.undergroundStation);
-        
+        const undergroundStation = undergroundStations.find(
+            (type) => String(type.key) === apartmentComplexArg.undergroundStation
+        );
+
         result.city = {key, displayName};
         result.district = district;
         result.undergroundStation = undergroundStation;
@@ -35,9 +39,13 @@ export const apartmentComplex = {
         const uuid = args.uuid;
         const result = {...apartmentComplexArg} as any;
 
-        const {key, displayName, districts, undergroundStations} = cities.find((type) => type.key === apartmentComplexArg.city);
+        const {key, displayName, districts, undergroundStations} = cities.find(
+            (type) => type.key === apartmentComplexArg.city
+        );
         const district = districts.find((type) => String(type.key) === apartmentComplexArg.district);
-        const undergroundStation = undergroundStations.find((type) => String(type.key) === apartmentComplexArg.undergroundStation);
+        const undergroundStation = undergroundStations.find(
+            (type) => String(type.key) === apartmentComplexArg.undergroundStation
+        );
 
         result.city = {key, displayName};
         result.district = district;

@@ -19,7 +19,7 @@ type District {
     displayName: String
 }
 
-type UndergroundStation{
+type UndergroundStation {
     key: String
     displayName: String
 }
