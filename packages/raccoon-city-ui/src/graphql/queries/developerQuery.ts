@@ -9,6 +9,10 @@ export const DEVELOPER_DROPDOWNS = gql`
                 key
                 displayName
             }
+            undergroundStations {
+                key
+                displayName
+            }
         }
     }
 `;

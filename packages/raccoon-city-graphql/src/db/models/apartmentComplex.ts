@@ -11,6 +11,7 @@ export interface ApartmentComplex extends Document {
     city: KeyDisplayName;
     address: string;
     district: KeyDisplayName;
+    undergroundStation: KeyDisplayName;
     class: KeyDisplayName;
     levels: number;
     sections: number;
@@ -27,6 +28,7 @@ const ApartmentComplexSchema: Schema = new Schema({
     address: {type: Schema.Types.String},
     city: {type: KeyDisplayNameSchema, required: true},
     district: {type: KeyDisplayNameSchema, required: true},
+    undergroundStation:{type: KeyDisplayNameSchema},
     class: {type: KeyDisplayNameSchema, required: true},
     levels: {type: Schema.Types.Number, required: true},
     sections: {type: Schema.Types.Number, required: true},

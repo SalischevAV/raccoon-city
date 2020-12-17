@@ -13,6 +13,10 @@
       "key": "1",
       "displayName": "District"
     },
+    "undergroundStation":{
+      "key": "1",
+      "displayName": "UndergroundStation"
+    },
     "class": {
       "key": "1",
       "displayName": "Class"

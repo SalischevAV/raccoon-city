@@ -19,6 +19,7 @@ import {
 import {setRouteParams, setTitle} from '../../../../redux/actions';
 import {ApartmentComplexFormValues, ApartmentComplexType} from '../../../shared/types/apartmentComplex.types';
 import {getApartmentComplexVariables} from './utils';
+
 const FormContainer = styled.div`
     border: 1px solid #aaa;
 `;
@@ -126,6 +127,7 @@ export const ApartmentComplexEditForm = connect(null, (dispatch) => ({
     values.type = values?.type?.key;
     values.class = values?.class?.key;
     values.district = values?.district?.key;
+    values.undergroundStation = values?.undergroundStation?.key;
     return (
         <Fragment>
             <ApartmentComplexForm
@@ -150,8 +152,11 @@ interface ApartmentComplexForm {
     title: string;
 }
 
-function getDistricts(cities, selectedCity) {
-    return cities.find((city) => city.key === selectedCity).districts || [];
+function getCityProperty(cities: [any], selectedCity: string, propName: string) {
+    const currentCity = cities.find((city) => city.key === selectedCity);
+    if (currentCity) {
+        return currentCity[propName];
+    } else return [];
 }
 
 export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
@@ -220,7 +225,7 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                     )}
                                                 </Field>
                                             </Grid>
-                                            <Grid item={true} xs={12} md={6}>
+                                            <Grid item={true} xs={12} md={4}>
                                                 <Field name="city" validate={required}>
                                                     {(props) => (
                                                         <TextField
@@ -250,7 +255,48 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                     )}
                                                 </Field>
                                             </Grid>
-                                            <Grid item={true} xs={12} md={6}>
+                                            <Grid item={true} xs={12} md={4}>
+                                                <Field name="undergroundStation" validate={required}>
+                                                    {(props) => {
+                                                        return (
+                                                            <TextField
+                                                                select={true}
+                                                                disabled={!selectedCity}
+                                                                label="Метро"
+                                                                margin="normal"
+                                                                fullWidth={true}
+                                                                variant="outlined"
+                                                                name={props.input.name}
+                                                                value={props.input.value}
+                                                                onChange={(
+                                                                    e: ChangeEvent<
+                                                                        HTMLInputElement | HTMLTextAreaElement
+                                                                    >
+                                                                ) => {
+                                                                    props.input.onChange(e.target.value);
+                                                                }}
+                                                            >
+                                                                {selectedCity ? (
+                                                                    getCityProperty(
+                                                                        cities,
+                                                                        selectedCity,
+                                                                        'undergroundStations'
+                                                                    ).map((item: any) => {
+                                                                        return (
+                                                                            <MenuItem key={item.key} value={item.key}>
+                                                                                {item.displayName}
+                                                                            </MenuItem>
+                                                                        );
+                                                                    })
+                                                                ) : (
+                                                                    <MenuItem />
+                                                                )}
+                                                            </TextField>
+                                                        );
+                                                    }}
+                                                </Field>
+                                            </Grid>
+                                            <Grid item={true} xs={12} md={4}>
                                                 <Field name="district" validate={required}>
                                                     {(props) => {
                                                         return (
@@ -272,18 +318,17 @@ export function ApartmentComplexForm(outerProps: ApartmentComplexForm) {
                                                                 }}
                                                             >
                                                                 {selectedCity ? (
-                                                                    getDistricts(cities, selectedCity).map(
-                                                                        (item: any) => {
-                                                                            return (
-                                                                                <MenuItem
-                                                                                    key={item.key}
-                                                                                    value={item.key}
-                                                                                >
-                                                                                    {item.displayName}
-                                                                                </MenuItem>
-                                                                            );
-                                                                        }
-                                                                    )
+                                                                    getCityProperty(
+                                                                        cities,
+                                                                        selectedCity,
+                                                                        'districts'
+                                                                    ).map((item: any) => {
+                                                                        return (
+                                                                            <MenuItem key={item.key} value={item.key}>
+                                                                                {item.displayName}
+                                                                            </MenuItem>
+                                                                        );
+                                                                    })
                                                                 ) : (
                                                                     <MenuItem />
                                                                 )}

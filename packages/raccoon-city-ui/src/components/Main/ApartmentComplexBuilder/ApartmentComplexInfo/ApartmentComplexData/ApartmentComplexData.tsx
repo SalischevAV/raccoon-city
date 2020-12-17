@@ -36,6 +36,11 @@ function getTableRows(props: ApartmentComplexType) {
             value: props.district.displayName
         },
         {
+            key: 'undergroundStation',
+            label: 'Метро',
+            value: props.undergroundStation ? props.undergroundStation.displayName : 'не определено'
+        },
+        {
             key: 'class',
             label: 'Класс',
             value: props.class.displayName

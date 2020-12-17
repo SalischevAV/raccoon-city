@@ -19,10 +19,16 @@ type District {
     displayName: String
 }
 
+type UndergroundStation{
+    key: String
+    displayName: String
+}
+
 type City {
     key: String
     displayName: String
     districts: [District]
+    undergroundStations: [UndergroundStation]
 }
 
 type UserRole {
