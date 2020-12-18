@@ -17,9 +17,15 @@ export interface City {
     key: string;
     displayName: string;
     districts: District[];
+    undergroundStations: UndergroundStation[];
 }
 
 export interface District {
+    key: string;
+    displayName: string;
+}
+
+export interface UndergroundStation {
     key: string;
     displayName: string;
 }
@@ -35,6 +41,7 @@ export interface ApartmentComplexDTO {
     address: string;
     city: KeyDisplayName;
     district: KeyDisplayName;
+    undergroundStation: KeyDisplayName;
     class: KeyDisplayName;
     levels: number;
     sections: number;
@@ -58,6 +65,7 @@ export interface ApartmentComplexType {
     name: string;
     city: KeyDisplayName;
     district: KeyDisplayName;
+    undergroundStation: KeyDisplayName;
     class: KeyDisplayName;
     levels: number;
     sections: number;
@@ -75,6 +83,7 @@ export interface ApartmentComplexFormValues {
     city: City;
     address: string;
     district: District;
+    undergroundStation: UndergroundStation;
     class: KeyDisplayName;
     levels: string;
     sections: string;

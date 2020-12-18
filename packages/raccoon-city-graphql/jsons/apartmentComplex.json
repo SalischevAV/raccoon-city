@@ -1,26 +1,30 @@
 {
-  "apartmentComplex": {
-    "type": {
-      "key": "1",
-      "displayName": "Economy"
-    },
-    "name": "Name",
-    "city": {
-      "key": "1",
-      "displayName": "City"
-    },
-    "district": {
-      "key": "1",
-      "displayName": "District"
-    },
-    "class": {
-      "key": "1",
-      "displayName": "Class"
-    },
-    "levels": 12,
-    "sections": 1,
-    "price": 12.2,
-    "beginDate": "2012",
-    "endDate": "2020"
-  }
+    "apartmentComplex": {
+        "type": {
+            "key": "1",
+            "displayName": "Economy"
+        },
+        "name": "Name",
+        "city": {
+            "key": "1",
+            "displayName": "City"
+        },
+        "district": {
+            "key": "1",
+            "displayName": "District"
+        },
+        "undergroundStation": {
+            "key": "1",
+            "displayName": "UndergroundStation"
+        },
+        "class": {
+            "key": "1",
+            "displayName": "Class"
+        },
+        "levels": 12,
+        "sections": 1,
+        "price": 12.2,
+        "beginDate": "2012",
+        "endDate": "2020"
+    }
 }

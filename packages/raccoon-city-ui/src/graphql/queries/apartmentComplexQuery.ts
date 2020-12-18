@@ -24,6 +24,10 @@ export const APARTMENT_COMPLEX_DROPDOWNS = gql`
                 key
                 displayName
             }
+            undergroundStations {
+                key
+                displayName
+            }
         }
         apartmentComplexClasses {
             key
@@ -48,6 +52,9 @@ export const APARTMENT_COMPLEX_INFO = gql`
                 displayName
             }
             district {
+                displayName
+            }
+            undergroundStation {
                 displayName
             }
             class {
@@ -108,6 +115,10 @@ export const GET_EDIT_APARTMENT_COMPLEX_INFO = gql`
                 displayName
             }
             district {
+                key
+                displayName
+            }
+            undergroundStation {
                 key
                 displayName
             }
