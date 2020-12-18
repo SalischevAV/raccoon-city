@@ -34,9 +34,11 @@ export const FlatInfoBar = ({info}: Props) => {
                         {`Цена: ${info.status === 'SOLD_OUT' ? 'Продано' : getPrice(info) || NO_DATA}`}
                     </ValueWrapper>
                     <ValueWrapper>{`М2: ${info.area || NO_DATA}`}</ValueWrapper>
-                    {(info.squarePriceSale || info.squarePrice) && (
-                        <ValueWrapper>{`Цена м2: ${info.squarePriceSale || info.squarePrice || NO_DATA}`}</ValueWrapper>
-                    )}
+                    <ValueWrapper>
+                        {`Цена м2: ${
+                            info.status === 'SOLD_OUT' ? 'Продано' : info.squarePriceSale || info.squarePrice || NO_DATA
+                        }`}
+                    </ValueWrapper>
                     <ValueWrapper>{`Комнат: ${info.roomAmount}`}</ValueWrapper>
                     <ValueWrapper>{`Кол-во уровней: ${info.levelAmount || NO_DATA}`}</ValueWrapper>
                 </>
