@@ -108,8 +108,7 @@ export const FlatInfo = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 60%;
-    min-width: 60%;
+    width: 90%;
     border: 1px solid #000;
 
     span {
