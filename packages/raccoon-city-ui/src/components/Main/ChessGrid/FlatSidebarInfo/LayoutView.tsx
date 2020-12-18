@@ -17,7 +17,7 @@ const StyledPaper = styled(Paper)`
 
 const ChessLayoutImageContainer = styled.div<any>`
     width: auto;
-    height: 70vh;
+    height: 65vh;
     background: url(${(props: any) => props.url});
     background-size: contain;
     background-repeat: no-repeat;
