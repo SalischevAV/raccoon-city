@@ -44,7 +44,7 @@ export const Sidebar = connect((state) => ({
     params: state.route.params
 }))(({open, handleDrawerClose, drawerStyles, params}: SidebarProps) => {
     const theme = useTheme();
-    const {developerUuid, houseUuid} = params || {};
+    const {developerUuid, houseUuid, apartmentComplexUuid} = params || {};
 
     return (
         <StyledDrawer
@@ -82,8 +82,10 @@ export const Sidebar = connect((state) => ({
                         </ListItem>
                     </StyledLink>
                 )}
-                {houseUuid && (
-                    <StyledLink to={`/developers/${developerUuid}/houseGrid/${houseUuid}`}>
+                {houseUuid && apartmentComplexUuid && (
+                    <StyledLink
+                        to={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseGrid/${houseUuid}`}
+                    >
                         <ListItem button>
                             <ListItemIcon>{<HomeWorkIcon />}</ListItemIcon>
                             <ListItemText primary="Шахматка дома" />
