@@ -21,7 +21,7 @@ export const auth = {
         }
     },
     async login(parent, {email, password}, {redis}) {
-        const user = await UserModel.findOne({email});
+        const user = await UserModel.findOne({email}).populate('role');
         if (!user) {
             throw new ApolloError(`No such user found for email: ${email}`, '404');
         }
@@ -32,7 +32,7 @@ export const auth = {
         const token = authTokenGenerate(user);
         await redis.set(
             token,
-            JSON.stringify({id: user._id, features: user?.role?.features || []}),
+            JSON.stringify({id: user._id, features: user?.role?.features || [], role: user?.role}),
             'ex',
             process.env.REDIS_KEY_TTL
         );
