@@ -9,17 +9,17 @@ import {connect} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {apartmentComplexDefaultImage} from '../../../core/constants';
+import {FEATURES} from '../../../core/constants/features';
 import {DELETE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {AddButton} from '../../shared/components/buttons/AddButton';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
-import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
-import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
-import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
 import {Feature} from '../../shared/components/features/Feature';
-import {FEATURES} from '../../../core/constants/features';
 import {CardHeaderNoMenu} from '../../shared/components/menus/CardHeaderNoMenu';
+import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
+import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
+import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
 
 export interface DeveloperCardProps {
     id: string;
@@ -128,9 +128,11 @@ export const DeveloperList = connect(null, (dispatch) => ({
 
     return (
         <Grid container={true} spacing={3} alignItems="center">
-            <Grid item={true} xs={12} md={3}>
-                <AddButton url={'/developer/new'} />
-            </Grid>
+            <Feature features={[FEATURES.CREATE_DEVELOPER]}>
+                <Grid item={true} xs={12} md={3}>
+                    <AddButton url={'/developer/new'} />
+                </Grid>
+            </Feature>
             {data.getDevelopers.map((developer) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={developer.id}>
