@@ -3,11 +3,13 @@ import {AuthError} from '../../utils';
 
 export const user = {
     async getUsers() {
-        return UserModel.find({})
+        const res = UserModel.find({})
             .populate({
                 path: 'role'
             })
             .exec();
+
+        return res;
     },
     async getUserInfo(parent, args, context) {
         try {
