@@ -7,5 +7,7 @@ export enum FEATURES {
     IMPORT_FLATS = 'import-flats',
     HISTORY = 'history',
     CREATE_HOUSE = 'create-house',
-    ADD_APARTMENT_COMPLEX = 'add-apartment-complex'
+    ADD_APARTMENT_COMPLEX = 'add-apartment-complex',
+    LAYOUTS = 'layouts',
+    PUBLISH_HOUSE = 'publish-house'
 }

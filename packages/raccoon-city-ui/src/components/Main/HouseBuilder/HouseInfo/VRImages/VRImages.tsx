@@ -1,14 +1,16 @@
+import {MutationTuple, useMutation} from '@apollo/react-hooks';
 import {Fab} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import * as React from 'react';
 import styled from 'styled-components';
+import {FEATURES} from '../../../../../core/constants/features';
+import {DELETE_IMAGE, UPLOAD_FILE} from '../../../../../graphql/mutations/houseMutation';
+import {HOUSE_INFO} from '../../../../../graphql/queries/houseQuery';
+import {Feature} from '../../../../shared/components/features/Feature';
 import {ImageType, PreviewImage} from '../../../../shared/types/apartmentComplex.types';
 import {ImagePreview} from '../../../Images/ImagePreview/ImagePreview';
 import {VRDialog} from '../../../Images/VRDialog/VRDialog';
-import {HOUSE_INFO} from '../../../../../graphql/queries/houseQuery';
-import {MutationTuple, useMutation} from '@apollo/react-hooks';
-import {DELETE_IMAGE, UPLOAD_FILE} from '../../../../../graphql/mutations/houseMutation';
 
 interface PreviewComponentProps {
     uuid: string;
@@ -83,13 +85,16 @@ export function VRImages(props: PreviewComponentProps) {
 
     return (
         <Grid container={true} spacing={2} alignItems="center">
-            <Grid item={true} xs={12} md={3}>
-                <NewVRImage mutation={mutation} uuid={props.uuid} mode={props.mode} />
-            </Grid>
+            <Feature features={[FEATURES.CREATE_HOUSE]}>
+                <Grid item={true} xs={12} md={3}>
+                    <NewVRImage mutation={mutation} uuid={props.uuid} mode={props.mode} />
+                </Grid>
+            </Feature>
             {props.images.map((image) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={image.uuid}>
                         <ImagePreview
+                            removeFeature={FEATURES.CREATE_HOUSE}
                             deleteMutation={deleteMutation}
                             uuid={props.uuid}
                             imageUuid={image.uuid}

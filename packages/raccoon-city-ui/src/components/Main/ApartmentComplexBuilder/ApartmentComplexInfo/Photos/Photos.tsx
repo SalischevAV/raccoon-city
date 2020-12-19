@@ -96,6 +96,7 @@ export function Photos(props: PreviewComponentProps) {
                     return (
                         <Grid item={true} xs={12} md={3} key={image.uuid}>
                             <ImagePreview
+                                removeFeature={FEATURES.CREATE_APARTMENT_COMPLEX}
                                 deleteMutation={deleteMutation}
                                 uuid={props.uuid}
                                 imageUuid={image.uuid}

@@ -10,6 +10,8 @@ import {PhotoDialog} from '../../../Images/PhotoDialog/PhotoDialog';
 import {MutationTuple, useMutation} from '@apollo/react-hooks';
 import {DELETE_IMAGE, UPLOAD_FILE} from '../../../../../graphql/mutations/houseMutation';
 import {HOUSE_INFO} from '../../../../../graphql/queries/houseQuery';
+import {Feature} from '../../../../shared/components/features/Feature';
+import {FEATURES} from '../../../../../core/constants/features';
 
 interface PreviewComponentProps {
     uuid: string;
@@ -85,13 +87,16 @@ export function Photos(props: PreviewComponentProps) {
     return (
         <Fragment>
             <Grid container={true} spacing={3} alignItems="center">
-                <Grid item={true} xs={12} md={3}>
-                    <NewPhoto mutation={mutation} uuid={props.uuid} mode={props.mode} />
-                </Grid>
+                <Feature features={[FEATURES.CREATE_HOUSE]}>
+                    <Grid item={true} xs={12} md={3}>
+                        <NewPhoto mutation={mutation} uuid={props.uuid} mode={props.mode} />
+                    </Grid>
+                </Feature>
                 {props.images.map((image) => {
                     return (
                         <Grid item={true} xs={12} md={3} key={image.uuid}>
                             <ImagePreview
+                                removeFeature={FEATURES.CREATE_HOUSE}
                                 deleteMutation={deleteMutation}
                                 uuid={props.uuid}
                                 imageUuid={image.uuid}

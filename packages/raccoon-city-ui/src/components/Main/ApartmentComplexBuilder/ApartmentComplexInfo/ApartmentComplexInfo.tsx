@@ -140,11 +140,13 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Дома" />
                                     </ListItem>
                                 </StyledNavLink>
-                                <StyledNavLink activeClassName="Mui-selected" to={`${url}/layout`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Разметка ЖК" />
-                                    </ListItem>
-                                </StyledNavLink>
+                                <Feature features={[FEATURES.LAYOUTS]}>
+                                    <StyledNavLink activeClassName="Mui-selected" to={`${url}/layout`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="Разметка ЖК" />
+                                        </ListItem>
+                                    </StyledNavLink>
+                                </Feature>
                                 <Feature features={[FEATURES.IMPORT_FLATS]}>
                                     <StyledNavLink activeClassName="Mui-selected" to={`${url}/import`}>
                                         <ListItem button={true}>
@@ -211,9 +213,11 @@ export const ApartmentComplexInfo = connect(null, (dispatch) => ({
                                         <ApartmentComplexHistory />
                                     </Route>
                                 )}
-                                <Route path={`${path}/layout`}>
-                                    <ApartmentComplexLayoutEditor />
-                                </Route>
+                                {isEnabled(client, [FEATURES.LAYOUTS]) && (
+                                    <Route path={`${path}/layout`}>
+                                        <ApartmentComplexLayoutEditor />
+                                    </Route>
+                                )}
                             </Switch>
                         </div>
                     </Grid>

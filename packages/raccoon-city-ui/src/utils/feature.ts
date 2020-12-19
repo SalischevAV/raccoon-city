@@ -9,7 +9,7 @@ export function isEnabled(client: ApolloClient<any> | any, features: string[]) {
 
     const {getUserInfo} = data;
 
-    if (getUserInfo.role.key === 'superAdmin') {
+    if (getUserInfo.role?.key === 'superAdmin') {
         return true;
     }
 
