@@ -17,6 +17,9 @@ import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
 import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
+import {Feature} from '../../shared/components/features/Feature';
+import {FEATURES} from '../../../core/constants/features';
+import {CardHeaderNoMenu} from '../../shared/components/menus/CardHeaderNoMenu';
 
 export interface DeveloperCardProps {
     id: string;
@@ -28,38 +31,40 @@ function DeveloperCard(props: DeveloperCardProps) {
     const [deleteMutation] = useMutation(DELETE_DEVELOPER);
     return (
         <StyledCard elevation={3}>
-            <CardHeaderWithMenu title={props.name}>
-                <StyledLink to={`/developer/${props.id}/edit`}>
-                    <MenuItem>Редактировать</MenuItem>
-                </StyledLink>
-                <StyledLink to={`/developer/${props.id}/amo`}>
-                    <MenuItem>AMO интеграция</MenuItem>
-                </StyledLink>
-                <Confirmation>
-                    {(confirmFn: (cb: () => void) => void) => {
-                        return (
-                            <MenuItem
-                                onClick={() => {
-                                    confirmFn(() => async () => {
-                                        await deleteMutation({
-                                            variables: {
-                                                id: props.id
-                                            },
-                                            refetchQueries: [
-                                                {
-                                                    query: GET_DEVELOPERS
-                                                }
-                                            ]
+            <Feature features={[FEATURES.CREATE_DEVELOPER]} fallbackComponent={<CardHeaderNoMenu title={props.name} />}>
+                <CardHeaderWithMenu title={props.name}>
+                    <StyledLink to={`/developer/${props.id}/edit`}>
+                        <MenuItem>Редактировать</MenuItem>
+                    </StyledLink>
+                    <StyledLink to={`/developer/${props.id}/amo`}>
+                        <MenuItem>AMO интеграция</MenuItem>
+                    </StyledLink>
+                    <Confirmation>
+                        {(confirmFn: (cb: () => void) => void) => {
+                            return (
+                                <MenuItem
+                                    onClick={() => {
+                                        confirmFn(() => async () => {
+                                            await deleteMutation({
+                                                variables: {
+                                                    id: props.id
+                                                },
+                                                refetchQueries: [
+                                                    {
+                                                        query: GET_DEVELOPERS
+                                                    }
+                                                ]
+                                            });
                                         });
-                                    });
-                                }}
-                            >
-                                Удалить
-                            </MenuItem>
-                        );
-                    }}
-                </Confirmation>
-            </CardHeaderWithMenu>
+                                    }}
+                                >
+                                    Удалить
+                                </MenuItem>
+                            );
+                        }}
+                    </Confirmation>
+                </CardHeaderWithMenu>
+            </Feature>
             <CardActionArea>
                 <Link to={`/developers/${props.id}/apartmentComplexes`}>
                     <StyledCardMedia image={props.imageUrl || apartmentComplexDefaultImage} title={props.name} />

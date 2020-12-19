@@ -6,20 +6,6 @@ export const KeyDisplayNameSchema = new Schema({
     displayName: {type: Schema.Types.String, required: true}
 });
 
-export const UserRoleSchema = new Schema({
-    key: {type: Schema.Types.String, required: true},
-    displayName: {type: Schema.Types.String, required: true},
-    features: [
-        {
-            type: Schema.Types.String,
-            required: true,
-            default: () => {
-                return [];
-            }
-        }
-    ]
-});
-
 export const SingleImageSchema = new Schema({
     uuid: {type: Schema.Types.String, required: true},
     downloadUrl: {type: Schema.Types.String, required: true}

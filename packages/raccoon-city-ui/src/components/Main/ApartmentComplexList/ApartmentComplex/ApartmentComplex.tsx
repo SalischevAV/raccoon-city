@@ -6,9 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {apartmentComplexDefaultImage} from '../../../../core/constants';
+import {FEATURES} from '../../../../core/constants/features';
 import {DELETE_APARTMENT_COMPLEX} from '../../../../graphql/mutations/apartmentComplexMutation';
 import {ALL_APARTMENT_COMPLEXES} from '../../../../graphql/queries/apartmentComplexQuery';
 import {Confirmation} from '../../../shared/components/dialogs/ConfirmDialog';
+import {Feature} from '../../../shared/components/features/Feature';
 import {CardHeaderWithMenu} from '../../../shared/components/menus/CardHeaderWithMenu';
 import {StyledCard, StyledCardMedia, StyledLink} from '../../../shared/components/styled';
 
@@ -34,28 +36,33 @@ export function ApartmentComplex(props: ApartmentComplexProps) {
     return (
         <StyledCard>
             <CardHeaderWithMenu title={props.name}>
-                <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${props.id}/edit`}>
-                    <MenuItem>Редактировать</MenuItem>
+                <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${props.id}/overview/info`}>
+                    <MenuItem>Детали</MenuItem>
                 </StyledLink>
-                <Confirmation>
-                    {(confirmFn: (cb: () => void) => void) => {
-                        return (
-                            <MenuItem
-                                onClick={() => {
-                                    confirmFn(() => async () => {
-                                        await deleteMutation({
-                                            variables: {
-                                                uuid: props.id
-                                            }
+                <Feature features={[FEATURES.ADD_APARTMENT_COMPLEX]}>
+                    <StyledLink to={`/developers/${developerUuid}/apartmentComplex/${props.id}/edit`}>
+                        <MenuItem>Редактировать</MenuItem>
+                    </StyledLink>
+                    <Confirmation>
+                        {(confirmFn: (cb: () => void) => void) => {
+                            return (
+                                <MenuItem
+                                    onClick={() => {
+                                        confirmFn(() => async () => {
+                                            await deleteMutation({
+                                                variables: {
+                                                    uuid: props.id
+                                                }
+                                            });
                                         });
-                                    });
-                                }}
-                            >
-                                Удалить
-                            </MenuItem>
-                        );
-                    }}
-                </Confirmation>
+                                    }}
+                                >
+                                    Удалить
+                                </MenuItem>
+                            );
+                        }}
+                    </Confirmation>
+                </Feature>
             </CardHeaderWithMenu>
             <CardActionArea>
                 <Link to={`/developers/${developerUuid}/apartmentComplex/${props.id}/overview/info`}>
