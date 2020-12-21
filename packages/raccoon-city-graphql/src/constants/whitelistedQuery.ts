@@ -10,6 +10,7 @@ export const WHITELISTED_QUERIES = [
     'getApartmentComplexLayout',
     'getPublishedFlatsLayoutByHouseId',
     'getApartmentComplex',
+    'getApartmentComplexName',
     'getPublishedHouse',
     'requestFromPublicForm'
 ];

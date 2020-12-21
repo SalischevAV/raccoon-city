@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import ApartmentComplexModel from '../../db/models/apartmentComplex';
+import HouseModel from '../../db/models/house';
 
 export const apartmentComplex = {
     getAllApartmentComplexes: async (_, {developerUuid}) => {
@@ -27,5 +28,12 @@ export const apartmentComplex = {
                 }
             }
         };
+    },
+    getApartmentComplexName: async (_, {uuid}) => {
+        const {apartmentComplex} = await HouseModel.findById(uuid);
+
+        const {name} = await ApartmentComplexModel.findById(apartmentComplex);
+
+        return {name};
     }
 };

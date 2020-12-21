@@ -8,32 +8,60 @@ import ruLocale from 'date-fns/locale/ru';
 import * as React from 'react';
 import styled from 'styled-components';
 import {ApartmentComplexType} from '../../../../shared/types/apartmentComplex.types';
+import {apartmentComplex} from './../../../../../../../raccoon-city-graphql/src/resolvers/queries/apartmentComplex.resolver';
 
+export const TypographyWithFont = styled.span`
+    font-family: 'TTNorms', sans-serif;
+    font-weight: 600;
+    color: #000;
+    @media only screen and (max-width: 600px) {
+        font-weight: 400;
+        color: #636363;
+    }
+`;
 interface ApartmentComplexDataProps {
     apartmentComplex: ApartmentComplexType;
 }
 
-function getTableRows(props: ApartmentComplexType) {
-    return [
+function getTableRows(props: any) {
+    const privateFields = [
+        {
+            key: 'beginDate',
+            label: 'Начало строительства',
+            value: format(parseISO(props.apartmentComplex.beginDate), 'MM yyyy', {
+                locale: ruLocale
+            })
+        },
+        {
+            key: 'endDate',
+            label: 'Конец строительства',
+            value: !!props.apartmentComplex.endDate
+                ? format(parseISO(props.apartmentComplex.endDate), 'MM yyyy', {
+                      locale: ruLocale
+                  })
+                : 'Не определено'
+        }
+    ];
+    const commonFields = [
         {
             key: 'type',
             label: 'Тип объекта',
-            value: props.type.displayName
+            value: props.apartmentComplex.type.displayName
         },
         {
             key: 'name',
             label: 'Название',
-            value: props.name
+            value: props.apartmentComplex.name
         },
         {
             key: 'city',
             label: 'Город',
-            value: props.city.displayName
+            value: props.apartmentComplex.city.displayName
         },
         {
             key: 'district',
             label: 'Район',
-            value: props.district.displayName
+            value: props.apartmentComplex.district.displayName
         },
         {
             key: 'undergroundStation',
@@ -43,54 +71,34 @@ function getTableRows(props: ApartmentComplexType) {
         {
             key: 'class',
             label: 'Класс',
-            value: props.class.displayName
+            value: props.apartmentComplex.class.displayName
         },
         {
             key: 'levels',
             label: 'Этажность',
-            value: props.levels
+            value: props.apartmentComplex.levels
         },
         {
             key: 'sections',
             label: 'Количество секций',
-            value: props.sections
+            value: props.apartmentComplex.sections
         },
         {
             key: 'address',
             label: 'Строительный адрес',
-            value: props.address
-        },
-        {
-            key: 'beginDate',
-            label: 'Начало строительства',
-            value: format(parseISO(props.beginDate), 'MM yyyy', {
-                locale: ruLocale
-            })
-        },
-        {
-            key: 'endDate',
-            label: 'Конец строительства',
-            value: !!props.endDate
-                ? format(parseISO(props.endDate), 'MM yyyy', {
-                      locale: ruLocale
-                  })
-                : 'Не определено'
+            value: props.apartmentComplex.address
         }
     ];
+
+    if (props.isPublic) {
+        return commonFields;
+    } else {
+        return commonFields.concat(privateFields);
+    }
 }
 
-const TypographyWithFont = styled.span`
-    font-family: 'TTNorms', sans-serif;
-    font-weight: 600;
-    color: #000;
-    @media only screen and (max-width: 600px) {
-        font-weight: 400;
-        color: #636363;
-    }
-`;
-
-export function ApartmentComplexData(props: ApartmentComplexDataProps) {
-    const rows = getTableRows(props.apartmentComplex);
+export function ApartmentComplexData(props: any) {
+    const rows = getTableRows(props);
     return (
         <Table aria-label="simple table">
             <TableBody>

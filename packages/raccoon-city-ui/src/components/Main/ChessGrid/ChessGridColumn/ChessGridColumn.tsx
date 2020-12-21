@@ -35,7 +35,8 @@ interface ChessGridColumnProps {
     }>;
     onSelect: (flat: Flat) => void;
     savedFlat: any;
-    houseName: string;
+    sectionName: string;
+    developerName: string;
 }
 
 function getFlatStatus(levels, levelToFind, flatNumberToFind) {
@@ -82,13 +83,17 @@ export class ChessGridColumn extends React.Component<ChessGridColumnProps> {
             return level2.level - level1.level;
         });
 
-        const EntranceTitle = () => (
-            <ColumnTitle>
-                <Typography variant="subtitle1" gutterBottom={true}>
-                    {this.props.houseName} Подъезд №{this.props.columnName}
-                </Typography>
-            </ColumnTitle>
-        );
+        const EntranceTitle = () => {
+            const {developerName, sectionName, columnName} = this.props;
+
+            return (
+                <ColumnTitle>
+                    <Typography variant="subtitle1" gutterBottom={true}>
+                        ЖК {developerName} {sectionName} Подъезд №{columnName}
+                    </Typography>
+                </ColumnTitle>
+            );
+        };
 
         return (
             <ColumnWrapper className="ChessGridColumn">

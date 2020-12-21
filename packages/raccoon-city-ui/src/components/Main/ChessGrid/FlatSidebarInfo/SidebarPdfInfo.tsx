@@ -4,8 +4,8 @@ import styled from '@react-pdf/styled-components';
 import React from 'react';
 import {FLAT_STATUSES} from '../../../../core/constants';
 import {SidebarFlat} from '../../../../graphql/queries/flatQuery';
+import {getPrice} from '../ChessFloorView/FloorViewsParts/FlatInfoBar';
 import {CustomButton} from './styledComponents';
-
 interface SidebarPdfInfoProps {
     flat: SidebarFlat;
     userInfo: {
@@ -70,7 +70,7 @@ const TR = styled.View`
     border-color: #ccc;
     border-bottom-style: solid;
     padding: 8px;
-    font-size: 12px;
+    font-size: 11px;
 `;
 
 const ImageWrapper = styled.View`
@@ -81,7 +81,7 @@ const ImageWrapper = styled.View`
 `;
 
 const LogoImageWrapper = styled(ImageWrapper)`
-    width: 25%;
+    width: 20%;
 `;
 
 const Logo = styled.Image`
@@ -98,12 +98,6 @@ const StyledImage = styled.Image`
     justify-self: center;
 `;
 
-const Call = styled.Text`
-    font-size: 13px;
-    margin-top: 8px;
-    text-align: center;
-`;
-
 const NumberSection = styled.View`
     display: flex;
     flex-direction: row;
@@ -115,13 +109,17 @@ const HeaderWrapper = styled.View`
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    margin-top: -20px;
+    margin-top: -25px;
 `;
 
 const InfoWrapper = styled.View`
     display: flex;
-    justify-content: center;
-    width: 37%;
+    justify-content: flex-start;
+    width: 40%;
+
+    &::last-child {
+        margin-left: -20px;
+    }
 `;
 
 const PhoneSection = styled.View`
@@ -132,7 +130,7 @@ const PhoneSection = styled.View`
 `;
 
 const PhoneSectionTitle = styled.Text`
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
 `;
 
@@ -157,7 +155,7 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
                         <Text>Полная цена</Text>
                     </View>
                     <View style={styles.value}>
-                        <Text>{flat.price} грн</Text>
+                        <Text>{getPrice(flat)} грн</Text>
                     </View>
                 </TR>
             ) : null}
@@ -176,7 +174,7 @@ function FlatTable({flat, userInfo}: SidebarPdfInfoProps) {
                     <Text>Площадь</Text>
                 </View>
                 <View style={styles.value}>
-                    <Text>{flat.area}</Text>
+                    <Text>{flat.area} м2</Text>
                 </View>
             </TR>
             <TR>

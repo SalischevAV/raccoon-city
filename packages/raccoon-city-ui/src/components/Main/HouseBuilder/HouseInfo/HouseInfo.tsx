@@ -1,18 +1,12 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {AppBar, Grid, Theme} from '@material-ui/core';
+import {AppBar, Grid, Theme, Paper} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
 import {format, parseISO} from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import {Fragment, useEffect, useState} from 'react';
@@ -39,6 +33,7 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
+import {HouseCommonInfo} from './HouseCommonInfo';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -218,70 +213,14 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         </Tabs>
                                     </AppBar>
                                     <TabPanel value={value} index={0}>
-                                        <Table aria-label="simple table">
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Название дома
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {name}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Стоимость квартир в доме
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {price}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Парковка
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {parking ? 'Есть' : 'Нет'}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Начало строительства
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {getDateFromFullString(beginDate)}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Окончание строительства
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {getDateFromFullString(endDate)}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
+                                        <HouseCommonInfo
+                                            name={name}
+                                            price={price}
+                                            parking={parking}
+                                            beginDate={beginDate}
+                                            endDate={endDate}
+                                            isPublic={false}
+                                        />
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
                                         <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />

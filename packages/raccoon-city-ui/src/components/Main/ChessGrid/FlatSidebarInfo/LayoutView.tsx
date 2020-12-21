@@ -8,7 +8,7 @@ import {LevelImageUrlInterface} from '../ChessFloorView/ChessFloor.interfaces';
 const ImageContainer = styled.div<any>`
     max-width: 320px;
     background: url(${(props: any) => props.url});
-    background-size: cover;
+    background-size: contain;
 `;
 
 const StyledPaper = styled(Paper)`

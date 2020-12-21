@@ -7,7 +7,7 @@ interface Props {
     info: any;
 }
 
-function getPrice(flat) {
+export function getPrice(flat) {
     const {squarePrice, squarePriceSale, area} = flat;
 
     if (!squarePrice) {

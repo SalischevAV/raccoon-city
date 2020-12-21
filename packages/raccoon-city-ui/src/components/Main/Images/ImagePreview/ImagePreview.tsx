@@ -4,7 +4,6 @@ import CardContent from '@material-ui/core/CardContent';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
-import {Fragment} from 'react';
 import {Feature} from '../../../shared/components/features/Feature';
 import {CardHeaderNoMenu} from '../../../shared/components/menus/CardHeaderNoMenu';
 import {CardHeaderWithMenu} from '../../../shared/components/menus/CardHeaderWithMenu';

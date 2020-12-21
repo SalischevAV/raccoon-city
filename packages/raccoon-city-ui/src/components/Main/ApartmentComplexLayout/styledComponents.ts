@@ -5,6 +5,9 @@ import Carousel from 'react-elastic-carousel';
 
 export const LayoutContainer = styled.div`
     height: 100vh;
+    @media only screen and (max-width: 960px) {
+        height: calc(100vh - 30px);
+    }
 `;
 
 export const HouseChooseContainer = styled.div`

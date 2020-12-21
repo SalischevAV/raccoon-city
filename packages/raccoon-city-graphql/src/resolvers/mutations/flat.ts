@@ -149,15 +149,17 @@ export const flatMutation = {
                 {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}}
             ]).exec();
 
-            await PublishedHouseModel.updateOne({
-                _id: house._id
-            }, {
-                $set: {'sections.$[].levels.$[].flats.$[flat].status':  String(flatStatus)}
-            }, {
-                "arrayFilters": [
-                    { "flat._id": mongoose.Types.ObjectId(flatId)  },
-                ]
-            }).exec()
+            await PublishedHouseModel.updateOne(
+                {
+                    _id: house._id
+                },
+                {
+                    $set: {'sections.$[].levels.$[].flats.$[flat].status': String(flatStatus)}
+                },
+                {
+                    arrayFilters: [{'flat._id': mongoose.Types.ObjectId(flatId)}]
+                }
+            ).exec();
         }
 
         return true;
