@@ -12,7 +12,8 @@ export const WHITELISTED_QUERIES = [
     'getApartmentComplex',
     'getApartmentComplexName',
     'getPublishedHouse',
-    'requestFromPublicForm'
+    'requestFromPublicForm',
+    'getHouse'
 ];
 
 export const PUBLIC_QUERIES = [
