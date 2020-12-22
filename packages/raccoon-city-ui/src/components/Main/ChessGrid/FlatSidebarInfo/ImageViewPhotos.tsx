@@ -184,6 +184,7 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
                     <HRLink>https://houseremake.com.ua/</HRLink>
                 </div>
             ) : (
+                !isOpen &&
                 props.images.map((image: NamedImage, i) => {
                     return (
                         <Grid item key={image.uuid} xs={12}>

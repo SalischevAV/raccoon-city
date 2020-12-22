@@ -5,9 +5,7 @@ import Carousel from 'react-elastic-carousel';
 
 export const LayoutContainer = styled.div`
     height: 100vh;
-    @media only screen and (max-width: 960px) {
-        height: calc(100vh - 30px);
-    }
+    box-sizing: border-box;
 `;
 
 export const HouseChooseContainer = styled.div`
@@ -16,11 +14,6 @@ export const HouseChooseContainer = styled.div`
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
-
-    @media only screen and (max-width: 960px) {
-        height: 80px;
-        margin-top: 30px;
-    }
 `;
 
 export const ImageContainer = styled.div`
@@ -42,6 +35,8 @@ export const LayoutImage = styled.div<any>`
 `;
 
 export const StyledCarousel = styled(Carousel)`
+    padding-top: 50px;
+
     .rec-swipable {
         align-items: center;
     }
