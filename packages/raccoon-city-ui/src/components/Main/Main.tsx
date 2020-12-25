@@ -57,6 +57,7 @@ export function Main() {
                 handleDrawerOpen={() => {
                     setOpen(true);
                 }}
+                userInfo={data.getUserInfo}
             />
             <Sidebar
                 drawerStyles={drawerStyles}
