@@ -1,14 +1,14 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 import {Redirect} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import {Dialog, DialogTitle, DialogActions, Button, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {defaultPic} from './defaultPic';
-import {userInfo} from '../../shared/types/user.types';
 import {useMutation} from '@apollo/react-hooks';
 import {LOGOUT} from '../../../graphql/mutations/authMutation';
 import {TOKEN} from '../../../core/constants';
 import Cookies from 'js-cookie';
+import {UserInfoContext} from '../Main';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function UserAvatar({userInfo: userInfo}) {
+export default function UserAvatar() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-
+    const userInfo = useContext(UserInfoContext);
     const [logout, {data, error}] = useMutation(LOGOUT);
 
     const handleClose = () => {

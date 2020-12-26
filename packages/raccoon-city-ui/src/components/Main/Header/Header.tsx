@@ -68,7 +68,7 @@ export const Header = connect((state) => ({
                         <AppBreadcrumbs />
                         <FilterContainer id="chessGridFilterContainer" style={{display: matches ? 'block' : 'none'}} />
                     </Box>
-                    <UserAvatar userInfo={userInfo} />
+                    <UserAvatar />
                 </Toolbar>
             </StyledAppBar>
         </div>
