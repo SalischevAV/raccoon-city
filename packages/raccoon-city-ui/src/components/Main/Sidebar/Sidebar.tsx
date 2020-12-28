@@ -10,6 +10,7 @@ import ChevronRightIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import AppsIcon from '@material-ui/icons/Apps';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
@@ -22,6 +23,7 @@ import styled from 'styled-components';
 import {FEATURES} from '../../../core/constants/features';
 import {Feature} from '../../shared/components/features/Feature';
 import {StyledLink} from '../../shared/components/styled';
+import {withTooltip} from './../../HOC/withTooltip';
 
 interface SidebarProps {
     open: boolean;
@@ -121,6 +123,17 @@ export const Sidebar = connect((state) => ({
                         </StyledLink>
                     </Feature>
                 )}
+                <Feature features={[FEATURES.VIEW_USER]}>
+                    {withTooltip(
+                        <StyledLink to="/users">
+                            <ListItem button>
+                                <ListItemIcon>{<BorderColorIcon />}</ListItemIcon>
+                                <ListItemText primary="Управление пользователями" />
+                            </ListItem>
+                        </StyledLink>,
+                        'Управление пользователями'
+                    )}
+                </Feature>
                 {developerUuid && (
                     <Feature features={[FEATURES.HISTORY]}>
                         <StyledLink to={`/developers/${developerUuid}/history`}>

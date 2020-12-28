@@ -52,6 +52,7 @@ export function Main() {
     if (!data || !data.getUserInfo) {
         return <Redirect to="/login" />;
     }
+
     return (
         <UserInfoContext.Provider value={data.getUserInfo}>
             <div className={drawerStyles.root}>
@@ -81,9 +82,11 @@ export function Main() {
                             <Route exact={true} path="/developers/:developerUuid/chessgrid">
                                 <MainChessGrid />
                             </Route>
-                            <Route exact={true} path="/users">
-                                <UserList />
-                            </Route>
+                            {isEnabled(client, [FEATURES.VIEW_USER]) && (
+                                <Route exact={true} path="/users">
+                                    <UserList />
+                                </Route>
+                            )}
                             <Route exact={true} path="/developers">
                                 <DeveloperList />
                             </Route>

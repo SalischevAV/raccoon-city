@@ -45,10 +45,8 @@ export const user = {
                     house: {
                         apartmentComplex: {name, address}
                     },
-                    section: {
-                        sectionName
-                    }
-                } = await FlatModel.findById(flatId)
+                    section: {sectionName}
+                } = (await FlatModel.findById(flatId)
                     .populate({
                         path: 'house',
                         populate: {
@@ -56,9 +54,9 @@ export const user = {
                         }
                     })
                     .populate({
-                        path: 'section',
+                        path: 'section'
                     })
-                    .exec() as any;
+                    .exec()) as any;
 
                 return {
                     id,
@@ -70,8 +68,8 @@ export const user = {
                         complexName: name,
                         complexAddress: address,
                         sectionName,
-                        newStatus,
-                    }),
+                        newStatus
+                    })
                 };
             }
 

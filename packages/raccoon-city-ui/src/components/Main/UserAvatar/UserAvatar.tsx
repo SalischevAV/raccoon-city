@@ -6,7 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {defaultPic} from './defaultPic';
 import {useMutation} from '@apollo/react-hooks';
 import {LOGOUT} from '../../../graphql/mutations/authMutation';
-import {TOKEN} from '../../../core/constants';
+import {TOKEN, REFRESH_TOKEN} from '../../../core/constants';
 import Cookies from 'js-cookie';
 import {UserInfoContext} from '../Main';
 
@@ -32,6 +32,7 @@ export default function UserAvatar() {
             variables: {key: Cookies.get(TOKEN)}
         });
         Cookies.remove(TOKEN);
+        Cookies.remove(REFRESH_TOKEN);
         handleClose();
     };
 

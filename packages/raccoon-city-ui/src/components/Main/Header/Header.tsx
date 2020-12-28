@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import {AppBreadcrumbs} from '../Breadcrumbs/AppBreadcrumbs';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import {userInfo} from '../../shared/types/user.types';
+import {withTooltip} from './../../HOC/withTooltip';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -68,7 +69,7 @@ export const Header = connect((state) => ({
                         <AppBreadcrumbs />
                         <FilterContainer id="chessGridFilterContainer" style={{display: matches ? 'block' : 'none'}} />
                     </Box>
-                    <UserAvatar />
+                    {withTooltip(<UserAvatar />, 'Информация пользователя')}
                 </Toolbar>
             </StyledAppBar>
         </div>
