@@ -17,7 +17,7 @@ export const getDateFromFullString = (date: any) => {
     } else return 'Не определено';
 };
 
-export function HouseCommonInfo({name, price, parking, beginDate, endDate, isPublic}) {
+export function HouseCommonInfo({name, price, parking, beginDate, endDate, visibleInCarousel, isPublic}) {
     return (
         <Table aria-label="simple table">
             <TableBody>
@@ -83,6 +83,20 @@ export function HouseCommonInfo({name, price, parking, beginDate, endDate, isPub
                         </Typography>
                     </TableCell>
                 </TableRow>
+                {!isPublic && (
+                    <TableRow>
+                        <TableCell component="th" scope="row">
+                            <Typography variant="body2" component="p">
+                                Виден в разметке
+                            </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                            <Typography variant="body2" component="p">
+                                {visibleInCarousel ? 'да' : 'нет'}
+                            </Typography>
+                        </TableCell>
+                    </TableRow>
+                )}
             </TableBody>
         </Table>
     );

@@ -6,7 +6,7 @@ type TInput = {
 export default ({db}: TInput) => {
     const connect = () => {
         mongoose
-            .connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
+            .connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
             .then(() => {
                 return console.info(`Successfully connected to ${db}`);
             })

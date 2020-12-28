@@ -157,7 +157,11 @@ export function HouseForm(outerProps: HouseFormProps) {
         <Fragment>
             <Form
                 onSubmit={(e) => {}}
-                initialValues={{...outerProps.values, parking: outerProps?.values?.parking ? 'true' : 'false'}}
+                initialValues={{
+                    ...outerProps.values,
+                    parking: outerProps?.values?.parking ? 'true' : 'false',
+                    visibleInCarousel: outerProps?.values?.visibleInCarousel ? 'true' : 'false'
+                }}
             >
                 {({values, invalid, form}) => {
                     return (
@@ -239,26 +243,73 @@ export function HouseForm(outerProps: HouseFormProps) {
                                     </Field>
                                 </Grid>
                             </Grid>
-                            <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
-                                {(props) => {
-                                    return (
-                                        <FormControl component="fieldset">
-                                            <FormLabel component="legend">Паркова</FormLabel>
-                                            <RadioGroup
-                                                defaultValue="false"
-                                                aria-label="parking"
-                                                row={true}
-                                                name={props.input.name}
-                                                value={values?.parking}
-                                                onChange={props.input.onChange}
-                                            >
-                                                <FormControlLabel value="true" control={<Radio />} label="Есть" />
-                                                <FormControlLabel value="false" control={<Radio />} label="Нет" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    );
-                                }}
-                            </Field>
+                            <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
+                                <Grid item={true} xs={12} md={6}>
+                                    <Field name="parking" type="radio" defaultValue={'false'} validate={required}>
+                                        {(props) => {
+                                            return (
+                                                <FormControl component="fieldset">
+                                                    <FormLabel component="legend">Паркова</FormLabel>
+                                                    <RadioGroup
+                                                        defaultValue="false"
+                                                        aria-label="parking"
+                                                        row={true}
+                                                        name={props.input.name}
+                                                        value={values?.parking}
+                                                        onChange={props.input.onChange}
+                                                    >
+                                                        <FormControlLabel
+                                                            value="true"
+                                                            control={<Radio />}
+                                                            label="Есть"
+                                                        />
+                                                        <FormControlLabel
+                                                            value="false"
+                                                            control={<Radio />}
+                                                            label="Нет"
+                                                        />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            );
+                                        }}
+                                    </Field>
+                                </Grid>
+                                <Grid item={true} xs={12} md={6}>
+                                    <Field
+                                        name="visibleInCarousel"
+                                        type="radio"
+                                        defaultValue={'false'}
+                                        validate={required}
+                                    >
+                                        {(props) => {
+                                            return (
+                                                <FormControl component="fieldset">
+                                                    <FormLabel component="legend">Скрывать из разметки</FormLabel>
+                                                    <RadioGroup
+                                                        defaultValue="false"
+                                                        aria-label="visibleInCarousel"
+                                                        row={true}
+                                                        name={props.input.name}
+                                                        value={values?.visibleInCarousel}
+                                                        onChange={props.input.onChange}
+                                                    >
+                                                        <FormControlLabel
+                                                            value="true"
+                                                            control={<Radio />}
+                                                            label="Виден в разметке"
+                                                        />
+                                                        <FormControlLabel
+                                                            value="false"
+                                                            control={<Radio />}
+                                                            label="Не виден в разметке"
+                                                        />
+                                                    </RadioGroup>
+                                                </FormControl>
+                                            );
+                                        }}
+                                    </Field>
+                                </Grid>
+                            </Grid>
                             <Grid container={true} direction="row" spacing={2} justify="flex-end" alignItems="center">
                                 <Grid justify="flex-end" container={true} item={true} xs={6}>
                                     <StyledLink

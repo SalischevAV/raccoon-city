@@ -9,4 +9,6 @@ export interface HouseDataInputArgs {
     beginDate: string;
     endDate: string;
     order: number;
+    visibleInCarousel: boolean;
+    parking: boolean;
 }

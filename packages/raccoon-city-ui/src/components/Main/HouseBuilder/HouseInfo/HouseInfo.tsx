@@ -133,7 +133,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
         return <Redirect to="/" />;
     }
 
-    const {name, images, parking, price, publishedDate, beginDate, endDate} = data.getHouse;
+    const {name, images, parking, price, publishedDate, beginDate, endDate, visibleInCarousel} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -219,6 +219,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                             parking={parking}
                                             beginDate={beginDate}
                                             endDate={endDate}
+                                            visibleInCarousel={visibleInCarousel}
                                             isPublic={false}
                                         />
                                     </TabPanel>

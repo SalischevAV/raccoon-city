@@ -11,6 +11,7 @@ export interface House {
     price: number;
     beginDate: string;
     endDate: string;
+    visibleInCarousel: boolean;
     apartmentComplex: string;
     parking: boolean;
     images: HouseImages;

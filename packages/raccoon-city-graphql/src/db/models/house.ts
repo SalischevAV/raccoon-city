@@ -34,6 +34,7 @@ const HouseSchema: Schema = new Schema(
         order: {type: Schema.Types.Number, default: 0},
         parking: {type: Schema.Types.Boolean},
         endDate: {type: Schema.Types.String},
+        visibleInCarousel: {type: Schema.Types.Boolean, default: true},
         isDeleted: {type: Schema.Types.Boolean, default: false},
         apartmentComplex: {
             type: Schema.Types.ObjectId,

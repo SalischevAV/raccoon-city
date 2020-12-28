@@ -86,7 +86,7 @@ export const SectionBar = (props: any) => {
 
     const {images} = data.getApartmentComplex;
 
-    const {name: houseName, parking, price, beginDate, endDate} = houseData!.getHouse;
+    const {name: houseName, parking, price, beginDate, endDate, visibleInCarousel} = houseData!.getHouse;
 
     const photosJSX =
         images?.PHOTO?.map(({downloadUrl, uuid}) => <SideBarImage key={uuid} src={downloadUrl} alt="house image" />) ||
@@ -130,6 +130,7 @@ export const SectionBar = (props: any) => {
                         parking={parking}
                         beginDate={beginDate}
                         endDate={endDate}
+                        visibleInCarousel={visibleInCarousel}
                         isPublic={isPublic}
                     />
                 </TabPanelContainer>

@@ -232,6 +232,7 @@ export const GET_APARTMENT_COMPLEX_LAYOUT = gql`
                     id
                     name
                     order
+                    visibleInCarousel
                     images {
                         CHESS_GRID {
                             uuid

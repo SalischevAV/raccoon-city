@@ -128,6 +128,7 @@ const PublishedHouseSchema: Schema = new Schema(
         parking: {type: Schema.Types.Boolean},
         order: {type: Schema.Types.Number, default: 0},
         endDate: {type: Schema.Types.String},
+        visibleInCarousel: {type: Schema.Types.Boolean, default: true},
         isDeleted: {type: Schema.Types.Boolean, default: false},
         images: {
             type: imagesSchema,

@@ -119,6 +119,7 @@ export default function ApartmentComplexLayout() {
     if (loading || error) {
         return null;
     }
+
     return (
         <LayoutContainer>
             <HouseIcons data={data} hoveredHouse={hoveredHouse} setHoveredHouse={setHoveredHouse} />
