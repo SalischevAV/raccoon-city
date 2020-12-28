@@ -29,3 +29,11 @@ export const LOGOUT = gql`
         logout(key: $key)
     }
 `;
+
+export const SAVE_HISTORY_EVENT = gql`
+    mutation saveHistoryEvent($historyEvent: HistoryEventInput) {
+        saveHistoryEvent(historyEvent: $historyEvent) {
+            id
+        }
+    }
+`;

@@ -28,15 +28,34 @@ input CurrentUserInfo {
     features: [String]
 }
 
+type HistoryEvent {
+    id: String
+    user: User
+    eventType: String
+    payload: String
+    date: String
+    developer: String
+}
+
+input HistoryEventInput {
+    user: String
+    eventType: String
+    payload: String
+    date: String
+    developer: String
+}
+
 type Mutation {
     authApp(apiKey: String!): Auth
     login(email: String!, password: String!): Auth
     logout(key: String!): Boolean!
     createUser(userData: UserInput): User
     deleteUser(id: String): Boolean
+    saveHistoryEvent(historyEvent: HistoryEventInput): HistoryEvent
 }
 
 type Query {
     getUserInfo: User
     getUsers: [User]
+    getHistoryEvents(developer: String!): [HistoryEvent]
 }

@@ -16,6 +16,7 @@ import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
 import {Sidebar} from './Sidebar/Sidebar';
+import {History} from './History/History';
 import {userInfo} from '../shared/types/user.types';
 
 const Content = styled.div`
@@ -129,6 +130,9 @@ export function Main() {
                             </Route>
                             <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
                                 <HouseInfo />
+                            </Route>
+                            <Route exact={true} path="/developers/:developerUuid/history">
+                                <History />
                             </Route>
                             <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid">
                                 <ChessGrid />

@@ -13,6 +13,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import HistoryIcon from '@material-ui/icons/History';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import clsx from 'clsx';
 import * as React from 'react';
@@ -116,6 +117,16 @@ export const Sidebar = connect((state) => ({
                             <ListItem button>
                                 <ListItemIcon>{<MonetizationOnIcon />}</ListItemIcon>
                                 <ListItemText primary="Сделки" />
+                            </ListItem>
+                        </StyledLink>
+                    </Feature>
+                )}
+                {developerUuid && (
+                    <Feature features={[FEATURES.HISTORY]}>
+                        <StyledLink to={`/developers/${developerUuid}/history`}>
+                            <ListItem button>
+                                <ListItemIcon>{<HistoryIcon />}</ListItemIcon>
+                                <ListItemText primary="История" />
                             </ListItem>
                         </StyledLink>
                     </Feature>

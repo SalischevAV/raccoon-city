@@ -42,3 +42,24 @@ export const GET_ROLES = gql`
         }
     }
 `;
+
+export const GET_HISTORY_EVENTS = gql`
+    query getHistoryEvents($developer: String!) {
+        getHistoryEvents(developer: $developer) {
+            id
+            user {
+                id
+                name
+                email
+                role {
+                    id
+                    key
+                    displayName
+                }
+            }
+            eventType
+            payload
+            date
+        }
+    }
+`;

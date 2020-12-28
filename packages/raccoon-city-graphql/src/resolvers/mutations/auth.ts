@@ -1,6 +1,7 @@
 import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
 import {UserModel} from '../../db/models/user';
+import {HistoryEventModel} from '../../db/models/historyEvent';
 import {authAppTokenGenerate, authTokenGenerate} from '../../utils';
 
 export const auth = {
@@ -50,5 +51,10 @@ export const auth = {
         } catch (e) {
             return false;
         }
+    },
+    async saveHistoryEvent(_, {historyEvent}) {
+        const savedHistoryEvent = await HistoryEventModel.create(historyEvent);
+
+        return savedHistoryEvent;
     }
 };
