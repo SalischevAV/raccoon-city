@@ -1,6 +1,7 @@
 export const WHITELISTED_QUERIES = [
     'login',
     'createUser',
+    'updateUser',
     'authorizeAmo',
     'getPublicApartmentComplexesByDeveloper',
     'getPublicGroupedFlatsBySection',

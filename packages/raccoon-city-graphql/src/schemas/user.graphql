@@ -13,7 +13,9 @@ type User {
 }
 
 input UserInput {
+    id: String
     name: String
+    isDeleted: Boolean
     email: String
     password: String
     role: String
@@ -50,6 +52,7 @@ type Mutation {
     login(email: String!, password: String!): Auth
     logout(key: String!): Boolean!
     createUser(userData: UserInput): User
+    updateUser(userData: UserInput): User
     deleteUser(id: String): Boolean
     saveHistoryEvent(historyEvent: HistoryEventInput): HistoryEvent
 }
