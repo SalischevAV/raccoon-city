@@ -3,6 +3,7 @@ import {useContext} from 'react';
 import {useParams} from 'react-router-dom';
 import {UserInfoContext} from '../components/Main/Main';
 import {SAVE_HISTORY_EVENT} from '../graphql/mutations/authMutation';
+import {GET_HISTORY_EVENTS} from '../graphql/queries/userQuery';
 
 export enum HistoryEventType {
     CHANGE_FLAT_STATUS = 'CHANGE_FLAT_STATUS'
@@ -33,7 +34,16 @@ function saveHistoryEvent(info: HistoryEventInfo, saveEvent: any) {
         await saveEvent({
             variables: {
                 historyEvent
-            }
+            },
+            refetchQueries: [
+                {
+                    query: GET_HISTORY_EVENTS,
+                    variables: {
+                        developer: info.developer,
+                        page: 1
+                    }
+                }
+            ]
         });
     };
 }

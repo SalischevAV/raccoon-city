@@ -1,80 +1,20 @@
-import React from 'react';
-import {useQuery} from '@apollo/react-hooks';
-import {GET_HISTORY_EVENTS} from '../../../graphql/queries/userQuery';
-import {useParams} from 'react-router-dom';
-import {HistoryTypesLabels} from '../../../hooks/useSaveEvent';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import React, {useState, useCallback} from 'react';
+import {HistoryTable} from './HistoryTable';
 
 export const History = () => {
-    const {developerUuid} = useParams() as any;
-    const {data, loading, error} = useQuery(GET_HISTORY_EVENTS, {
-        variables: {
-            developer: developerUuid
-        }
-    });
+    const [page, setPage] = useState(1);
 
-    if (loading) {
-        return <div>Loading</div>;
-    }
-
-    if (error) {
-        return <div>Error</div>;
-    }
-
-    const {getHistoryEvents: history} = data;
+    const handlePaginationChange = useCallback(
+        async (page: number) => {
+            setPage(page);
+        },
+        [setPage, page]
+    );
 
     return (
         <div>
-            <h2>История</h2>
-
-            {!history.length ? (
-                <div>История пуста</div>
-            ) : (
-                <TableContainer component={Paper}>
-                    <Table size="small" aria-label="history_table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="left">Дата</TableCell>
-                                <TableCell align="left">Имя</TableCell>
-                                <TableCell align="left">Роль</TableCell>
-                                <TableCell align="left">Событие</TableCell>
-                                <TableCell align="left">Новый статус</TableCell>
-                                <TableCell align="left">Квартира</TableCell>
-                                <TableCell align="left">ЖК</TableCell>
-                                <TableCell align="left">Адрес</TableCell>
-                                <TableCell align="left">Секция</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {history.reverse().map(({id, date, user, eventType, payload}) => {
-                                const {flatNumber, complexName, complexAddress, sectionName, newStatus} = JSON.parse(
-                                    payload
-                                );
-
-                                return (
-                                    <TableRow key={id}>
-                                        <TableCell align="left">{date}</TableCell>
-                                        <TableCell align="left">{user.name}</TableCell>
-                                        <TableCell align="left">{user?.role.displayName}</TableCell>
-                                        <TableCell align="left">{HistoryTypesLabels[eventType]}</TableCell>
-                                        <TableCell align="left">{newStatus.label}</TableCell>
-                                        <TableCell align="left">{flatNumber}</TableCell>
-                                        <TableCell align="left">{complexName}</TableCell>
-                                        <TableCell align="left">{complexAddress}</TableCell>
-                                        <TableCell align="left">{sectionName}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )}
+            <h2>История {page}</h2>
+            <HistoryTable page={page} handlePaginationChange={handlePaginationChange} />
         </div>
     );
 };

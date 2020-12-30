@@ -49,6 +49,11 @@ input HistoryEventInput {
     developer: String
 }
 
+type History {
+    historyEventsRes: [HistoryEvent]
+    historyPageAmount: Int
+}
+
 type Mutation {
     authApp(apiKey: String!): Auth
     login(email: String!, password: String!): Auth
@@ -62,5 +67,5 @@ type Mutation {
 type Query {
     getUserInfo: User
     getUsers: [User]
-    getHistoryEvents(developer: String!): [HistoryEvent]
+    getHistoryEvents(developer: String!, page: Int): History
 }

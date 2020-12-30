@@ -30,8 +30,15 @@ export const user = {
             throw new AuthError();
         }
     },
-    async getHistoryEvents(_, {developer}) {
+    async getHistoryEvents(_, {developer, page}) {
+        const perPage = 5;
+        const currentPage = page || 1;
+        const historyEventsAmount = await HistoryEventModel.count({developer});
+
         const historyEvents = await HistoryEventModel.find({developer})
+            .sort({_id: -1})
+            .skip(perPage * currentPage - perPage)
+            .limit(perPage)
             .populate({
                 path: 'user',
                 populate: {
@@ -84,6 +91,9 @@ export const user = {
 
         const historyEventsRes = await Promise.all(updatedHistoryEvents);
 
-        return historyEventsRes;
+        return {
+            historyEventsRes: historyEventsRes,
+            historyPageAmount: Math.ceil(historyEventsAmount / perPage),
+        };
     }
 };
