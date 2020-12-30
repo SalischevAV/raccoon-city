@@ -11,6 +11,7 @@ import {Field, Form} from 'react-final-form';
 import {isEmail} from '../../../core/validators/validators';
 import {UPDATE_USER} from '../../../graphql/mutations/authMutation';
 import {GET_ROLES, GET_USERS} from '../../../graphql/queries/userQuery';
+import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
 import {MenuItem} from '@material-ui/core';
 import {FormBlock} from './UserCreateForm';
 import Radio from '@material-ui/core/Radio';
@@ -20,6 +21,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import {UserFormValues, getUserDataVariables} from './utils';
 import {isRequired} from '../../../core/validators/validators';
+import {role} from '../../shared/types/user.types';
+import {Developer} from '../../shared/types/developer.type';
 
 export const UserUpdateForm = ({openUserEditForm: open, setOpenUserEditForm: setOpen, user}) => {
     const handleClose = () => {
@@ -27,16 +30,24 @@ export const UserUpdateForm = ({openUserEditForm: open, setOpenUserEditForm: set
     };
 
     const {data, loading, error} = useQuery(GET_ROLES);
+    const {data: developerData, loading: developerLoading, error: developerError} = useQuery(GET_DEVELOPERS);
     const [updateUser] = useMutation(UPDATE_USER);
 
-    if (loading || error) {
+    if (loading || error || developerLoading || developerError) {
         return null;
     }
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Редактирование пользователя</DialogTitle>
-            <Form onSubmit={(e) => {}} initialValues={{...user}}>
+            <Form
+                onSubmit={(e) => {}}
+                initialValues={{
+                    ...user,
+                    developer: user.developer?.id,
+                    isDeleted: user.isDeleted ? 'true' : 'false'
+                }}
+            >
                 {({values, invalid, form, errors}) => {
                     return (
                         <Fragment>
@@ -79,6 +90,32 @@ export const UserUpdateForm = ({openUserEditForm: open, setOpenUserEditForm: set
                                             </Field>
                                         </Grid>
                                         <Grid item={true} xs={12}>
+                                            <Field name="developer" validate={isRequired}>
+                                                {(props) => {
+                                                    return (
+                                                        <TextField
+                                                            select
+                                                            name={props.input.name}
+                                                            value={props.input.value}
+                                                            onChange={props.input.onChange}
+                                                            label="Застройщики"
+                                                            margin="normal"
+                                                            fullWidth={true}
+                                                            variant="outlined"
+                                                        >
+                                                            {developerData.getDevelopers.map((item: Developer) => {
+                                                                return (
+                                                                    <MenuItem key={item.id} value={item.id}>
+                                                                        {item.name}
+                                                                    </MenuItem>
+                                                                );
+                                                            })}
+                                                        </TextField>
+                                                    );
+                                                }}
+                                            </Field>
+                                        </Grid>
+                                        <Grid item={true} xs={12}>
                                             <Field name="role" validate={isRequired}>
                                                 {(props) => {
                                                     return (
@@ -92,7 +129,7 @@ export const UserUpdateForm = ({openUserEditForm: open, setOpenUserEditForm: set
                                                             fullWidth={true}
                                                             variant="outlined"
                                                         >
-                                                            {data.userRoles.map((item: any) => {
+                                                            {data.userRoles.map((item: role) => {
                                                                 return (
                                                                     <MenuItem key={item.key} value={item.id}>
                                                                         {item.displayName}
@@ -112,7 +149,7 @@ export const UserUpdateForm = ({openUserEditForm: open, setOpenUserEditForm: set
                                                     <FormControl component="fieldset">
                                                         <FormLabel component="legend">Пользователь активен</FormLabel>
                                                         <RadioGroup
-                                                            defaultValue={user.isDeleted}
+                                                            defaultValue={user.isDeleted ? 'true' : 'false'}
                                                             aria-label="isDeleted"
                                                             row={true}
                                                             name={props.input.name}

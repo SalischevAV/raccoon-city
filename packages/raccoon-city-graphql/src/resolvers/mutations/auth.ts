@@ -8,7 +8,7 @@ export const auth = {
     async createUser(parent, {userData}) {
         try {
             userData.password = bcrypt.hashSync(userData.password);
-            return UserModel.create(userData);
+            return await UserModel.create(userData);
         } catch (e) {
             return null;
         }
@@ -22,7 +22,8 @@ export const auth = {
                         isDeleted: userData.isDeleted,
                         name: userData.name,
                         email: userData.email,
-                        role: userData.role
+                        role: userData.role,
+                        developer: userData.developer
                     }
                 }
             );

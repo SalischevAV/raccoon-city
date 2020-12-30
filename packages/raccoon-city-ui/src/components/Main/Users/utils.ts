@@ -4,15 +4,17 @@ export interface UserFormValues {
     role: string;
     email: string;
     isDeleted: string;
+    developer: string;
 }
 
 export function getUserDataVariables(userData: UserFormValues) {
-    const {name, id, role, email, isDeleted} = userData;
+    const {name, id, role, email, isDeleted, developer} = userData;
     return {
         name,
         id,
         role,
         email,
-        isDeleted: isDeleted === 'true'
+        isDeleted: isDeleted === 'true',
+        developer
     };
 }

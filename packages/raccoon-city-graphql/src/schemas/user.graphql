@@ -10,6 +10,7 @@ type User {
     email: String
     role: UserRole
     isDeleted: Boolean
+    developer: Developer
 }
 
 input UserInput {
@@ -19,6 +20,7 @@ input UserInput {
     email: String
     password: String
     role: String
+    developer: String
 }
 
 type Auth {

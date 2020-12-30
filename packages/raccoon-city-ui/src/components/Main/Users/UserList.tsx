@@ -66,6 +66,7 @@ export const UserList = connect(null, (dispatch) => ({
                         <TableCell>Активен</TableCell>
                         <TableCell align="left">Имя</TableCell>
                         <TableCell align="left">Почта</TableCell>
+                        <TableCell align="left">Застройщики</TableCell>
                         <TableCell align="left">Роль</TableCell>
                         <TableCell align="left">Редактировать</TableCell>
                     </TableRow>
@@ -78,6 +79,7 @@ export const UserList = connect(null, (dispatch) => ({
                             </TableCell>
                             <TableCell align="left">{user.name}</TableCell>
                             <TableCell align="left">{user.email}</TableCell>
+                            <TableCell align="left">{user?.developer?.name}</TableCell>
                             <TableCell align="left">{user?.role?.displayName}</TableCell>
                             <TableCell align="left">
                                 {
@@ -85,7 +87,7 @@ export const UserList = connect(null, (dispatch) => ({
                                         className={classes.editable}
                                         color="secondary"
                                         onClick={() =>
-                                            editClickHandler({...user, role: user.role.id, isDeleted: user.isDeletedd})
+                                            editClickHandler({...user, role: user.role.id, isDeleted: user.isDeleted})
                                         }
                                     />
                                 }

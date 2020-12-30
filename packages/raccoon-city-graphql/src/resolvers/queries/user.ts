@@ -5,21 +5,27 @@ import {FlatModel} from '../../db/models/flat';
 
 export const user = {
     async getUsers() {
-        const res = UserModel.find({})
+        const res = await UserModel.find({})
             .populate({
                 path: 'role'
             })
+            .populate({
+                path: 'developer'
+            })
             .exec();
-
         return res;
     },
     async getUserInfo(parent, args, context) {
         try {
-            return await UserModel.findById(context.currentUser.id)
+            const res = await UserModel.findById(context.currentUser.id)
                 .populate({
                     path: 'role'
                 })
+                .populate({
+                    path: 'developer'
+                })
                 .exec();
+            return res;
         } catch (e) {
             throw new AuthError();
         }

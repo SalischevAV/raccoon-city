@@ -47,8 +47,13 @@ export const validatePassword = (password: string) => {
     return regex.test(password);
 };
 
+export const validatePasswordFinalForm = (password: string) => {
+    const regex = /(?=.*\d)(?=.*[a-z]).{6,}/;
+    return regex.test(password) ? null : 'weak password';
+};
+
 export const validateConfirmPassword = (password: string, allValues) => {
-    return password === allValues.password ? undefined : 'Пароли должны совпадать';
+    return password === allValues.password ? null : 'Пароли должны совпадать';
 };
 
 export const validateLoginForm = (form: LoginFormInterface) => {

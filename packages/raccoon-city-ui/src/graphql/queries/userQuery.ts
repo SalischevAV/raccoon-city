@@ -6,6 +6,15 @@ export const GET_USER_INFO = gql`
             id
             name
             email
+            developer {
+                id
+                name
+                city
+                address
+                emails
+                receptionNumbers
+                salesNumbers
+            }
             role {
                 key
                 displayName
@@ -21,6 +30,15 @@ export const GET_USERS = gql`
             id
             name
             email
+            developer {
+                id
+                name
+                city
+                address
+                emails
+                receptionNumbers
+                salesNumbers
+            }
             role {
                 id
                 key
