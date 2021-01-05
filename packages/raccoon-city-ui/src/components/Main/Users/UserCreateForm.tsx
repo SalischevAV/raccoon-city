@@ -25,7 +25,6 @@ import {Developer} from '../../shared/types/developer.type';
 export const FormBlock = styled.div`
     padding: 16px;
 `;
-// export const required = (value: any) => (value ? undefined : 'Required');
 
 export const UserCreateForm = ({openUserCreateForm: open, setOpenUserCreateForm: setOpen}) => {
     const {data, loading, error} = useQuery(GET_ROLES);

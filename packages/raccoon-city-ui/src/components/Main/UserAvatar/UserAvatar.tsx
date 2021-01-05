@@ -49,6 +49,11 @@ export default function UserAvatar() {
                 <Typography variant="h6" className={classes.title}>
                     Пользователь: {userInfo.name}
                 </Typography>
+                {userInfo.role.key !== 'superAdmin' && (
+                    <Typography variant="h6" className={classes.title}>
+                        Застройщик: {userInfo.developer?.name}
+                    </Typography>
+                )}
                 <Typography variant="h6" className={classes.title}>
                     Роль: {userInfo.role.displayName}
                 </Typography>

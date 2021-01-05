@@ -1,3 +1,4 @@
+import {Developer} from './developer.type';
 export interface role {
     id: string;
     displayName: string;
@@ -10,4 +11,6 @@ export interface userInfo {
     email: string;
     id: string;
     role: role;
+    isDeleted: boolean;
+    developer: Developer;
 }

@@ -12,6 +12,7 @@ import {
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
 import {AmoIntegration} from './Developer/AmoIntegration';
 import {DeveloperCreateForm, DeveloperEditForm} from './Developer/DeveloperForm';
+import {PrivateRoute} from './PrivateRoute/PrivateRoute';
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';
@@ -76,12 +77,20 @@ export function Main() {
 
                     <Suspense fallback={<div>Loading...</div>}>
                         <Switch>
-                            <Route exact={true} path="/developers/:developerUuid/apartmentComplexes">
+                            <PrivateRoute
+                                exact={true}
+                                path="/developers/:developerUuid/apartmentComplexes"
+                                userInfo={data.getUserInfo}
+                            >
                                 <ApartmentComplexList />
-                            </Route>
-                            <Route exact={true} path="/developers/:developerUuid/chessgrid">
+                            </PrivateRoute>
+                            <PrivateRoute
+                                exact={true}
+                                path="/developers/:developerUuid/chessgrid"
+                                userInfo={data.getUserInfo}
+                            >
                                 <MainChessGrid />
-                            </Route>
+                            </PrivateRoute>
                             {isEnabled(client, [FEATURES.VIEW_USER]) && (
                                 <Route exact={true} path="/users">
                                     <UserList />
@@ -96,65 +105,101 @@ export function Main() {
                                 </Route>
                             )}
                             {isEnabled(client, [FEATURES.CREATE_DEVELOPER]) && (
-                                <Route exact={true} path="/developer/:developerUuid/edit">
+                                <PrivateRoute
+                                    exact={true}
+                                    path="/developer/:developerUuid/edit"
+                                    userInfo={data.getUserInfo}
+                                >
                                     <DeveloperEditForm />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.CREATE_DEVELOPER]) && (
-                                <Route exact={true} path="/developer/:developerUuid/amo">
+                                <PrivateRoute
+                                    exact={true}
+                                    path="/developer/:developerUuid/amo"
+                                    userInfo={data.getUserInfo}
+                                >
                                     <AmoIntegration />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.CONTACTS]) && (
-                                <Route exact={true} path="/developers/:developerUuid/contacts">
+                                <PrivateRoute
+                                    exact={true}
+                                    path="/developers/:developerUuid/contacts"
+                                    userInfo={data.getUserInfo}
+                                >
                                     <Contacts />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.TRADES]) && (
-                                <Route exact={true} path="/developers/:developerUuid/trades">
+                                <PrivateRoute
+                                    exact={true}
+                                    path="/developers/:developerUuid/trades"
+                                    userInfo={data.getUserInfo}
+                                >
                                     <Trades />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.CREATE_APARTMENT_COMPLEX]) && (
-                                <Route exact={true} path="/developers/:developerUuid/apartmentComplex/new">
+                                <PrivateRoute
+                                    exact={true}
+                                    path="/developers/:developerUuid/apartmentComplex/new"
+                                    userInfo={data.getUserInfo}
+                                >
                                     <ApartmentComplexCreateForm />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.CREATE_APARTMENT_COMPLEX]) && (
-                                <Route
+                                <PrivateRoute
                                     exact={true}
                                     path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/edit"
+                                    userInfo={data.getUserInfo}
                                 >
                                     <ApartmentComplexEditForm />
-                                </Route>
+                                </PrivateRoute>
                             )}
-                            <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/overview">
+                            <PrivateRoute
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/overview"
+                                userInfo={data.getUserInfo}
+                            >
                                 <ApartmentComplexInfo />
-                            </Route>
-                            <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/house/:houseUuid">
+                            </PrivateRoute>
+                            <PrivateRoute
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/house/:houseUuid"
+                                userInfo={data.getUserInfo}
+                            >
                                 <HouseInfo />
-                            </Route>
-                            <Route exact={true} path="/developers/:developerUuid/history">
+                            </PrivateRoute>
+                            <PrivateRoute
+                                exact={true}
+                                path="/developers/:developerUuid/history"
+                                userInfo={data.getUserInfo}
+                            >
                                 <History />
-                            </Route>
-                            <Route path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid">
+                            </PrivateRoute>
+                            <PrivateRoute
+                                path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseGrid/:houseUuid"
+                                userInfo={data.getUserInfo}
+                            >
                                 <ChessGrid />
-                            </Route>
+                            </PrivateRoute>
                             {isEnabled(client, [FEATURES.CREATE_HOUSE]) && (
-                                <Route
+                                <PrivateRoute
                                     exact={true}
                                     path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/create/house"
+                                    userInfo={data.getUserInfo}
                                 >
                                     <HouseCreateForm />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             {isEnabled(client, [FEATURES.CREATE_HOUSE]) && (
-                                <Route
+                                <PrivateRoute
                                     exact={true}
                                     path="/developers/:developerUuid/apartmentComplex/:apartmentComplexUuid/houseEdit/:houseUuid"
+                                    userInfo={data.getUserInfo}
                                 >
                                     <HouseEditForm />
-                                </Route>
+                                </PrivateRoute>
                             )}
                             <Route path="*">
                                 <DeveloperList />

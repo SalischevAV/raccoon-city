@@ -4,7 +4,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
+import {UserInfoContext} from '../Main';
 import {connect} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import styled from 'styled-components';
@@ -106,6 +107,7 @@ export const DeveloperList = connect(null, (dispatch) => ({
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, applyTitle}) => {
     const params = useParams();
+    const userInfo = useContext(UserInfoContext);
 
     useEffect(() => {
         applyParams(params);
@@ -126,6 +128,11 @@ export const DeveloperList = connect(null, (dispatch) => ({
         return <EmptyDevelopers />;
     }
 
+    const developersList =
+        userInfo.role.key === 'superAdmin'
+            ? data.getDevelopers
+            : data.getDevelopers.filter((developer) => developer.id === userInfo.developer?.id);
+
     return (
         <Grid container={true} spacing={3} alignItems="center">
             <Feature features={[FEATURES.CREATE_DEVELOPER]}>
@@ -133,7 +140,8 @@ export const DeveloperList = connect(null, (dispatch) => ({
                     <AddButton url={'/developer/new'} />
                 </Grid>
             </Feature>
-            {data.getDevelopers.map((developer) => {
+
+            {developersList.map((developer) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={developer.id}>
                         <Grid container justify="center">
