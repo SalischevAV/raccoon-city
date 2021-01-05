@@ -166,7 +166,7 @@ export function LayoutView(props: LayoutViewProps) {
                         <ImageWithSvg
                             image={floorImage}
                             paths={updatedFloor.paths}
-                            index={0}
+                            index={-1}
                             viewBox={updatedFloor.viewBox}
                             isChessLayoutView={true}
                             info={updatedFloor.info}
