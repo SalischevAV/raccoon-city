@@ -53,6 +53,11 @@ interface LayoutViewProps {
 }
 
 function attachSvg(container: string) {
+    const svgContainer = document.querySelector(container) as HTMLElement;
+    if (svgContainer?.childNodes.length >= 1) {
+        svgContainer.childNodes[0].remove();
+    }
+
     return SVG()
         .addTo(container)
         .size('100%', '100%');
@@ -68,7 +73,7 @@ function fillExistingLayouts(
 ) {
     if (info) {
         info.forEach((item, i) => {
-            let pathParsed = JSON.parse(paths[i]);
+            const pathParsed = JSON.parse(paths[i]);
 
             const path = svgItem
                 .viewbox(0, 0, viewBox.width, viewBox.height)
@@ -130,7 +135,7 @@ function ImageWithSvg({
         }
 
         // eslint-disable-next-line
-    }, []);
+    }, [JSON.stringify(info)]);
 
     if (isChessLayoutView) {
         return (
