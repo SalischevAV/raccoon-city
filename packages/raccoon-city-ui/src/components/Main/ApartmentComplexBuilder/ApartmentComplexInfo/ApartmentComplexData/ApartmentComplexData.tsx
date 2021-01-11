@@ -66,7 +66,9 @@ function getTableRows(props: any) {
         {
             key: 'undergroundStation',
             label: 'Метро',
-            value: props.undergroundStation ? props.undergroundStation.displayName : 'не определено'
+            value: props.apartmentComplex.undergroundStation
+                ? props.apartmentComplex.undergroundStation.displayName
+                : 'не определено'
         },
         {
             key: 'class',
