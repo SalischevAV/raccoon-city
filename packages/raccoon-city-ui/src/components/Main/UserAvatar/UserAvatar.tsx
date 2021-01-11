@@ -3,12 +3,18 @@ import {Redirect} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import {Dialog, DialogTitle, DialogActions, Button, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import {defaultPic} from './defaultPic';
-import {useMutation} from '@apollo/react-hooks';
+import {defaultPic} from '../../../utils/constants';
+import {useMutation, useQuery} from '@apollo/react-hooks';
 import {LOGOUT} from '../../../graphql/mutations/authMutation';
+import {GET_USER_INFO} from '../../../graphql/queries/userQuery';
 import {TOKEN, REFRESH_TOKEN, API_TOKEN} from '../../../core/constants';
 import Cookies from 'js-cookie';
-import {UserInfoContext} from '../Main';
+
+function clearCookie() {
+    Cookies.remove(TOKEN);
+    Cookies.remove(REFRESH_TOKEN);
+    Cookies.remove(API_TOKEN);
+}
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -20,8 +26,12 @@ const useStyles = makeStyles((theme) => ({
 export default function UserAvatar() {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const userInfo = useContext(UserInfoContext);
+    const {data: userData, loading: userLoading, client} = useQuery(GET_USER_INFO, {
+        fetchPolicy: 'cache-only'
+    });
     const [logout, {data, error}] = useMutation(LOGOUT);
+
+    const {getUserInfo: userInfo} = userData;
 
     const handleClose = () => {
         setOpen(false);
@@ -31,14 +41,16 @@ export default function UserAvatar() {
         await logout({
             variables: {key: Cookies.get(TOKEN)}
         });
-        Cookies.remove(TOKEN);
-        Cookies.remove(REFRESH_TOKEN);
-        Cookies.remove(API_TOKEN);
-        handleClose();
+        clearCookie();
+        client.resetStore();
     };
 
     if (data) {
         return <Redirect to="/Login" />;
+    }
+
+    if (userLoading) {
+        return <div>Loading...</div>;
     }
 
     return (

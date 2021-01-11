@@ -12,7 +12,7 @@ import {
 } from './ApartmentComplexBuilder/ApartmentComplexForm/ApartmentComplexForm';
 import {AmoIntegration} from './Developer/AmoIntegration';
 import {DeveloperCreateForm, DeveloperEditForm} from './Developer/DeveloperForm';
-import {PrivateRoute} from './PrivateRoute/PrivateRoute';
+import {PrivateRoute} from '../Authentication/PrivateRoute/PrivateRoute';
 import {useStyles} from './drawerStyles';
 import {Header} from './Header/Header';
 import {HouseCreateForm, HouseEditForm} from './HouseBuilder/HouseForm/HouseForm';

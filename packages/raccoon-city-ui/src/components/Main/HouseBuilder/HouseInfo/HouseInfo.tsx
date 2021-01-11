@@ -139,10 +139,11 @@ export const HouseInfo = connect(null, (dispatch) => ({
         setValue(newValue);
     };
     const publishedText = publishedDate ? `Опубликовано: ${format(parseISO(publishedDate), 'dd.MM.yyyy HH:mm')}` : '';
+
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <Feature featrues={[FEATURES.CREATE_HOUSE]} fallbackComponent={<TitleWithoutEditIcon title={name} />}>
+                <Feature features={[FEATURES.CREATE_HOUSE]} fallbackComponent={<TitleWithoutEditIcon title={name} />}>
                     <TitleWithEditIcon
                         title={`${name}`}
                         editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}

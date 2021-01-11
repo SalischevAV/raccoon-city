@@ -14,10 +14,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {GET_USERS} from '../../../graphql/queries/userQuery';
+import {GET_USERS, GET_USER_INFO} from '../../../graphql/queries/userQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
-import {UserCreateForm} from './UserCreateForm';
-import {UserUpdateForm} from './UserUpdateForm';
+import {UserForm} from './UserForm';
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles({
@@ -42,22 +41,39 @@ export const UserList = connect(null, (dispatch) => ({
     }, [params]); // eslint-disable-line
     const classes = useStyles();
     const {data, loading, error} = useQuery(GET_USERS);
-    const [openUserCreateForm, setOpenUserCreateForm] = useState(false);
-    const [openUserEditForm, setOpenUserEditForm] = useState(false);
+    const {data: userData, loading: userLoading, error: userError} = useQuery(GET_USER_INFO, {
+        fetchPolicy: 'cache-only'
+    });
+
+    const {getUserInfo: userInfo} = userData;
+    const [openUserForm, setOpenUserForm] = useState(false);
     const [editUser, setEditUser] = useState({});
 
     const editClickHandler = (user) => {
-        setEditUser(user);
-        setOpenUserEditForm(true);
+        setEditUser({...user, developer: user.developer?.id});
+        setOpenUserForm(true);
+    };
+    const createClickHandler = () => {
+        setEditUser({});
+        setOpenUserForm(true);
     };
 
-    if (loading || error) {
+    if (loading || userLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error || userError) {
         return null;
     }
 
+    const userList =
+        userInfo.role?.key === 'superAdmin'
+            ? data.getUsers
+            : data.getUsers.filter((item) => item.developer?.id === userInfo.developer.id);
+
     return (
         <TableContainer component={Paper}>
-            <Button variant="outlined" color="primary" onClick={() => setOpenUserCreateForm(true)}>
+            <Button variant="outlined" color="primary" onClick={createClickHandler}>
                 Создать пользователя
             </Button>
             <Table className={classes.table} aria-label="simple table">
@@ -72,7 +88,7 @@ export const UserList = connect(null, (dispatch) => ({
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.getUsers.map((user) => (
+                    {userList.map((user) => (
                         <TableRow key={user.id}>
                             <TableCell padding="checkbox">
                                 <Checkbox checked={!user.isDeleted} disabled />
@@ -96,11 +112,11 @@ export const UserList = connect(null, (dispatch) => ({
                     ))}
                 </TableBody>
             </Table>
-            <UserCreateForm openUserCreateForm={openUserCreateForm} setOpenUserCreateForm={setOpenUserCreateForm} />
-            <UserUpdateForm
-                openUserEditForm={openUserEditForm}
-                setOpenUserEditForm={setOpenUserEditForm}
+            <UserForm
+                openUserForm={openUserForm}
+                setOpenUserForm={setOpenUserForm}
                 user={editUser}
+                userInfo={userInfo}
             />
         </TableContainer>
     );

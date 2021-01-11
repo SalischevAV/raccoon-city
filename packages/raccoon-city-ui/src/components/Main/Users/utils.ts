@@ -18,3 +18,7 @@ export function getUserDataVariables(userData: UserFormValues) {
         developer
     };
 }
+
+export function isEmpty(obj: object) {
+    return Boolean(Object.keys(obj).length);
+}
