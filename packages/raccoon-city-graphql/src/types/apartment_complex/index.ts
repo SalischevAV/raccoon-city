@@ -6,6 +6,7 @@ export interface ApartmentComplexModelArgs {
     name: string;
     city: KeyDisplayName;
     district: KeyDisplayName;
+    undergroundStation: KeyDisplayName;
     class: KeyDisplayName;
     levels: number;
     sections: number;
@@ -21,6 +22,7 @@ export interface ApartmentComplexInputArgs {
     city: string;
     address: string;
     district: string;
+    undergroundStation: string;
     class: string;
     levels: number;
     sections: number;

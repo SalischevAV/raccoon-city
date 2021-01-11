@@ -1,4 +1,5 @@
 type UserRole {
+    id: String
     key: String
     displayName: String
     features: [String]
@@ -9,13 +10,17 @@ type User {
     email: String
     role: UserRole
     isDeleted: Boolean
+    developer: Developer
 }
 
 input UserInput {
+    id: String
     name: String
+    isDeleted: Boolean
     email: String
     password: String
     role: String
+    developer: String
 }
 
 type Auth {
@@ -27,15 +32,40 @@ input CurrentUserInfo {
     features: [String]
 }
 
+type HistoryEvent {
+    id: String
+    user: User
+    eventType: String
+    payload: String
+    date: String
+    developer: String
+}
+
+input HistoryEventInput {
+    user: String
+    eventType: String
+    payload: String
+    date: String
+    developer: String
+}
+
+type History {
+    historyEventsRes: [HistoryEvent]
+    historyPageAmount: Int
+}
+
 type Mutation {
     authApp(apiKey: String!): Auth
     login(email: String!, password: String!): Auth
     logout(key: String!): Boolean!
     createUser(userData: UserInput): User
+    updateUser(userData: UserInput): User
     deleteUser(id: String): Boolean
+    saveHistoryEvent(historyEvent: HistoryEventInput): HistoryEvent
 }
 
 type Query {
     getUserInfo: User
     getUsers: [User]
+    getHistoryEvents(developer: String!, page: Int): History
 }

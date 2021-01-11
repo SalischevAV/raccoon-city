@@ -3,7 +3,6 @@ import React, {useEffect, useReducer, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import styled from 'styled-components';
 import {APARTMENT_COMPLEX_INFO} from '../../../graphql/queries/apartmentComplexQuery';
 import {
     FlatsInHouse,
@@ -12,109 +11,31 @@ import {
     GET_PUBLIC_FLATS_LIST,
     GET_PUBLIC_GROUPED_FLATS_CHESSGRID,
     GetGroupedFlatsBySectionQuery,
-    GroupedFlats,
     PUBLISHED_HOUSE_INFO
 } from '../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {Flat} from '../../shared/types/flat.types';
 import {House} from '../../shared/types/house.types';
 import {ChessCellViewMode, ViewModeValues} from './ChessEnums';
-import {ChessFloorView} from './ChessFloorView/ChessFloorView';
 import {getInitialState, reducer} from './ChessGrid.reducer';
 import {
     ChessGridWrapper,
-    ColumnAndSectionBarWrapper,
-    ColumnWrapper,
-    Container,
     HouseTitle,
-    MobileInformation,
-    SidebarDrawer,
-    ScrollWrapper
+    ScrollWrapper,
+    CustomSidebarDrawer,
+    InternalCustomSidebarDrawer
 } from './ChessGrid.styled';
-import {showMutedFlats} from './ChessGrid.utils';
 import {ChessGridAnimation} from './ChessGridAnimation/ChessGridAnimation';
-import {ChessGridColumn} from './ChessGridColumn/ChessGridColumn';
 import {ChessGridFiltersDrawer, ShowFilter} from './ChessGridFiltersDrawer/ChessGridFiltersDrawer';
 import {ChessListView} from './ChessListView/ChessListView';
 import {ChessSideBar} from './ChessSideBar';
 import {PublicLink} from './PublicLink/PublicLink';
-import {SectionBar} from './SectionBar/SectionBar';
 import {ViewModeSelectorMobile} from './MobileViewMode';
+import {ChessGridFloorView} from './ChessGridFloorView';
+import {ChessGridTileView} from './ChessGridTileView';
 
 export const ViewModeContext = React.createContext({selectedViewMode: ViewModeValues.AREA});
 export const CellViewModeContext = React.createContext({mode: ChessCellViewMode.TILE});
-
-export const InternalCustomSidebarDrawer = styled<any>(SidebarDrawer)`
-    .MuiAppBar-root .MuiTab-wrapper path {
-        fill: #fff;
-    }
-`;
-
-export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
-    .MuiPaper-elevation4 {
-        box-shadow: none;
-    }
-
-    .MuiAppBar-colorPrimary {
-        background-color: transparent;
-    }
-
-    .PrivateTabIndicator-colorSecondary-42 {
-        background-color: #fff;
-    }
-
-    .MuiTabs-flexContainer {
-        box-shadow: none;
-    }
-
-    .MuiAppBar-root {
-        margin-top: 10px;
-        padding: 0 18px;
-    }
-
-    .MuiTab-root {
-        width: 40px;
-        height: 40px;
-        min-height: 40px;
-    }
-
-    .MuiAppBar-root .MuiTouchRipple-root {
-        border: 1px solid #000;
-        border-radius: 10px;
-        margin: 0 5px;
-    }
-
-    .MuiAppBar-root .MuiTab-wrapper {
-        font-size: 12px;
-        color: #000;
-    }
-
-    .Mui-selected .MuiTab-wrapper {
-        color: #e84f1d;
-
-        svg {
-            width: 20px;
-        }
-
-        path {
-            fill: #e84f1d;
-        }
-    }
-
-    .Mui-selected .MuiTouchRipple-root {
-        border-color: #e84f1d;
-    }
-
-    .MuiTabs-indicator {
-        display: none;
-    }
-
-    @media only screen and (max-width: 600px) {
-        .MuiTabs-flexContainer {
-            justify-content: center;
-        }
-    }
-`;
 
 const ChessGridContent = React.memo((props: any) => {
     const {
@@ -167,65 +88,30 @@ const ChessGridContent = React.memo((props: any) => {
         setFlatCardOpen(true);
     };
 
-    // TODO divide to views component
     const tileView = (
-        <ChessGridWrapper hasSelect={hasSelect}>
-            {houseFlats.map((group: FlatsInHouse) => {
-                const {groupedFlats} = group;
-
-                if (!groupedFlats || (groupedFlats && groupedFlats.length === 0)) {
-                    return null;
-                }
-
-                return (
-                    <Container key={group.id}>
-                        <ColumnAndSectionBarWrapper isPublic={isPublic} mode={filters.mode}>
-                            <ColumnWrapper>
-                                {showMutedFlats(groupedFlats, filters, isPublic).map((item: GroupedFlats) => {
-                                    return (
-                                        <ChessGridColumn
-                                            key={item.id}
-                                            columnName={item.section}
-                                            houseName={houseFlats[0].name}
-                                            levels={item.levels}
-                                            onSelect={selectFlat}
-                                            savedFlat={savedFlat}
-                                        />
-                                    );
-                                })}
-                            </ColumnWrapper>
-                        </ColumnAndSectionBarWrapper>
-                        {isPublic && filters.mode === ChessCellViewMode.TILE && (
-                            <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />
-                        )}
-                    </Container>
-                );
-            })}
-        </ChessGridWrapper>
+        <ChessGridTileView
+            houseFlats={houseFlats}
+            hasSelect={hasSelect}
+            isPublic={isPublic}
+            filters={filters}
+            selectFlat={selectFlat}
+            savedFlat={savedFlat}
+            isSideBarOpen={isSideBarOpen}
+            setSideBarOpen={setSideBarOpen}
+        />
     );
 
-    // TODO divide to views component
     const chessViews = {
         [ChessCellViewMode.FLOOR]: (
-            <>
-                {!houseFlats.length ? (
-                    <div>Дома не найдены</div>
-                ) : (
-                    <>
-                        <ChessFloorView
-                            setCurrentLevel={setCurrentLevel}
-                            filters={filters}
-                            onSelect={selectFlat}
-                            houseFlats={houseFlats}
-                            isPublic={isPublic}
-                        />
-
-                        <MobileInformation>
-                            {isPublic && <SectionBar isSideBarOpen={isSideBarOpen} setSideBarOpen={setSideBarOpen} />}
-                        </MobileInformation>
-                    </>
-                )}
-            </>
+            <ChessGridFloorView
+                houseFlats={houseFlats}
+                filters={filters}
+                isPublic={isPublic}
+                isSideBarOpen={isSideBarOpen}
+                onSelect={selectFlat}
+                setCurrentLevel={setCurrentLevel}
+                setSideBarOpen={setSideBarOpen}
+            />
         ),
         [ChessCellViewMode.LIST]: <ChessListView listData={listFlats} filters={filters} onSelect={selectFlat} />,
         [ChessCellViewMode.TILE]: tileView,

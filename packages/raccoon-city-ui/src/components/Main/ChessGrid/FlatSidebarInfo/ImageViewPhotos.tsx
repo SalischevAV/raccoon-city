@@ -106,7 +106,7 @@ const CustomButtonHouseRemake = styled<any>(CustomButton)`
     width: 300px;
 
     @media only screen and (max-width: 600px) {
-        top: 17%;
+        top: 88%
         margin: 0 !important;
     }
 `;
@@ -167,13 +167,13 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
         setIsOpen(false);
         setOrderModalType(OrderModalType.ORDER);
         setOrderModalOpen(true);
-    }, [setOrderModalType, setOrderModalType]);
+    }, [setOrderModalType]);
 
     const openHouseRemakeOrderModal = useCallback(() => {
         setIsOpen(false);
         setOrderModalType(OrderModalType.HOUSE_REMAKE);
         setOrderModalOpen(true);
-    }, [setOrderModalType, setOrderModalType]);
+    }, [setOrderModalType]);
 
     return (
         <Grid container spacing={3}>
@@ -184,6 +184,7 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
                     <HRLink>https://houseremake.com.ua/</HRLink>
                 </div>
             ) : (
+                !isOpen &&
                 props.images.map((image: NamedImage, i) => {
                     return (
                         <Grid item key={image.uuid} xs={12}>
@@ -206,7 +207,7 @@ export function ImageViewPhotos(props: ImageViewPhotosProps) {
             {isOpen && (
                 <div>
                     <CustomButtonHouseRemake variant="contained" onClick={openOrderModal}>
-                        Зaбронировать кваритру
+                        Зaбронировать квартиру
                     </CustomButtonHouseRemake>
                     <ButtonsContainer>
                         <CustomButton variant="contained" onClick={openHouseRemakeOrderModal}>

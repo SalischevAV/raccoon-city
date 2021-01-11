@@ -1,17 +1,35 @@
 import {ApolloError} from 'apollo-server';
 import * as bcrypt from 'bcryptjs';
 import {UserModel} from '../../db/models/user';
+import {HistoryEventModel} from '../../db/models/historyEvent';
 import {authAppTokenGenerate, authTokenGenerate} from '../../utils';
-import {userRoles} from '../../constants/userRoles';
 
 export const auth = {
     async createUser(parent, {userData}) {
         try {
             userData.password = bcrypt.hashSync(userData.password);
-            userData.role = userRoles.find((role) => role.key === userData.role);
-            return UserModel.create(userData);
+            return await UserModel.create(userData);
         } catch (e) {
             return null;
+        }
+    },
+    async updateUser(parent, {userData}) {
+        try {
+            await UserModel.findOneAndUpdate(
+                {_id: userData.id},
+                {
+                    $set: {
+                        isDeleted: userData.isDeleted,
+                        name: userData.name,
+                        email: userData.email,
+                        role: userData.role,
+                        developer: userData.developer
+                    }
+                }
+            );
+            return true;
+        } catch (e) {
+            return false;
         }
     },
     async deleteUser(parent, {id}) {
@@ -23,8 +41,8 @@ export const auth = {
         }
     },
     async login(parent, {email, password}, {redis}) {
-        const user = await UserModel.findOne({email});
-        if (!user) {
+        const user = await UserModel.findOne({email}).populate('role');
+        if (!user || user.isDeleted) {
             throw new ApolloError(`No such user found for email: ${email}`, '404');
         }
         const valid = await bcrypt.compareSync(password, user.password);
@@ -34,7 +52,7 @@ export const auth = {
         const token = authTokenGenerate(user);
         await redis.set(
             token,
-            JSON.stringify({id: user._id, features: user?.role?.features || []}),
+            JSON.stringify({id: user._id, features: user?.role?.features || [], role: user?.role}),
             'ex',
             process.env.REDIS_KEY_TTL
         );
@@ -52,5 +70,10 @@ export const auth = {
         } catch (e) {
             return false;
         }
+    },
+    async saveHistoryEvent(_, {historyEvent}) {
+        const savedHistoryEvent = await HistoryEventModel.create(historyEvent);
+
+        return savedHistoryEvent;
     }
 };

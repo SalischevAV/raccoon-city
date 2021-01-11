@@ -1,7 +1,7 @@
 import {useQuery} from '@apollo/react-hooks';
 import {AppBar, Button, Chip, Tab, Tabs, Typography} from '@material-ui/core';
 import ThreeSixtyIcon from '@material-ui/icons/ThreeSixty';
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import {
     GET_FLAT_SIDEBAR_DATA,
@@ -31,6 +31,8 @@ import {GallaryIcon} from '../../../../icons/GaleryIcon';
 import {withTooltip} from '../../../HOC/withTooltip';
 import {useMediaQuery, useTheme} from '@material-ui/core';
 import {StyledCloseIcon} from './styledComponents';
+import useOnClickOutside from '../../../../hooks/useOnClickOutside';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface FlatSidebarInfoProps {
     flat: Flat;
@@ -52,6 +54,8 @@ const FlatSidebarWrapper = styled.div`
 
 const ImageContainer = styled.div`
     max-width: 420px;
+    cursor: pointer;
+
     .FlatSidebarInfo__image {
         width: 100%;
     }
@@ -79,6 +83,33 @@ const StyledTab = styled(Tab)`
 
 const StyledPrintTab = styled<any>(StyledTab)`
     margin-left: auto !important;
+`;
+
+const CustomCloseIcon = styled(CloseIcon)`
+    position: fixed;
+    color: #e84f1d;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+`;
+
+const FloorLayoutContainer = styled.div`
+    position: fixed;
+    z-index: 4000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(29, 29, 27, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: auto;
+        height: 98vh;
+    }
 `;
 
 export const ButtonsContainer = styled.div`
@@ -122,12 +153,16 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
             fetchPolicy: 'cache-and-network'
         }
     );
-    const [value, setValue] = React.useState(0);
-    const [isModalOpen, setModalOpen] = React.useState(false);
-    const [modal, setModal] = React.useState(false);
+    const [value, setValue] = useState(0);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [isLayoutOpen, setLayoutOpen] = useState(false);
+    const floorLayoutRef = useRef() as any;
 
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+    useOnClickOutside(floorLayoutRef, () => setLayoutOpen(false));
 
     const {data: user, loading: userLoading} = useQuery(GET_USER_INFO, {
         fetchPolicy: 'cache-and-network',
@@ -205,11 +240,19 @@ export function FlatSidebarInfo(props: FlatSidebarInfoProps) {
                         className="FlatSidebarInfo__image"
                         src={flat.layout?.image.previewImageUrl}
                         alt={flat.layout?.name}
+                        onClick={() => setLayoutOpen(true)}
                     />
                 ) : (
                     defaultFlatPicture
                 )}
             </ImageContainer>
+            {isLayoutOpen && (
+                <FloorLayoutContainer>
+                    <img src={flat.layout?.image.previewImageUrl} alt={flat.layout?.name} ref={floorLayoutRef} />
+
+                    <CustomCloseIcon onClick={() => setLayoutOpen(false)} />
+                </FloorLayoutContainer>
+            )}
             <AppBar position="static">
                 <Tabs
                     value={value}

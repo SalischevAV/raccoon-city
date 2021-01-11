@@ -4,6 +4,7 @@ type ApartmentComplex {
     name: String
     city: City
     district: District
+    undergroundStation: UndergroundStation
     address: String
     class: ApartmentComplexClass
     levels: Int
@@ -22,6 +23,7 @@ input ApartmentComplexInput {
     city: String
     address: String
     district: String
+    undergroundStation: String
     class: String
     levels: Int
     sections: Int
@@ -94,7 +96,12 @@ type Mutation {
     assignFlats(data: [HosueWithFlats]): String
 }
 
+type ApartmentComplexName {
+    name: String
+}
+
 extend type Query {
     getAllApartmentComplexes(developerUuid: String!): [ApartmentComplex]
     getApartmentComplex(uuid: String!): ApartmentComplex
+    getApartmentComplexName(uuid: String!): ApartmentComplexName
 }

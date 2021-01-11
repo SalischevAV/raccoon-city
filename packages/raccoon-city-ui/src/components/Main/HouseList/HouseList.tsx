@@ -11,6 +11,8 @@ import {FabButtonContainer, StyledFab, StyledLink} from '../../shared/components
 import {House} from '../../shared/types/house.types';
 import {HousePreview} from '../HouseBuilder/HousePreview/HousePreview';
 import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
+import {Feature} from '../../shared/components/features/Feature';
+import {FEATURES} from '../../../core/constants/features';
 
 const EmptyHouseWrapper = styled.div`
     display: flex;
@@ -65,9 +67,11 @@ interface HouseGridProps {
 function HouseGrid({houses}: HouseGridProps) {
     return (
         <Grid container={true} spacing={2} alignItems="center">
-            <Grid item={true} xs={12} md={4}>
-                <AddHouseButton />
-            </Grid>
+            <Feature features={[FEATURES.CREATE_HOUSE]}>
+                <Grid item={true} xs={12} md={4}>
+                    <AddHouseButton />
+                </Grid>
+            </Feature>
             {houses.map((house) => {
                 return (
                     <Grid item={true} xs={12} md={4} key={house.id}>

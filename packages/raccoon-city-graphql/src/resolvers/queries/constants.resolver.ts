@@ -1,7 +1,6 @@
 import {cities} from '../../constants/cities';
 import {apartmentComplexTypes} from '../../constants/apartmentComplexTypes';
 import {complexClasses} from '../../constants/complexClasses';
-import {userRoles} from '../../constants/userRoles';
 import {
     ClientInterests,
     ClientSources,
@@ -13,6 +12,7 @@ import {
     TradeSources,
     TradeStates
 } from '../../constants/tradeConstants';
+import {UserRoleModel} from '../../db/models/userRole';
 
 export const constants = {
     cities: () => {
@@ -25,7 +25,7 @@ export const constants = {
         return complexClasses;
     },
     userRoles: () => {
-        return userRoles;
+        return UserRoleModel.find().exec();
     },
     tradeStates: () => {
         return TradeStates;

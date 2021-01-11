@@ -1,11 +1,12 @@
 import {useMutation} from '@apollo/react-hooks';
 import {MenuItem, Select} from '@material-ui/core';
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useCallback} from 'react';
 import styled from 'styled-components';
 import {FLAT_STATUSES} from '../../../../core/constants';
 import {UPDATE_FLAT_STATUS} from '../../../../graphql/mutations/flatMutation';
 import {GET_FLAT_LIST, GET_GROUPED_FLATS_CHESSGRID} from '../../../../graphql/queries/houseQuery';
 import {GET_FLATS_INFO_WITH_SVG_LAYOUTS} from '../../../../graphql/queries/layoutQuery';
+import {HistoryEventType, useSaveHistoryEvent} from '../../../../hooks/useSaveEvent';
 import {Flat} from '../../../shared/types/flat.types';
 import {ChessCellViewMode} from '../ChessEnums';
 
@@ -74,22 +75,19 @@ function FlatPriceInfoItem({flat}) {
 export function FlatSidebarData(props: FlatSidebarDataProps) {
     const {flat, houseId, viewMode, currentLevel, setSavedFlat, isPublic} = props;
     const [updateFlatStatus] = useMutation(UPDATE_FLAT_STATUS);
+    const saveHistoryEvent = useSaveHistoryEvent(HistoryEventType.CHANGE_FLAT_STATUS);
     const flatStatus = FLAT_STATUSES.find((statuses) => statuses.value === flat.status);
     const [status, setStatus] = useState(flatStatus?.label);
+    const tileQueryParams = {
+        query: GET_GROUPED_FLATS_CHESSGRID,
+        variables: {
+            uuid: houseId
+        }
+    };
 
     const QUERY = {
-        [ChessCellViewMode.TILE_PLUS]: {
-            query: GET_GROUPED_FLATS_CHESSGRID,
-            variables: {
-                uuid: houseId
-            }
-        },
-        [ChessCellViewMode.TILE]: {
-            query: GET_GROUPED_FLATS_CHESSGRID,
-            variables: {
-                uuid: houseId
-            }
-        },
+        [ChessCellViewMode.TILE_PLUS]: tileQueryParams,
+        [ChessCellViewMode.TILE]: tileQueryParams,
         [ChessCellViewMode.LIST]: {
             query: GET_FLAT_LIST,
             variables: {}
@@ -102,17 +100,38 @@ export function FlatSidebarData(props: FlatSidebarDataProps) {
         }
     };
 
-    const handleFlatStatusChange = (label: string) => {
-        setStatus(label);
-
+    const handleFlatStatusChange = useCallback(async (label: string, value: string) => {
         const savedFlat = {
             section: flat.section,
             level: flat.level,
             flatNumber: flat.flatNumber
         };
 
+        await updateFlatStatus({
+            variables: {
+                flatId: flat.id,
+                flatStatus: value
+            },
+            refetchQueries: [
+                {
+                    query: QUERY[viewMode].query,
+                    variables: {
+                        ...QUERY[viewMode].variables
+                    }
+                }
+            ]
+        });
+
+        await saveHistoryEvent({
+            payload: JSON.stringify({
+                flatId: flat.id,
+                newStatus: {label, value}
+            })
+        });
+
+        setStatus(label);
         setSavedFlat(savedFlat);
-    };
+    }, []);
 
     return (
         <div>
@@ -131,30 +150,14 @@ export function FlatSidebarData(props: FlatSidebarDataProps) {
                     label="Статус"
                     value={
                         <Select value={status}>
-                            {FLAT_STATUSES.map((item) => {
+                            {FLAT_STATUSES.map(({label, value}) => {
                                 return (
                                     <MenuItem
-                                        key={item.label}
-                                        value={item.label}
-                                        onClick={async () => {
-                                            handleFlatStatusChange(item.label);
-                                            await updateFlatStatus({
-                                                variables: {
-                                                    flatId: flat.id,
-                                                    flatStatus: item.value
-                                                },
-                                                refetchQueries: [
-                                                    {
-                                                        query: QUERY[viewMode].query,
-                                                        variables: {
-                                                            ...QUERY[viewMode].variables
-                                                        }
-                                                    }
-                                                ]
-                                            });
-                                        }}
+                                        key={label}
+                                        value={label}
+                                        onClick={() => handleFlatStatusChange(label, value)}
                                     >
-                                        {item.label}
+                                        {label}
                                     </MenuItem>
                                 );
                             })}

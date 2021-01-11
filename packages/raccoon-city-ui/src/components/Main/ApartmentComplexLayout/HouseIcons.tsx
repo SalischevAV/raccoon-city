@@ -30,6 +30,7 @@ function HouseIcons({data, hoveredHouse, setHoveredHouse}) {
                         .sort((a, b) => {
                             return a.house.order - b.house.order;
                         })
+                        .filter((layout) => layout.house.visibleInCarousel)
                         .map((layout) => {
                             return HouseIconContainer(layout);
                         })}

@@ -26,6 +26,7 @@ export const HOUSE_INFO = gql`
             price
             beginDate
             endDate
+            visibleInCarousel
             publishedDate
             images {
                 CHESS_GRID {
@@ -79,6 +80,7 @@ export const HOUSE_DATA = gql`
             parking
             order
             price
+            visibleInCarousel
         }
     }
 `;

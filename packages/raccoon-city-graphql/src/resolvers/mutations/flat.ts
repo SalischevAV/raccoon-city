@@ -4,6 +4,8 @@ import {LevelModel} from '../../db/models/level';
 import {SectionModel} from '../../db/models/section';
 import {IdFlat} from '../../types/flat/flat';
 import {Context} from '../../utils';
+import {PublishedHouseModel} from '../../db/models/publishedHouse';
+import mongoose from 'mongoose';
 
 async function handleSection(newFlat: IdFlat, previousFlat: Flat | null, houseId: string): Promise<Flat> {
     const prevFlat = previousFlat ? previousFlat.toObject() : {};
@@ -124,7 +126,7 @@ export const flatMutation = {
         };
         return FlatModel.findOneAndUpdate({_id: previousFlat.id, isDeleted: false}, result);
     },
-    updateFlatStatus: async (parent, {flatId, flatStatus}) => {
+    updateFlatStatus: async (parent, {flatId, flatStatus}, {currentUser}) => {
         await FlatModel.findOneAndUpdate(
             {
                 _id: flatId,
@@ -132,6 +134,33 @@ export const flatMutation = {
             },
             {status: String(flatStatus)}
         );
+
+        if (currentUser && currentUser?.role?.key === 'manager') {
+            const [house] = await PublishedHouseModel.aggregate([
+                {
+                    $unwind: '$sections'
+                },
+                {
+                    $unwind: '$sections.levels'
+                },
+                {
+                    $unwind: '$sections.levels.flats'
+                },
+                {$match: {'sections.levels.flats._id': mongoose.Types.ObjectId(flatId)}}
+            ]).exec();
+
+            await PublishedHouseModel.updateOne(
+                {
+                    _id: house._id
+                },
+                {
+                    $set: {'sections.$[].levels.$[].flats.$[flat].status': String(flatStatus)}
+                },
+                {
+                    arrayFilters: [{'flat._id': mongoose.Types.ObjectId(flatId)}]
+                }
+            ).exec();
+        }
 
         return true;
     },

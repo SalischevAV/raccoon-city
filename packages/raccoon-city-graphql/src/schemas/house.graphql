@@ -9,6 +9,7 @@ type House {
     order: Int
     beginDate: String
     endDate: String
+    visibleInCarousel: Boolean
 }
 
 input HouseInput {
@@ -19,6 +20,7 @@ input HouseInput {
     order: Int
     beginDate: String
     endDate: String
+    visibleInCarousel: Boolean
 }
 
 type HouseImages {

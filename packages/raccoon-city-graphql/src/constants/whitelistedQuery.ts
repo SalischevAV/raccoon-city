@@ -1,6 +1,7 @@
 export const WHITELISTED_QUERIES = [
     'login',
     'createUser',
+    'updateUser',
     'authorizeAmo',
     'getPublicApartmentComplexesByDeveloper',
     'getPublicGroupedFlatsBySection',
@@ -10,8 +11,10 @@ export const WHITELISTED_QUERIES = [
     'getApartmentComplexLayout',
     'getPublishedFlatsLayoutByHouseId',
     'getApartmentComplex',
+    'getApartmentComplexName',
     'getPublishedHouse',
-    'requestFromPublicForm'
+    'requestFromPublicForm',
+    'getHouse'
 ];
 
 export const PUBLIC_QUERIES = [

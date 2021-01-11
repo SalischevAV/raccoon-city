@@ -10,6 +10,8 @@ import {ApartmentComplexType, ImageType} from '../../shared/types/apartmentCompl
 import {AddProperty} from './AddApartmentComplexList/AddProperty';
 import {ApartmentComplex} from './ApartmentComplex/ApartmentComplex';
 import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
+import {Feature} from '../../shared/components/features/Feature';
+import {FEATURES} from '../../../core/constants/features';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -56,9 +58,11 @@ export const ApartmentComplexList = connect(null, (dispatch) => ({
     return (
         <div className={classes.root}>
             <Grid container={true} spacing={3} alignItems="center">
-                <Grid item={true} xs={12} md={3}>
-                    <AddProperty />
-                </Grid>
+                <Feature features={[FEATURES.ADD_APARTMENT_COMPLEX]}>
+                    <Grid item={true} xs={12} md={3}>
+                        <AddProperty />
+                    </Grid>
+                </Feature>
                 {data &&
                     data.getAllApartmentComplexes.map((complex: ApartmentComplexType) => {
                         const chessGridImage = complex.images[ImageType.CHESS_GRID];

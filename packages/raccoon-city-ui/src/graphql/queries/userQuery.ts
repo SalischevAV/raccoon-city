@@ -6,6 +6,15 @@ export const GET_USER_INFO = gql`
             id
             name
             email
+            developer {
+                id
+                name
+                city
+                address
+                emails
+                receptionNumbers
+                salesNumbers
+            }
             role {
                 key
                 displayName
@@ -21,7 +30,17 @@ export const GET_USERS = gql`
             id
             name
             email
+            developer {
+                id
+                name
+                city
+                address
+                emails
+                receptionNumbers
+                salesNumbers
+            }
             role {
+                id
                 key
                 displayName
                 features
@@ -34,9 +53,34 @@ export const GET_USERS = gql`
 export const GET_ROLES = gql`
     query getRoles {
         userRoles {
+            id
             key
             displayName
             features
+        }
+    }
+`;
+
+export const GET_HISTORY_EVENTS = gql`
+    query getHistoryEvents($developer: String!, $page: Int) {
+        getHistoryEvents(developer: $developer, page: $page) {
+            historyEventsRes {
+                id
+                user {
+                    id
+                    name
+                    email
+                    role {
+                        id
+                        key
+                        displayName
+                    }
+                }
+                eventType
+                payload
+                date
+            }
+            historyPageAmount
         }
     }
 `;

@@ -61,6 +61,7 @@ export const FloorContentContainer = styled.div`
     }
 
     @media only screen and (max-width: 500px) {
+        width: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -108,8 +109,7 @@ export const FlatInfo = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 60%;
-    min-width: 60%;
+    width: 90%;
     border: 1px solid #000;
 
     span {

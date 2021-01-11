@@ -109,3 +109,75 @@ export const InfoMobileViewWrapper = styled.div`
     width: 50%;
     border: 1px solid #73859f;
 `;
+
+export const CustomSidebarDrawer = styled<any>(SidebarDrawer)`
+    .MuiPaper-elevation4 {
+        box-shadow: none;
+    }
+
+    .MuiAppBar-colorPrimary {
+        background-color: transparent;
+    }
+
+    .PrivateTabIndicator-colorSecondary-42 {
+        background-color: #fff;
+    }
+
+    .MuiTabs-flexContainer {
+        box-shadow: none;
+    }
+
+    .MuiAppBar-root {
+        margin-top: 10px;
+        padding: 0 18px;
+    }
+
+    .MuiTab-root {
+        width: 40px;
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .MuiAppBar-root .MuiTouchRipple-root {
+        border: 1px solid #000;
+        border-radius: 10px;
+        margin: 0 5px;
+    }
+
+    .MuiAppBar-root .MuiTab-wrapper {
+        font-size: 12px;
+        color: #000;
+    }
+
+    .Mui-selected .MuiTab-wrapper {
+        color: #e84f1d;
+
+        svg {
+            width: 20px;
+        }
+
+        path {
+            fill: #e84f1d;
+        }
+    }
+
+    .Mui-selected .MuiTouchRipple-root {
+        border-color: #e84f1d;
+    }
+
+    .MuiTabs-indicator {
+        display: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .MuiTabs-flexContainer {
+            justify-content: center;
+        }
+    }
+`;
+
+export const InternalCustomSidebarDrawer = styled<any>(SidebarDrawer)`
+    .MuiAppBar-root .MuiTab-wrapper path {
+        fill: #fff;
+    }
+`;

@@ -4,19 +4,23 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
+import {UserInfoContext} from '../Main';
 import {connect} from 'react-redux';
 import {Link, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import {apartmentComplexDefaultImage} from '../../../core/constants';
+import {FEATURES} from '../../../core/constants/features';
 import {DELETE_DEVELOPER} from '../../../graphql/mutations/developerMutaion';
 import {GET_DEVELOPERS} from '../../../graphql/queries/developerQuery';
 import {setRouteParams, setTitle} from '../../../redux/actions';
 import {AddButton} from '../../shared/components/buttons/AddButton';
 import {Confirmation} from '../../shared/components/dialogs/ConfirmDialog';
+import {Feature} from '../../shared/components/features/Feature';
+import {CardHeaderNoMenu} from '../../shared/components/menus/CardHeaderNoMenu';
 import {CardHeaderWithMenu} from '../../shared/components/menus/CardHeaderWithMenu';
-import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
 import {CardSkeleton} from '../../shared/components/skeletons/CardSkeleton';
+import {StyledCard, StyledCardMedia, StyledLink} from '../../shared/components/styled';
 
 export interface DeveloperCardProps {
     id: string;
@@ -28,38 +32,40 @@ function DeveloperCard(props: DeveloperCardProps) {
     const [deleteMutation] = useMutation(DELETE_DEVELOPER);
     return (
         <StyledCard elevation={3}>
-            <CardHeaderWithMenu title={props.name}>
-                <StyledLink to={`/developer/${props.id}/edit`}>
-                    <MenuItem>Редактировать</MenuItem>
-                </StyledLink>
-                <StyledLink to={`/developer/${props.id}/amo`}>
-                    <MenuItem>AMO интеграция</MenuItem>
-                </StyledLink>
-                <Confirmation>
-                    {(confirmFn: (cb: () => void) => void) => {
-                        return (
-                            <MenuItem
-                                onClick={() => {
-                                    confirmFn(() => async () => {
-                                        await deleteMutation({
-                                            variables: {
-                                                id: props.id
-                                            },
-                                            refetchQueries: [
-                                                {
-                                                    query: GET_DEVELOPERS
-                                                }
-                                            ]
+            <Feature features={[FEATURES.CREATE_DEVELOPER]} fallbackComponent={<CardHeaderNoMenu title={props.name} />}>
+                <CardHeaderWithMenu title={props.name}>
+                    <StyledLink to={`/developer/${props.id}/edit`}>
+                        <MenuItem>Редактировать</MenuItem>
+                    </StyledLink>
+                    <StyledLink to={`/developer/${props.id}/amo`}>
+                        <MenuItem>AMO интеграция</MenuItem>
+                    </StyledLink>
+                    <Confirmation>
+                        {(confirmFn: (cb: () => void) => void) => {
+                            return (
+                                <MenuItem
+                                    onClick={() => {
+                                        confirmFn(() => async () => {
+                                            await deleteMutation({
+                                                variables: {
+                                                    id: props.id
+                                                },
+                                                refetchQueries: [
+                                                    {
+                                                        query: GET_DEVELOPERS
+                                                    }
+                                                ]
+                                            });
                                         });
-                                    });
-                                }}
-                            >
-                                Удалить
-                            </MenuItem>
-                        );
-                    }}
-                </Confirmation>
-            </CardHeaderWithMenu>
+                                    }}
+                                >
+                                    Удалить
+                                </MenuItem>
+                            );
+                        }}
+                    </Confirmation>
+                </CardHeaderWithMenu>
+            </Feature>
             <CardActionArea>
                 <Link to={`/developers/${props.id}/apartmentComplexes`}>
                     <StyledCardMedia image={props.imageUrl || apartmentComplexDefaultImage} title={props.name} />
@@ -101,6 +107,7 @@ export const DeveloperList = connect(null, (dispatch) => ({
     applyTitle: (title) => dispatch(setTitle(title))
 }))(({applyParams, applyTitle}) => {
     const params = useParams();
+    const userInfo = useContext(UserInfoContext);
 
     useEffect(() => {
         applyParams(params);
@@ -121,12 +128,20 @@ export const DeveloperList = connect(null, (dispatch) => ({
         return <EmptyDevelopers />;
     }
 
+    const developersList =
+        userInfo.role.key === 'superAdmin'
+            ? data.getDevelopers
+            : data.getDevelopers.filter((developer) => developer.id === userInfo.developer?.id);
+
     return (
         <Grid container={true} spacing={3} alignItems="center">
-            <Grid item={true} xs={12} md={3}>
-                <AddButton url={'/developer/new'} />
-            </Grid>
-            {data.getDevelopers.map((developer) => {
+            <Feature features={[FEATURES.CREATE_DEVELOPER]}>
+                <Grid item={true} xs={12} md={3}>
+                    <AddButton url={'/developer/new'} />
+                </Grid>
+            </Feature>
+
+            {developersList.map((developer) => {
                 return (
                     <Grid item={true} xs={12} md={3} key={developer.id}>
                         <Grid container justify="center">

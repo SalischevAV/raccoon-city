@@ -7,7 +7,7 @@ interface Props {
     info: any;
 }
 
-function getPrice(flat) {
+export function getPrice(flat) {
     const {squarePrice, squarePriceSale, area} = flat;
 
     if (!squarePrice) {
@@ -30,13 +30,15 @@ export const FlatInfoBar = ({info}: Props) => {
                     <ValueWrapper>{`№${info.flatNumber || NO_DATA}`}</ValueWrapper>
                     <ValueWrapper>{`Статус: ${FLAT_STATUSES.find((statuses) => statuses.value === info.status)?.label ||
                         NO_DATA}`}</ValueWrapper>
-                    {info.status !== 'SOLD_OUT' && info.price && (
-                        <ValueWrapper>{`Цена: ${getPrice(info) || NO_DATA}`}</ValueWrapper>
-                    )}
+                    <ValueWrapper>
+                        {`Цена: ${info.status === 'SOLD_OUT' ? 'Продано' : getPrice(info) || NO_DATA}`}
+                    </ValueWrapper>
                     <ValueWrapper>{`М2: ${info.area || NO_DATA}`}</ValueWrapper>
-                    {(info.squarePriceSale || info.squarePrice) && (
-                        <ValueWrapper>{`Цена м2: ${info.squarePriceSale || info.squarePrice || NO_DATA}`}</ValueWrapper>
-                    )}
+                    <ValueWrapper>
+                        {`Цена м2: ${
+                            info.status === 'SOLD_OUT' ? 'Продано' : info.squarePriceSale || info.squarePrice || NO_DATA
+                        }`}
+                    </ValueWrapper>
                     <ValueWrapper>{`Комнат: ${info.roomAmount}`}</ValueWrapper>
                     <ValueWrapper>{`Кол-во уровней: ${info.levelAmount || NO_DATA}`}</ValueWrapper>
                 </>

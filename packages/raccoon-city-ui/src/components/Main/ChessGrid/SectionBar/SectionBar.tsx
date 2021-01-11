@@ -6,9 +6,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import React, {useState} from 'react';
 import {useParams} from 'react-router';
 import {APARTMENT_COMPLEX_INFO} from '../../../../graphql/queries/apartmentComplexQuery';
+import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
+import {House} from '../../../shared/types/house.types';
 import {ApartmentComplexType, ImageType} from '../../../shared/types/apartmentComplex.types';
 import {ApartmentComplexData} from '../../ApartmentComplexBuilder/ApartmentComplexInfo/ApartmentComplexData/ApartmentComplexData';
 import {SidebarVRDialog} from '../FlatSidebarInfo/SidebarVRDialog';
+import {HouseCommonInfo} from '../../HouseBuilder/HouseInfo/HouseCommonInfo';
 import {
     AppBarContainer,
     CloseBarContainer,
@@ -42,9 +45,9 @@ function TabPanel(props: any) {
 
 // TODO add error handle
 export const SectionBar = (props: any) => {
-    const {isSideBarOpen, setSideBarOpen} = props;
+    const {isSideBarOpen, setSideBarOpen, isPublic} = props;
 
-    const {apartmentComplexUuid} = useParams() as any;
+    const {apartmentComplexUuid, houseUuid} = useParams() as any;
     const [value, setValue] = useState(0);
     const [open, setOpen] = useState(false);
     const [downloadLink, setDownloadLink] = React.useState('');
@@ -54,6 +57,14 @@ export const SectionBar = (props: any) => {
         setValue(newValue);
     };
 
+    const uuid = houseUuid;
+    const {data: houseData, loading: houseLoading, error: houseError} = useQuery<{getHouse: House}>(HOUSE_INFO, {
+        fetchPolicy: 'network-only',
+        variables: {
+            uuid
+        }
+    });
+
     const {loading, error, data} = useQuery<{getApartmentComplex: ApartmentComplexType}>(APARTMENT_COMPLEX_INFO, {
         fetchPolicy: 'cache-and-network',
         variables: {
@@ -61,26 +72,27 @@ export const SectionBar = (props: any) => {
         }
     });
 
-    if (loading) {
+    if (loading || houseLoading) {
         return <div>Loading</div>;
     }
 
-    if (error) {
+    if (error || houseError) {
         return <div>Error :(</div>;
     }
 
-    if (!data || !apartmentComplexUuid) {
+    if (!data || !apartmentComplexUuid || !houseData || !houseUuid) {
         return <div>Error</div>;
     }
 
     const {images} = data.getApartmentComplex;
+
+    const {name: houseName, parking, price, beginDate, endDate, visibleInCarousel} = houseData!.getHouse;
 
     const photosJSX =
         images?.PHOTO?.map(({downloadUrl, uuid}) => <SideBarImage key={uuid} src={downloadUrl} alt="house image" />) ||
         [];
 
     const isEmptyOrSingle = photosJSX.length < 2;
-
     return (
         <SectionBarContainer isSideBarOpen={isSideBarOpen}>
             <CloseBarContainer>
@@ -111,7 +123,16 @@ export const SectionBar = (props: any) => {
             </AppBarContainer>
             <TabPanel value={value} index={0}>
                 <TabPanelContainer>
-                    <ApartmentComplexData apartmentComplex={data.getApartmentComplex} />
+                    <ApartmentComplexData apartmentComplex={data.getApartmentComplex} isPublic={isPublic} />
+                    <HouseCommonInfo
+                        name={houseName}
+                        price={price}
+                        parking={parking}
+                        beginDate={beginDate}
+                        endDate={endDate}
+                        visibleInCarousel={visibleInCarousel}
+                        isPublic={isPublic}
+                    />
                 </TabPanelContainer>
             </TabPanel>
             <TabPanel value={value} index={1}>

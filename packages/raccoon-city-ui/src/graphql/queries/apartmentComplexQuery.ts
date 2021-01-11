@@ -24,6 +24,10 @@ export const APARTMENT_COMPLEX_DROPDOWNS = gql`
                 key
                 displayName
             }
+            undergroundStations {
+                key
+                displayName
+            }
         }
         apartmentComplexClasses {
             key
@@ -48,6 +52,9 @@ export const APARTMENT_COMPLEX_INFO = gql`
                 displayName
             }
             district {
+                displayName
+            }
+            undergroundStation {
                 displayName
             }
             class {
@@ -111,6 +118,10 @@ export const GET_EDIT_APARTMENT_COMPLEX_INFO = gql`
                 key
                 displayName
             }
+            undergroundStation {
+                key
+                displayName
+            }
             class {
                 key
                 displayName
@@ -121,6 +132,14 @@ export const GET_EDIT_APARTMENT_COMPLEX_INFO = gql`
             price
             beginDate
             endDate
+        }
+    }
+`;
+
+export const GET_APARTMENT_COMPLEX_NAME = gql`
+    query getApartmentComplexName($uuid: String!) {
+        getApartmentComplexName(uuid: $uuid) {
+            name
         }
     }
 `;

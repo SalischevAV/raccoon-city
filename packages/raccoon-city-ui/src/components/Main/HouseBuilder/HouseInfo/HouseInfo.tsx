@@ -1,29 +1,27 @@
 import {useMutation, useQuery} from '@apollo/react-hooks';
-import {AppBar, Grid, Theme} from '@material-ui/core';
+import {AppBar, Grid, Theme, Paper} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Tab from '@material-ui/core/Tab';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
 import {format, parseISO} from 'date-fns';
+import ruLocale from 'date-fns/locale/ru';
 import {Fragment, useEffect, useState} from 'react';
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, Switch, useParams} from 'react-router';
 import {useRouteMatch} from 'react-router-dom';
 import styled from 'styled-components';
+import {FEATURES} from '../../../../core/constants/features';
 import {PUBLISH_HOUSE} from '../../../../graphql/mutations/houseMutation';
 import {HOUSE_INFO} from '../../../../graphql/queries/houseQuery';
 import {setRouteParams, setTitle} from '../../../../redux/actions';
-import {TitleWithEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
+import {isEnabled} from '../../../../utils/feature';
+import {Feature} from '../../../shared/components/features/Feature';
+import {TitleWithEditIcon, TitleWithoutEditIcon} from '../../../shared/components/misc/TitleWithEditIcon';
 import {StyledNavLink} from '../../../shared/components/styled';
 import {TabPanel} from '../../../shared/components/tabs/TabPanel';
 import {ImageType} from '../../../shared/types/apartmentComplex.types';
@@ -35,7 +33,7 @@ import {HouseEditor} from '../HouseEditor/HouseEditor';
 import {MainHouseImages} from './MainHouseImages/MainHouseImages';
 import {Photos} from './Photos/Photos';
 import {VRImages} from './VRImages/VRImages';
-import ruLocale from 'date-fns/locale/ru';
+import {HouseCommonInfo} from './HouseCommonInfo';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -66,7 +64,9 @@ export const getDateFromFullString = (date: any) => {
         } catch (e) {
             return 'Не определено';
         }
-    } else return 'Не определено';
+    } else {
+        return 'Не определено';
+    }
 };
 
 function PublishHouse({uuid}) {
@@ -115,7 +115,7 @@ export const HouseInfo = connect(null, (dispatch) => ({
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {loading, error, data} = useQuery<{getHouse: House}>(HOUSE_INFO, {
+    const {loading, error, data, client} = useQuery<{getHouse: House}>(HOUSE_INFO, {
         fetchPolicy: 'network-only',
         variables: {
             uuid
@@ -133,20 +133,23 @@ export const HouseInfo = connect(null, (dispatch) => ({
         return <Redirect to="/" />;
     }
 
-    const {name, images, parking, price, publishedDate, beginDate, endDate} = data.getHouse;
+    const {name, images, parking, price, publishedDate, beginDate, endDate, visibleInCarousel} = data.getHouse;
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
     const publishedText = publishedDate ? `Опубликовано: ${format(parseISO(publishedDate), 'dd.MM.yyyy HH:mm')}` : '';
+
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <TitleWithEditIcon
-                    title={`${name}`}
-                    editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}
-                    children={<span>{publishedText}</span>}
-                />
+                <Feature features={[FEATURES.CREATE_HOUSE]} fallbackComponent={<TitleWithoutEditIcon title={name} />}>
+                    <TitleWithEditIcon
+                        title={`${name}`}
+                        editUrl={`/developers/${developerUuid}/apartmentComplex/${apartmentComplexUuid}/houseEdit/${uuid}`}
+                        children={<span>{publishedText}</span>}
+                    />
+                </Feature>
                 <Grid container={true} spacing={2}>
                     <Grid item={true} xs={3}>
                         <StyledPaper>
@@ -165,21 +168,27 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         <ListItemText primary="Просмотр шахматки" />
                                     </ListItem>
                                 </StyledLink>
-                                <StyledLink activeClassName="Mui-selected" to={`${url}/editor`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Редактор помещений" />
-                                    </ListItem>
-                                </StyledLink>
-                                <StyledLink activeClassName="Mui-selected" to={`${url}/levels`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Планировка этажей" />
-                                    </ListItem>
-                                </StyledLink>
-                                <StyledLink activeClassName="Mui-selected" to={`${url}/layout`}>
-                                    <ListItem button={true}>
-                                        <ListItemText primary="Планировка квартир" />
-                                    </ListItem>
-                                </StyledLink>
+                                <Feature features={[FEATURES.CREATE_HOUSE]}>
+                                    <StyledLink activeClassName="Mui-selected" to={`${url}/editor`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="Редактор помещений" />
+                                        </ListItem>
+                                    </StyledLink>
+                                </Feature>
+                                <Feature features={[FEATURES.LAYOUTS]}>
+                                    <StyledLink activeClassName="Mui-selected" to={`${url}/levels`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="Планировка этажей" />
+                                        </ListItem>
+                                    </StyledLink>
+                                </Feature>
+                                <Feature features={[FEATURES.LAYOUTS]}>
+                                    <StyledLink activeClassName="Mui-selected" to={`${url}/layout`}>
+                                        <ListItem button={true}>
+                                            <ListItemText primary="Планировка квартир" />
+                                        </ListItem>
+                                    </StyledLink>
+                                </Feature>
                                 <ListItem
                                     button
                                     component="a"
@@ -187,7 +196,9 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                 >
                                     <ListItemText primary="Скачать в csv" />
                                 </ListItem>
-                                <PublishHouse uuid={uuid} />
+                                <Feature features={[FEATURES.PUBLISH_HOUSE]}>
+                                    <PublishHouse uuid={uuid} />
+                                </Feature>
                             </List>
                         </StyledPaper>
                     </Grid>
@@ -203,70 +214,15 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         </Tabs>
                                     </AppBar>
                                     <TabPanel value={value} index={0}>
-                                        <Table aria-label="simple table">
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Название дома
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {name}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Стоимость квартир в доме
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {price}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Парковка
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {parking ? 'Есть' : 'Нет'}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Начало строительства
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {getDateFromFullString(beginDate)}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">
-                                                        <Typography variant="body2" component="p">
-                                                            Окончание строительства
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <Typography variant="body2" component="p">
-                                                            {getDateFromFullString(endDate)}
-                                                        </Typography>
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
+                                        <HouseCommonInfo
+                                            name={name}
+                                            price={price}
+                                            parking={parking}
+                                            beginDate={beginDate}
+                                            endDate={endDate}
+                                            visibleInCarousel={visibleInCarousel}
+                                            isPublic={false}
+                                        />
                                     </TabPanel>
                                     <TabPanel value={value} index={1}>
                                         <VRImages uuid={uuid} images={images.VR || []} mode={ImageType.VR} />
@@ -275,18 +231,26 @@ export const HouseInfo = connect(null, (dispatch) => ({
                                         <Photos uuid={uuid} images={images.PHOTO || []} mode={ImageType.PHOTO} />
                                     </TabPanel>
                                 </Route>
-                                <Route exact path={`${path}/editor`}>
-                                    <HouseEditor />
-                                </Route>
-                                <Route exact path={`${path}/levels`}>
-                                    <LevelLayoutEditor />
-                                </Route>
-                                <Route exact path={`${path}/layout`}>
-                                    <LayoutEditor />
-                                </Route>
-                                <Route exact path={`${path}/layout/:layoutId/info`}>
-                                    <FlatLayouInfo />
-                                </Route>
+                                {isEnabled(client, [FEATURES.CREATE_HOUSE]) && (
+                                    <Route exact path={`${path}/editor`}>
+                                        <HouseEditor />
+                                    </Route>
+                                )}
+                                {isEnabled(client, [FEATURES.LAYOUTS]) && (
+                                    <Route exact path={`${path}/levels`}>
+                                        <LevelLayoutEditor />
+                                    </Route>
+                                )}
+                                {isEnabled(client, [FEATURES.LAYOUTS]) && (
+                                    <Route exact path={`${path}/layout`}>
+                                        <LayoutEditor />
+                                    </Route>
+                                )}
+                                {isEnabled(client, [FEATURES.LAYOUTS]) && (
+                                    <Route exact path={`${path}/layout/:layoutId/info`}>
+                                        <FlatLayouInfo />
+                                    </Route>
+                                )}
                             </Switch>
                         </div>
                     </Grid>
