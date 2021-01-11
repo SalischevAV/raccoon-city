@@ -20,5 +20,5 @@ export function getUserDataVariables(userData: UserFormValues) {
 }
 
 export function isEmpty(obj: object) {
-    return Boolean(Object.keys(obj).length);
+    return !Boolean(Object.keys(obj).length);
 }
